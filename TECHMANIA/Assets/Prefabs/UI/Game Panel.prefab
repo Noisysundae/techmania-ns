@@ -2232,7 +2232,12 @@ MonoBehaviour:
     keyboardMouseOffsetMs: 0
     keyboardMouseLatencyMs: 0
     ruleset: 0
+    customDataLocation: 0
+    tracksFolderLocation: 
+    skinsFolderLocation: 
     editorOptions:
+      beatSnapDivisor: 2
+      visibleLanes: 12
       showKeysounds: 1
       keepScanlineInView: 1
       applyKeysoundToSelection: 0
@@ -3842,6 +3847,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 0
+  position: 0
   scanNumber: 0
   countdownBackground: {fileID: 6868358960716429521}
   countdownNumber: {fileID: 3080959060374953344}
@@ -4505,6 +4511,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 0
+  position: 0
   scanNumber: 0
   countdownBackground: {fileID: 8777133634769817680}
   countdownNumber: {fileID: 2461407240259624699}
@@ -6534,6 +6541,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_text
       value: 9999
+      objectReference: {fileID: 0}
+    - target: {fileID: 7299862028387148678, guid: ab430c3b23fa3a046b8a0af014a2f552,
+        type: 3}
+      propertyPath: m_fontStyle
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7299862028387148678, guid: ab430c3b23fa3a046b8a0af014a2f552,
         type: 3}
@@ -8718,6 +8730,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7299862028387148678, guid: ab430c3b23fa3a046b8a0af014a2f552,
         type: 3}
+      propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7299862028387148678, guid: ab430c3b23fa3a046b8a0af014a2f552,
+        type: 3}
       propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
@@ -9906,7 +9923,8 @@ PrefabInstance:
         type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: 2100000, guid: cc6fb55dd2d71724bb194f185baf438e, type: 2}
+      objectReference: {fileID: 1121629173804532967, guid: 8961a44f18957c64bada90d4e703f314,
+        type: 2}
     - target: {fileID: 7299862028387148678, guid: ab430c3b23fa3a046b8a0af014a2f552,
         type: 3}
       propertyPath: m_TextStyleHashCode
@@ -12904,6 +12922,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_text
       value: 123456
+      objectReference: {fileID: 0}
+    - target: {fileID: 7299862028387148678, guid: ab430c3b23fa3a046b8a0af014a2f552,
+        type: 3}
+      propertyPath: m_fontStyle
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7299862028387148678, guid: ab430c3b23fa3a046b8a0af014a2f552,
         type: 3}

@@ -14,6 +14,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2039164074022748979, guid: bfd215a7d6bbd0f498722381df931dcc,
         type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8961a44f18957c64bada90d4e703f314,
+        type: 2}
+    - target: {fileID: 2039164074022748979, guid: bfd215a7d6bbd0f498722381df931dcc,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 1121629173804532967, guid: 8961a44f18957c64bada90d4e703f314,
+        type: 2}
+    - target: {fileID: 2039164074022748979, guid: bfd215a7d6bbd0f498722381df931dcc,
+        type: 3}
       propertyPath: m_VerticalAlignment
       value: 256
       objectReference: {fileID: 0}
@@ -27,6 +39,18 @@ PrefabInstance:
       propertyPath: m_text
       value: Text Field
       objectReference: {fileID: 0}
+    - target: {fileID: 2039164074046922689, guid: bfd215a7d6bbd0f498722381df931dcc,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8961a44f18957c64bada90d4e703f314,
+        type: 2}
+    - target: {fileID: 2039164074046922689, guid: bfd215a7d6bbd0f498722381df931dcc,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 1121629173804532967, guid: 8961a44f18957c64bada90d4e703f314,
+        type: 2}
     - target: {fileID: 2039164074046922689, guid: bfd215a7d6bbd0f498722381df931dcc,
         type: 3}
       propertyPath: m_VerticalAlignment

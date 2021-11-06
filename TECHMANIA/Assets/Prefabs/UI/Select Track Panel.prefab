@@ -6392,7 +6392,7 @@ PrefabInstance:
     - target: {fileID: 8111477514375073465, guid: 6d71ded5003a93c4ca74d7e2eb0e4f62,
         type: 3}
       propertyPath: m_Value
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8111477514673168009, guid: 6d71ded5003a93c4ca74d7e2eb0e4f62,
         type: 3}
@@ -6586,6 +6586,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_margin.w
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1245099087148297893, guid: 33b4b15bd20c4b54ca7e7498057d7225,
+        type: 3}
+      propertyPath: m_fontStyle
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1245099087148297893, guid: 33b4b15bd20c4b54ca7e7498057d7225,
         type: 3}

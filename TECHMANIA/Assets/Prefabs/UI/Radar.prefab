@@ -2801,6 +2801,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7664613274378453131, guid: 26f88fd551da9c247a8f0127571e99ac,
         type: 3}
+      propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7664613274378453131, guid: 26f88fd551da9c247a8f0127571e99ac,
+        type: 3}
       propertyPath: m_HorizontalAlignment
       value: 2
       objectReference: {fileID: 0}
@@ -3403,6 +3408,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7664613274378453131, guid: 26f88fd551da9c247a8f0127571e99ac,
         type: 3}
+      propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7664613274378453131, guid: 26f88fd551da9c247a8f0127571e99ac,
+        type: 3}
       propertyPath: m_HorizontalAlignment
       value: 2
       objectReference: {fileID: 0}
@@ -3705,6 +3715,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7664613274378453131, guid: 26f88fd551da9c247a8f0127571e99ac,
         type: 3}
+      propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7664613274378453131, guid: 26f88fd551da9c247a8f0127571e99ac,
+        type: 3}
       propertyPath: m_HorizontalAlignment
       value: 2
       objectReference: {fileID: 0}
@@ -3854,6 +3869,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_text
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7664613274378453131, guid: 26f88fd551da9c247a8f0127571e99ac,
+        type: 3}
+      propertyPath: m_fontStyle
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7664613274378453131, guid: 26f88fd551da9c247a8f0127571e99ac,
         type: 3}
@@ -4156,6 +4176,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_text
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7664613274378453131, guid: 26f88fd551da9c247a8f0127571e99ac,
+        type: 3}
+      propertyPath: m_fontStyle
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7664613274378453131, guid: 26f88fd551da9c247a8f0127571e99ac,
         type: 3}

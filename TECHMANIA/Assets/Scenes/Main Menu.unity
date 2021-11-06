@@ -1574,6 +1574,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7664613274378453131, guid: 26f88fd551da9c247a8f0127571e99ac,
         type: 3}
+      propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7664613274378453131, guid: 26f88fd551da9c247a8f0127571e99ac,
+        type: 3}
       propertyPath: m_textAlignment
       value: 65535
       objectReference: {fileID: 0}
@@ -33685,6 +33690,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1245099087148297893, guid: 33b4b15bd20c4b54ca7e7498057d7225,
         type: 3}
+      propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1245099087148297893, guid: 33b4b15bd20c4b54ca7e7498057d7225,
+        type: 3}
       propertyPath: m_textAlignment
       value: 65535
       objectReference: {fileID: 0}
@@ -45200,7 +45210,7 @@ PrefabInstance:
     - target: {fileID: 962360426411226525, guid: ff899dd7c8ae9f542a0080012f5ce641,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 962360426411226525, guid: ff899dd7c8ae9f542a0080012f5ce641,
         type: 3}
