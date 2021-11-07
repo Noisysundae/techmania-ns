@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: NotoSans-Bold SDF
   m_EditorClassIdentifier: 
-  hashCode: 0
+  hashCode: 514071788
   material: {fileID: 9036269606573978129}
-  materialHashCode: 0
+  materialHashCode: 625010380
   m_Version: 1.1.0
   m_SourceFontFileGUID: f58b97c5fab8c14458ce4bdd228b885d
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: f58b97c5fab8c14458ce4bdd228b885d,
@@ -47,8 +47,8 @@ MonoBehaviour:
   m_AtlasTextures:
   - {fileID: 8550861100486564211}
   m_AtlasTextureIndex: 0
-  m_IsMultiAtlasTexturesEnabled: 0
-  m_ClearDynamicDataOnBuild: 0
+  m_IsMultiAtlasTexturesEnabled: 1
+  m_ClearDynamicDataOnBuild: 1
   m_UsedGlyphRects: []
   m_FreeGlyphRects:
   - m_X: 0
