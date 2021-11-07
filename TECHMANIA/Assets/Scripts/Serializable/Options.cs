@@ -659,7 +659,7 @@ public class PerTrackOptions
     {
         this.trackGuid = trackGuid;
         noVideo = false;
-        backgroundBrightness = kMaxBrightness;
+        backgroundBrightness = 6;
     }
 
     public PerTrackOptions Clone()
