@@ -155,11 +155,11 @@ public class Score
     // Assumes player did not fail.
     public static string ScoreToRank(int score)
     {
-        if (score > 295000) return "S++";
-        if (score > 290000) return "S+";
+        if (score > 295000) return "S⁺⁺";
+        if (score > 290000) return "S⁺";
         if (score > 285000) return "S";
-        if (score > 280000) return "A++";
-        if (score > 270000) return "A+";
+        if (score > 280000) return "A⁺⁺";
+        if (score > 270000) return "A⁺";
         if (score > 260000) return "A";
         if (score > 220000) return "B";
         return "C";
