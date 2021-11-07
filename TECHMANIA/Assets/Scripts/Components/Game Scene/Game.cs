@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;  // For stopwatch
@@ -218,16 +219,16 @@ public class Game : MonoBehaviour
     public static event UnityAction<int> ScanAboutToChange;
     public static event UnityAction<int> JumpedToScan;
 
-    public static List<List<KeyCode>> keysForLane { get; private set; }
+    public static Dictionary<int, Dictionary<int, KeyCode>> keysForLane { get; private set; }
 
     // Each NoteList represents one lane; each lane is sorted by
     // pulse.
-    private List<NoteList> noteObjectsInLane;
+    private Dictionary<int, NoteList> noteObjectsInLane;
     // noteObjectsInLane separated into mouse and keyboard notes.
     // In KM, Each input device only care about notes in its
     // corresponding list.
-    private List<NoteList> notesForMouseInLane;
-    private List<NoteList> notesForKeyboardInLane;
+    private Dictionary<int, NoteList> notesForMouseInLane;
+    private Dictionary<int, NoteList> notesForKeyboardInLane;
     private int numPlayableNotes;
 
     // Value is the judgement at note's head.
@@ -621,21 +622,21 @@ public class Game : MonoBehaviour
         // are drawn on the top.
         // Also organize them as linked lists, so empty hits can
         // play the keysound of upcoming notes.
-        noteObjectsInLane = new List<NoteList>();
-        notesForMouseInLane = new List<NoteList>();
-        notesForKeyboardInLane = new List<NoteList>();
+        noteObjectsInLane = new Dictionary<int, NoteList>();
+        notesForMouseInLane = new Dictionary<int, NoteList>();
+        notesForKeyboardInLane = new Dictionary<int, NoteList>();
         numPlayableNotes = 0;
         NoteObject nextChainNode = null;
-        List<List<NoteObject>> unmanagedRepeatNotes =
-            new List<List<NoteObject>>();
+        Dictionary<int, Dictionary<int, NoteObject>> unmanagedRepeatNotes =
+            new Dictionary<int, Dictionary<int, NoteObject>>();
         // Create at least as many lists as playable lanes, or
         // empty hits on the noteless lanes will generate errors.
         for (int i = 0; i < playableLanes; i++)
         {
-            noteObjectsInLane.Add(new NoteList());
-            notesForMouseInLane.Add(new NoteList());
-            notesForKeyboardInLane.Add(new NoteList());
-            unmanagedRepeatNotes.Add(new List<NoteObject>());
+            noteObjectsInLane.Add(i, new NoteList());
+            notesForMouseInLane.Add(i, new NoteList());
+            notesForKeyboardInLane.Add(i, new NoteList());
+            unmanagedRepeatNotes.Add(unmanagedRepeatNotes.Count, new Dictionary<int, NoteObject>());
         }
         foreach (Note n in GameSetup.pattern.notes.Reverse())
         {
@@ -651,10 +652,10 @@ public class Game : MonoBehaviour
 
             while (noteObjectsInLane.Count <= n.lane)
             {
-                noteObjectsInLane.Add(new NoteList());
-                notesForMouseInLane.Add(new NoteList());
-                notesForKeyboardInLane.Add(new NoteList());
-                unmanagedRepeatNotes.Add(new List<NoteObject>());
+                noteObjectsInLane.Add(noteObjectsInLane.Count, new NoteList());
+                notesForMouseInLane.Add(notesForMouseInLane.Count, new NoteList());
+                notesForKeyboardInLane.Add(notesForKeyboardInLane.Count, new NoteList());
+                unmanagedRepeatNotes.Add(unmanagedRepeatNotes.Count, new Dictionary<int, NoteObject>());
             }
             noteObjectsInLane[n.lane].Add(noteObject);
             switch (n.type)
@@ -708,8 +709,7 @@ public class Game : MonoBehaviour
             if (n.type == NoteType.Repeat ||
                 n.type == NoteType.RepeatHold)
             {
-                unmanagedRepeatNotes[n.lane].Add(
-                    noteObject);
+                unmanagedRepeatNotes[n.lane].Add(unmanagedRepeatNotes[n.lane].Count, noteObject);
             }
             if (n.type == NoteType.RepeatHead ||
                 n.type == NoteType.RepeatHeadHold)
@@ -719,9 +719,9 @@ public class Game : MonoBehaviour
                     scanObjects);
             }
         }
-        foreach (NoteList l in noteObjectsInLane) l.Reverse();
-        foreach (NoteList l in notesForKeyboardInLane) l.Reverse();
-        foreach (NoteList l in notesForMouseInLane) l.Reverse();
+        foreach (NoteList l in noteObjectsInLane.Values) l.Reverse();
+        foreach (NoteList l in notesForKeyboardInLane.Values) l.Reverse();
+        foreach (NoteList l in notesForMouseInLane.Values) l.Reverse();
 
         // Calculate Fever coefficient. The goal is for the Fever bar
         // to fill up in around 12.5 seconds.
@@ -777,83 +777,83 @@ public class Game : MonoBehaviour
     #region Subroutines of InitializePattern
     private void InitializeKeysForLane()
     {
-        keysForLane = new List<List<KeyCode>>();
+        keysForLane = new Dictionary<int, Dictionary<int, KeyCode>>();
         if (playableLanes >= 4)
         {
-            keysForLane.Add(new List<KeyCode>()
+            keysForLane.Add(keysForLane.Count, new Dictionary<int, KeyCode>()
             {
-                KeyCode.BackQuote,
-                KeyCode.Alpha0,
-                KeyCode.Alpha1,
-                KeyCode.Alpha2,
-                KeyCode.Alpha3,
-                KeyCode.Alpha4,
-                KeyCode.Alpha5,
-                KeyCode.Alpha6,
-                KeyCode.Alpha7,
-                KeyCode.Alpha8,
-                KeyCode.Alpha9,
-                KeyCode.Minus,
-                KeyCode.Equals,
-                KeyCode.KeypadDivide,
-                KeyCode.KeypadMultiply,
-                KeyCode.KeypadMinus
+                { 0, KeyCode.BackQuote },
+                { 1, KeyCode.Alpha0 },
+                { 2, KeyCode.Alpha1 },
+                { 3, KeyCode.Alpha2 },
+                { 4, KeyCode.Alpha3 },
+                { 5, KeyCode.Alpha4 },
+                { 6, KeyCode.Alpha5 },
+                { 7, KeyCode.Alpha6 },
+                { 8, KeyCode.Alpha7 },
+                { 9, KeyCode.Alpha8 },
+                { 10, KeyCode.Alpha9 },
+                { 11, KeyCode.Minus },
+                { 12, KeyCode.Equals },
+                { 13, KeyCode.KeypadDivide },
+                { 14, KeyCode.KeypadMultiply },
+                { 15, KeyCode.KeypadMinus }
             });
         }
         if (playableLanes >= 3)
         {
-            keysForLane.Add(new List<KeyCode>()
+            keysForLane.Add(keysForLane.Count, new Dictionary<int, KeyCode>()
             {
-                KeyCode.Q,
-                KeyCode.W,
-                KeyCode.E,
-                KeyCode.R,
-                KeyCode.T,
-                KeyCode.Y,
-                KeyCode.U,
-                KeyCode.I,
-                KeyCode.O,
-                KeyCode.P,
-                KeyCode.LeftBracket,
-                KeyCode.RightBracket,
-                KeyCode.Backslash,
-                KeyCode.Keypad7,
-                KeyCode.Keypad8,
-                KeyCode.Keypad9
+                { 0, KeyCode.Q },
+                { 1, KeyCode.W },
+                { 2, KeyCode.E },
+                { 3, KeyCode.R },
+                { 4, KeyCode.T },
+                { 5, KeyCode.Y },
+                { 6, KeyCode.U },
+                { 7, KeyCode.I },
+                { 8, KeyCode.O },
+                { 9, KeyCode.P },
+                { 10, KeyCode.LeftBracket },
+                { 11, KeyCode.RightBracket },
+                { 12, KeyCode.Backslash },
+                { 13, KeyCode.Keypad7 },
+                { 14, KeyCode.Keypad8 },
+                { 15, KeyCode.Keypad9 }
             });
         }
-        keysForLane.Add(new List<KeyCode>()
+        keysForLane.Add(keysForLane.Count, new Dictionary<int, KeyCode>()
         {
-            KeyCode.A,
-            KeyCode.S,
-            KeyCode.D,
-            KeyCode.F,
-            KeyCode.G,
-            KeyCode.H,
-            KeyCode.J,
-            KeyCode.K,
-            KeyCode.L,
-            KeyCode.Semicolon,
-            KeyCode.Quote,
-            KeyCode.Keypad4,
-            KeyCode.Keypad5,
-            KeyCode.Keypad6
+            { 0, KeyCode.A },
+            { 1, KeyCode.S },
+            { 2, KeyCode.D },
+            { 3, KeyCode.F },
+            { 4, KeyCode.G },
+            { 5, KeyCode.H },
+            { 6, KeyCode.J },
+            { 7, KeyCode.K },
+            { 8, KeyCode.L },
+            { 9, KeyCode.Semicolon },
+            { 10, KeyCode.Quote },
+            { 11, KeyCode.Keypad4 },
+            { 12, KeyCode.Keypad5 },
+            { 13, KeyCode.Keypad6 }
         });
-        keysForLane.Add(new List<KeyCode>()
+        keysForLane.Add(keysForLane.Count, new Dictionary<int, KeyCode>()
         {
-            KeyCode.Z,
-            KeyCode.X,
-            KeyCode.C,
-            KeyCode.V,
-            KeyCode.B,
-            KeyCode.N,
-            KeyCode.M,
-            KeyCode.Comma,
-            KeyCode.Period,
-            KeyCode.Slash,
-            KeyCode.Keypad1,
-            KeyCode.Keypad2,
-            KeyCode.Keypad3
+            { 0, KeyCode.Z },
+            { 1, KeyCode.X },
+            { 2, KeyCode.C },
+            { 3, KeyCode.V },
+            { 4, KeyCode.B },
+            { 5, KeyCode.N },
+            { 6, KeyCode.M },
+            { 7, KeyCode.Comma },
+            { 8, KeyCode.Period },
+            { 9, KeyCode.Slash },
+            { 10, KeyCode.Keypad1 },
+            { 11, KeyCode.Keypad2 },
+            { 12, KeyCode.Keypad3 }
         });
     }
 
@@ -995,7 +995,7 @@ public class Game : MonoBehaviour
     }
 
     private void ManageRepeatNotes(NoteObject head,
-        List<NoteObject> notesToManage,
+        Dictionary<int, NoteObject> notesToManage,
         Dictionary<int, Scan> scanObjects)
     {
         RepeatHeadAppearanceBase headAppearance = 
@@ -1417,7 +1417,7 @@ public class Game : MonoBehaviour
             case ControlScheme.Keys:
                 for (int lane = 0; lane < playableLanes; lane++)
                 {
-                    foreach (KeyCode key in keysForLane[lane])
+                    foreach (KeyCode key in keysForLane[lane].Values)
                     {
                         if (Input.GetKeyDown(key))
                         {
@@ -1446,7 +1446,7 @@ public class Game : MonoBehaviour
                 }
                 for (int lane = 0; lane < playableLanes; lane++)
                 {
-                    foreach (KeyCode key in keysForLane[lane])
+                    foreach (KeyCode key in keysForLane[lane].Values)
                     {
                         if (Input.GetKeyDown(key))
                         {
@@ -1657,17 +1657,17 @@ public class Game : MonoBehaviour
         previousComboTick = Pulse;
 
         // Rebuild data structures.
-        foreach (NoteList l in noteObjectsInLane)
+        foreach (NoteList l in noteObjectsInLane.Values)
         {
             l.Reset();
             l.RemoveUpTo(Pulse);
         }
-        foreach (NoteList l in notesForKeyboardInLane)
+        foreach (NoteList l in notesForKeyboardInLane.Values)
         {
             l.Reset();
             l.RemoveUpTo(Pulse);
         }
-        foreach (NoteList l in notesForMouseInLane)
+        foreach (NoteList l in notesForMouseInLane.Values)
         {
             l.Reset();
             l.RemoveUpTo(Pulse);
@@ -1707,7 +1707,7 @@ public class Game : MonoBehaviour
         }
 
         // Play keysounds before this moment if they last enough.
-        foreach (NoteList l in noteObjectsInLane)
+        foreach (NoteList l in noteObjectsInLane.Values)
         {
             l.ForEach((NoteObject noteObject) =>
             {
@@ -1878,7 +1878,7 @@ public class Game : MonoBehaviour
 
     private void OnFingerDown(int finger, Vector2 screenPosition)
     {
-        List<RaycastResult> results = Raycast(screenPosition);
+        Dictionary<int, RaycastResult> results = Raycast(screenPosition);
         int lane = RaycastResultToLane(results);
         if (fingerInLane.ContainsKey(finger))
         {
@@ -1899,7 +1899,7 @@ public class Game : MonoBehaviour
             OnFingerDown(finger, screenPosition);
             return;
         }
-        List<RaycastResult> results = Raycast(screenPosition);
+        Dictionary<int, RaycastResult> results = Raycast(screenPosition);
         int lane = RaycastResultToLane(results);
         if (fingerInLane[finger] != lane)
         {
@@ -1914,20 +1914,21 @@ public class Game : MonoBehaviour
         fingerInLane.Remove(finger);
     }
 
-    private List<RaycastResult> Raycast(Vector2 screenPosition)
+    private Dictionary<int, RaycastResult> Raycast(Vector2 screenPosition)
     {
         PointerEventData eventData = new PointerEventData(
             EventSystem.current);
         eventData.position = screenPosition;
+        int count = 0;
 
         List<RaycastResult> results = new List<RaycastResult>();
         raycaster.Raycast(eventData, results);
 
-        return results;
+        return results.ToDictionary(i => count++, e => e);
     }
 
     private void ProcessMouseOrFingerDown(
-        List<RaycastResult> results)
+        Dictionary<int, RaycastResult> results)
     {
         // This event may hit any number of the following things:
         // - The hit box of a not-ongoing note (aka. a newly hit note)
@@ -1940,7 +1941,7 @@ public class Game : MonoBehaviour
         bool hitOngoingNote = false;
         EmptyTouchReceiver hitEmptyReceiver = null;
 
-        foreach (RaycastResult r in results)
+        foreach (RaycastResult r in results.Values)
         {
             NoteHitbox touchReceiver = r.gameObject
                 .GetComponent<NoteHitbox>();
@@ -2022,9 +2023,9 @@ public class Game : MonoBehaviour
         }
     }
 
-    private int RaycastResultToLane(List<RaycastResult> results)
+    private int RaycastResultToLane(Dictionary<int, RaycastResult> results)
     {
-        foreach (RaycastResult r in results)
+        foreach (RaycastResult r in results.Values)
         {
             EmptyTouchReceiver receiver = r.gameObject
                 .GetComponent<EmptyTouchReceiver>();
@@ -2039,8 +2040,8 @@ public class Game : MonoBehaviour
 
     private void OnFingerHeld(Vector2 screenPosition)
     {
-        List<RaycastResult> results = Raycast(screenPosition);
-        foreach (RaycastResult r in results)
+        Dictionary<int, RaycastResult> results = Raycast(screenPosition);
+        foreach (RaycastResult r in results.Values)
         {
             NoteObject n = r.gameObject
                 .GetComponentInParent<NoteObject>();
@@ -2098,7 +2099,7 @@ public class Game : MonoBehaviour
     {
         // KM only.
 
-        List<NoteObject> earliestNotes = new List<NoteObject>();
+        Dictionary<int, NoteObject> earliestNotes = new Dictionary<int, NoteObject>();
         int earliestPulse = int.MaxValue;
         for (int i = 0; i < playableLanes; i++)
         {
@@ -2114,12 +2115,12 @@ public class Game : MonoBehaviour
             if (n.note.pulse < earliestPulse)
             {
                 earliestNotes.Clear();
-                earliestNotes.Add(n);
+                earliestNotes.Add(earliestNotes.Count, n);
                 earliestPulse = n.note.pulse;
             }
             else if (n.note.pulse == earliestPulse)
             {
-                earliestNotes.Add(n);
+                earliestNotes.Add(earliestNotes.Count, n);
             }
         }
         if (earliestNotes.Count == 0)
@@ -2136,7 +2137,7 @@ public class Game : MonoBehaviour
         else
         {
             // Pick the first note that has no duration, if any.
-            foreach (NoteObject n in earliestNotes)
+            foreach (NoteObject n in earliestNotes.Values)
             {
                 if (n.note.type == NoteType.RepeatHead ||
                     n.note.type == NoteType.Repeat)
@@ -2217,7 +2218,7 @@ public class Game : MonoBehaviour
         // Compensate for speed.
         absDifference /= speed;
 
-        foreach (Judgement j in new List<Judgement>{
+        foreach (Judgement j in new Judgement[] {
             Judgement.RainbowMax,
             Judgement.Max,
             Judgement.Cool,
@@ -2228,6 +2229,7 @@ public class Game : MonoBehaviour
             if (absDifference <= n.note.timeWindow[j])
             {
                 judgement = j;
+                PlayKeysound(n, emptyHit: false);
                 break;
             }
         }
@@ -2257,8 +2259,6 @@ public class Game : MonoBehaviour
                 ResolveNote(n, judgement);
                 break;
         }
-
-        PlayKeysound(n, emptyHit: false);
     }
 
     private void EmptyHit(int lane)

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,8 +13,8 @@ using UnityEngine;
 // - A cursor always points to the first active element.
 public class NoteList
 {
-    private List<NoteObject> list;
-    private List<bool> active;
+    private Dictionary<int, NoteObject> list;
+    private Dictionary<int, bool> active;
     private int first;
     private int count;
     public int Count { get { return count; } }
@@ -21,41 +22,44 @@ public class NoteList
     #region Initialize
     public NoteList()
     {
-        list = new List<NoteObject>();
-        active = new List<bool>();
+        list = new Dictionary<int, NoteObject>();
+        active = new Dictionary<int, bool>();
         count = 0;
         first = 0;
     }
 
     public void Add(NoteObject n)
     {
-        list.Add(n);
-        active.Add(true);
+        list.Add(list.Count, n);
+        active.Add(active.Count, true);
         count++;
     }
 
     // After calling this, we assume notes are sorted by pulse.
     public void Reverse()
     {
-        list.Reverse();
+        Dictionary<int, NoteObject> newList = new Dictionary<int, NoteObject>();
+        for (int i = 0; i < count; i++)
+        {
+            newList.Add(i, list[count - i - 1]);
+        }
+        list = newList;
     }
     #endregion
 
     public void Remove(NoteObject n)
     {
-        for (int i = first; i < list.Count; i++)
+        KeyValuePair<int, NoteObject> match = list.Where(e => e.Value == n).FirstOrDefault();
+        if (null != match.Value)
         {
-            if (list[i] == n)
+            int k = match.Key;
+            active[match.Key] = false;
+            count--;
+            if (k == first)
             {
-                active[i] = false;
-                count--;
-                if (i == first)
-                {
-                    do
+                do
                     { first++; }
-                    while (first < list.Count && !active[first]);
-                }
-                return;
+                while (first < list.Count && !active[first]);
             }
         }
     }
@@ -96,11 +100,14 @@ public class NoteList
 
     public NoteObject First()
     {
-        if (first >= list.Count)
+        try
+        {
+            return list[first];
+        }
+        catch (KeyNotFoundException)
         {
             throw new System.Exception("Attempting to get first element from an empty NoteList.");
         }
-        return list[first];
     }
 
     public void Reset()
@@ -112,6 +119,9 @@ public class NoteList
     // This applies to inactive elements too.
     public void ForEach(Action<NoteObject> action)
     {
-        list.ForEach(action);
+        foreach (NoteObject e in list.Values)
+        {
+            action(e);
+        }
     }
 }

@@ -62,7 +62,7 @@ public class TouchClickFeedbackManager : MonoBehaviour
                 {
                     if (Game.keysForLane == null ||
                         Game.keysForLane[i] == null) continue;
-                    foreach (KeyCode c in Game.keysForLane[i])
+                    foreach (KeyCode c in Game.keysForLane[i].Values)
                     {
                         if (Input.GetKeyDown(c))
                         {

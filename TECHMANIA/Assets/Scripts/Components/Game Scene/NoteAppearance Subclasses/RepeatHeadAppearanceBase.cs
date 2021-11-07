@@ -100,18 +100,18 @@ public class RepeatHeadAppearanceBase : NoteAppearance
     #region Repeat
     // Repeat heads and repeat hold heads store references to
     // all repeat notes and repeat hold notes after it.
-    private List<NoteObject> managedRepeatNotes;
+    private Dictionary<int, NoteObject> managedRepeatNotes;
     // Counting backwards because notes are drawn backwards.
     // A value equal to managedRepeatNotes.Count means
     // the head itself.
     private int nextUnresolvedRepeatNoteIndex;
     private List<RepeatPathExtension> repeatPathExtensions;
 
-    public void ManageRepeatNotes(List<NoteObject> repeatNotes)
+    public void ManageRepeatNotes(Dictionary<int, NoteObject> repeatNotes)
     {
         // Clone the list because it will be cleared later.
-        managedRepeatNotes = new List<NoteObject>(repeatNotes);
-        foreach (NoteObject n in managedRepeatNotes)
+        managedRepeatNotes = new Dictionary<int, NoteObject>(repeatNotes);
+        foreach (NoteObject n in managedRepeatNotes.Values)
         {
             n.GetComponent<RepeatNoteAppearanceBase>().repeatHead
                 = this;
@@ -153,7 +153,7 @@ public class RepeatHeadAppearanceBase : NoteAppearance
         // Since notes are drawn from back to front, we look
         // for the 1st note in the same scan, and draw
         // before that one.
-        foreach (NoteObject n in managedRepeatNotes)
+        foreach (NoteObject n in managedRepeatNotes.Values)
         {
             if (n.transform.parent == transform.parent)
             {
