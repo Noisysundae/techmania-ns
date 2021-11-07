@@ -316,13 +316,13 @@ public class Game : MonoBehaviour
         Input.simulateMouseWithTouches = true;
     }
 
-    private void OnApplicationFocus(bool focus)
-    {
-        if (!focus && !IsPaused() && !loading && !inEditor)
-        {
-            OnPauseButtonClickOrTouch(playSound: false);
-        }
-    }
+    // private void OnApplicationFocus(bool focus)
+    // {
+    //     if (!focus && !IsPaused() && !loading && !inEditor)
+    //     {
+    //         OnPauseButtonClickOrTouch(playSound: false);
+    //     }
+    // }
     #endregion
 
     #region Initialization
@@ -741,7 +741,7 @@ public class Game : MonoBehaviour
         Debug.Log("Fever coefficient is: " + feverCoefficient);
 
         // Initialize practice mode.
-        loopStart = firstScan;
+        loopStart = firstScan - 1;
         loopEnd = lastScan;
         speedPercentage = 100;
 
