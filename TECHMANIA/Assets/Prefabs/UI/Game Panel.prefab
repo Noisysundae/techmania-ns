@@ -12635,6 +12635,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8905956753094978168, guid: 76d0bcdb17f32b949a6ca090864205c7,
         type: 3}
+      propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8905956753094978168, guid: 76d0bcdb17f32b949a6ca090864205c7,
+        type: 3}
       propertyPath: m_fontColor.b
       value: 0.41960785
       objectReference: {fileID: 0}
@@ -12651,12 +12656,12 @@ PrefabInstance:
     - target: {fileID: 8905956753094978168, guid: 76d0bcdb17f32b949a6ca090864205c7,
         type: 3}
       propertyPath: m_wordSpacing
-      value: 64
+      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: 8905956753094978168, guid: 76d0bcdb17f32b949a6ca090864205c7,
         type: 3}
       propertyPath: m_characterSpacing
-      value: 24
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8905956753094978168, guid: 76d0bcdb17f32b949a6ca090864205c7,
         type: 3}
@@ -12701,7 +12706,7 @@ PrefabInstance:
     - target: {fileID: 8905956753094978170, guid: 76d0bcdb17f32b949a6ca090864205c7,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1277.4
+      value: 1057.25
       objectReference: {fileID: 0}
     - target: {fileID: 8905956753094978170, guid: 76d0bcdb17f32b949a6ca090864205c7,
         type: 3}
