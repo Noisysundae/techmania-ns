@@ -196,7 +196,7 @@ public class Options : OptionsBase
         // be stretched in the wrong direction.
         //
         // Resolution is not supported at all on iOS.
-        // Screen.SetResolution(width, height, fullScreenMode, refreshRate);
+        Screen.SetResolution(width, height, fullScreenMode, refreshRate);
 #endif
 
 #if UNITY_IOS

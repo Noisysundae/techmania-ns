@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -58,7 +57,7 @@ public class NoteList
             if (k == first)
             {
                 do
-                    { first++; }
+                { first++; }
                 while (first < list.Count && !active[first]);
             }
         }
