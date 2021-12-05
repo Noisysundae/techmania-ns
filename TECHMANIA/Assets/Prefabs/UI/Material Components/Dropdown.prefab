@@ -1094,8 +1094,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Option A
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8961a44f18957c64bada90d4e703f314, type: 2}
-  m_sharedMaterial: {fileID: 1121629173804532967, guid: 8961a44f18957c64bada90d4e703f314,
+  m_fontAsset: {fileID: 11400000, guid: 8a028d379d772c34780b2156088ef352, type: 2}
+  m_sharedMaterial: {fileID: 1121629173804532967, guid: 8a028d379d772c34780b2156088ef352,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1612,6 +1612,12 @@ PrefabInstance:
       propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3034328191725606143, guid: 0159e2c2d7d31f8459b93f9392689828,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 1121629173804532967, guid: 8a028d379d772c34780b2156088ef352,
+        type: 2}
     - target: {fileID: 3034328191725606143, guid: 0159e2c2d7d31f8459b93f9392689828,
         type: 3}
       propertyPath: m_VerticalAlignment
