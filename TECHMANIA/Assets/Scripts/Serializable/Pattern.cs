@@ -584,30 +584,55 @@ public partial class Pattern
     // - ScrollSpeed
     //
     // Warning: the clone has different GUID and fingerprint.
-    public Pattern ApplyModifiers(Modifiers modifiers)
+    public Pattern ApplyModifiers(
+        Modifiers modifiers,
+        bool patternEditPreview = false)
     {
         Pattern p = CloneWithDifferentGuid();
         int playableLanes = patternMetadata.playableLanes;
         const int kAutoKeysoundFirstLane = 64;
         const int kAutoAssistTickFirstLane = 68;
 
-        if (modifiers.notePosition == Modifiers.NotePosition.Mirror)
+        if (!patternEditPreview)
         {
-            foreach (Note n in p.notes)
+            if (modifiers.notePosition == Modifiers.NotePosition.Mirror)
             {
-                if (n.lane >= playableLanes) continue;
-                n.lane = playableLanes - 1 - n.lane;
-                if (n is DragNote)
+                foreach (Note n in p.notes)
                 {
-                    foreach (DragNode node in (n as DragNote).nodes)
+                    if (n.lane >= playableLanes) continue;
+                    n.lane = playableLanes - 1 - n.lane;
+                    if (n is DragNote)
                     {
-                        node.anchor.lane = -node.anchor.lane;
-                        node.controlLeft.lane =
-                            -node.controlLeft.lane;
-                        node.controlRight.lane =
-                            -node.controlRight.lane;
+                        foreach (DragNode node in (n as DragNote).nodes)
+                        {
+                            node.anchor.lane = -node.anchor.lane;
+                            node.controlLeft.lane =
+                                -node.controlLeft.lane;
+                            node.controlRight.lane =
+                                -node.controlRight.lane;
+                        }
                     }
                 }
+            }
+
+            switch (modifiers.controlOverride)
+            {
+                case Modifiers.ControlOverride.None:
+                    break;
+                case Modifiers.ControlOverride.OverrideToTouch:
+                    p.patternMetadata.controlScheme = ControlScheme.Touch;
+                    break;
+                case Modifiers.ControlOverride.OverrideToKeys:
+                    p.patternMetadata.controlScheme = ControlScheme.Keys;
+                    break;
+                case Modifiers.ControlOverride.OverrideToKM:
+                    p.patternMetadata.controlScheme = ControlScheme.KM;
+                    break;
+            }
+
+            if (modifiers.scrollSpeed == Modifiers.ScrollSpeed.HalfSpeed)
+            {
+                p.patternMetadata.bps *= 2;
             }
         }
 
@@ -649,26 +674,6 @@ public partial class Pattern
             {
                 p.notes.Add(n);
             }
-        }
-
-        switch (modifiers.controlOverride)
-        {
-            case Modifiers.ControlOverride.None:
-                break;
-            case Modifiers.ControlOverride.OverrideToTouch:
-                p.patternMetadata.controlScheme = ControlScheme.Touch;
-                break;
-            case Modifiers.ControlOverride.OverrideToKeys:
-                p.patternMetadata.controlScheme = ControlScheme.Keys;
-                break;
-            case Modifiers.ControlOverride.OverrideToKM:
-                p.patternMetadata.controlScheme = ControlScheme.KM;
-                break;
-        }
-
-        if (modifiers.scrollSpeed == Modifiers.ScrollSpeed.HalfSpeed)
-        {
-            p.patternMetadata.bps *= 2;
         }
 
         return p;

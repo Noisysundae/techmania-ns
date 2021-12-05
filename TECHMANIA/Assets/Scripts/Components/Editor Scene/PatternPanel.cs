@@ -1459,7 +1459,12 @@ public class PatternPanel : MonoBehaviour
     {
         GameSetup.track = EditorContext.track;
         GameSetup.trackPath = EditorContext.trackPath;
-        GameSetup.pattern = EditorContext.Pattern;
+        GameSetup.patternBeforeApplyingModifier = EditorContext.Pattern;
+        if (GameSetup.patternBeforeApplyingModifier != null)
+        {
+            GameSetup.pattern = GameSetup.patternBeforeApplyingModifier
+                .ApplyModifiers(Modifiers.instance, patternEditPreview: true);
+        }
         GameSetup.beginningScanInEditorPreview =
             Mathf.FloorToInt(
                 scanline.floatPulse / 
