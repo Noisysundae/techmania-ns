@@ -1,3 +1,33 @@
+**Disclaimer:** This fork is intended for personal use. These commits are published in case anyone is interested, and I might not be actively maintaining this (at least I will merge changes from the original repository from time to time).
+
+## Changes
+
+* Disable empty hits for long notes (Hold, Drag, Repeat Hold)
+  * Reference: DJMax Respect V behavior.
+* With "Auto Keysound" on, reroute keysound audio sources to the keysound mixer track
+  * This keeps keysounds from using the music volume (from settings) instead of keysound volume.
+* (dirty change) Some default values which are unavailable in settings
+  * Default BGA brightness (from 10 to 6)
+* (dirty change) Convert gameplay note collections from lists to dictionaries
+  * For optimization, especially on rapid scan jumps in practice mode
+* Prevent screen settings applying at launch, so some command line arguments are usable (e.g. custom screen resolution)
+  * You can still apply them in settings.
+* Optimize Unity physics and shading
+  * Since TECHMANIA does not actually utilize 3D-space shading, some settings are tweaked for unlit kind of shading.
+  * Other minor game scene adjustments, such as 2D culling mask and clipping distance
+* UI text changes
+  * [Tex Gyre Adventor](https://www.fontsquirrel.com/fonts/tex-gyre-adventor) as default font (TMP)
+  * Readjusted text styling and spacing
+  * Original fonts kept as fallbacks
+* Bug fixes
+  * Fix Scan Jump Playing Keysounds Right at the Start Twice
+  * Pattern Editor: Fixed Keysound Off-By-One Errors
+
+
+Below is the content from the original README.
+
+---
+
 # TECHMANIA
 An open source rhythm game, written in Unity, playable with or without a touchscreen.
 
