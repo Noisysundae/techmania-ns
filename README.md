@@ -2,6 +2,7 @@
 
 ## Changes
 
+* Add ability to use supported files inside track subfolder(s)
 * Disable empty hits for long notes (Hold, Drag, Repeat Hold)
   * Reference: DJMax Respect V behavior.
 * With "Auto Keysound" on, reroute keysound audio sources to the keysound mixer track
