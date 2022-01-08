@@ -9,8 +9,11 @@
       * Pattern Image (No Video ON)
       * Base BGA (One of the BGAs stored in the *BGAs* folder)
     * Base BGA are shuffled every play, ensuring that the same base BGA is not picked twice in a row.
-  * Put supported video files to be played as BGAs into the *BGAs* folder.
+  * Put video files with a supported format into the *BGAs* folder.
+  * **IMPORTANT:** This will remove all track's "No Video" values inside per-track settings.
+    * All other settings are still compatible work in the official build.
 * Add ability to use supported files inside track subfolder(s)
+  * Those files are displayed, or stored into track.tech as a relative path separated by "/" (e.g. *Notes/synth_001.ogg*).
 * Disable empty hits for long notes (Hold, Drag, Repeat Hold)
   * Reference: DJMax Respect V behavior.
 * With "Auto Keysound" on, reroute keysound audio sources to the keysound mixer track
