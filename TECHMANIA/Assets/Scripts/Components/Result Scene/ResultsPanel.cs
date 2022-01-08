@@ -160,7 +160,8 @@ public class ResultsPanel : MonoBehaviour
 
         // Modifier display
         modifierDisplay.SetUp(ModifierSidesheet.GetDisplayString(
-            noVideo: false, specialModifierColor));
+            GameSetup.trackOptions.backgroundDisplay,
+            specialModifierColor));
     }
 
     public void OnSelectTrackButtonClick()

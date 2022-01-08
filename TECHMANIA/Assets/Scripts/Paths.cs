@@ -23,6 +23,7 @@ public static class Paths
     public const string kVfxSkinFolderName = "VFX";
     public const string kComboSkinFolderName = "Combo";
     public const string kGameUiFolderName = "Game UI";
+    public const string kBgaFolderName = "BGAs";
 
     #region Important folders
     // "Streaming" refers to streaming assets. On PC this brings no
@@ -93,6 +94,7 @@ public static class Paths
         Directory.CreateDirectory(GetVfxSkinRootFolder());
         Directory.CreateDirectory(GetComboSkinRootFolder());
         Directory.CreateDirectory(GetGameUiSkinRootFolder());
+        Directory.CreateDirectory(GetBgaRootFolder());
 
         // Data folder
 #if UNITY_ANDROID || UNITY_IOS
@@ -225,6 +227,16 @@ public static class Paths
         return Directory.Exists(temp) ? 
             temp :
             Path.Combine(GetStreamingGameUiSkinRootFolder(), name);
+    }
+    
+    public static string GetBgaRootFolder()
+    {
+        return Path.Combine(workingDirectory, kBgaFolderName);
+    }
+    public static string GetStreamingBgaRootFolder()
+    {
+        return Path.Combine(streamingSkinFolder, 
+            kBgaFolderName);
     }
     #endregion
 

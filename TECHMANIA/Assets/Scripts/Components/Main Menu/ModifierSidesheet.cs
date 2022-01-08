@@ -19,7 +19,7 @@ public class ModifierSidesheet : MonoBehaviour
 
     [Header("Appearance")]
     public Toggle showJudgementTally;
-    public Toggle noVideo;
+    public TMP_Dropdown backgroundDisplay;
 
     [Header("Special modifiers")]
     public TMP_Dropdown mode;
@@ -68,6 +68,12 @@ public class ModifierSidesheet : MonoBehaviour
         UIUtils.InitializeDropdownWithLocalizedOptions(
             scrollSpeed,
             Modifiers.scrollSpeedDisplayKeys);
+
+        // Appearance
+
+        UIUtils.InitializeDropdownWithLocalizedOptions(
+            backgroundDisplay,
+            PerTrackOptions.backgroundDisplayKeys);
     }
 
     public void MemoryToUI()
@@ -112,8 +118,9 @@ public class ModifierSidesheet : MonoBehaviour
 
         showJudgementTally.SetIsOnWithoutNotify(
             Options.instance.showJudgementTally);
-        noVideo.SetIsOnWithoutNotify(
-            GameSetup.trackOptions.noVideo);
+        backgroundDisplay.SetValueWithoutNotify(
+            (int)GameSetup.trackOptions.backgroundDisplay);
+        backgroundDisplay.RefreshShownValue();
 
         // Special modifiers
 
@@ -155,8 +162,8 @@ public class ModifierSidesheet : MonoBehaviour
 
         Options.instance.showJudgementTally =
             showJudgementTally.isOn;
-        GameSetup.trackOptions.noVideo =
-            noVideo.isOn;
+        GameSetup.trackOptions.backgroundDisplay =
+            (PerTrackOptions.BackgroundDisplay)backgroundDisplay.value;
 
         // Special modifiers
 
@@ -170,17 +177,28 @@ public class ModifierSidesheet : MonoBehaviour
         ModifierChanged?.Invoke();
     }
 
-    public static string GetDisplayString(bool noVideo,
+    public static string GetDisplayString(
+        PerTrackOptions.BackgroundDisplay bgDisplay,
         Color specialModifierColor)
     {
         List<string> regularSegments = new List<string>();
         List<string> specialSegments = new List<string>();
         Modifiers.instance.ToDisplaySegments(
             regularSegments, specialSegments);
-        if (noVideo)
+        switch (bgDisplay)
         {
-            regularSegments.Add(Locale.GetString(
-                "modifier_sidesheet_no_video_label"));
+            case PerTrackOptions.BackgroundDisplay.PatternBga:
+                regularSegments.Add(Locale.GetString(
+                    "modifier_bg_pattern_bga"));
+                break;
+            case PerTrackOptions.BackgroundDisplay.BaseBga: 
+                regularSegments.Add(Locale.GetString(
+                    "modifier_bg_base_bga"));
+                break;
+            case PerTrackOptions.BackgroundDisplay.PatternImage: 
+                regularSegments.Add(Locale.GetString(
+                    "modifier_bg_pattern_image"));
+                break;
         }
 
         List<string> allSegments = new List<string>();

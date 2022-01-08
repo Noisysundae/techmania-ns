@@ -429,13 +429,25 @@ public class Game : MonoBehaviour
         yield return new WaitUntil(() => keysoundsLoaded);
 
         // Step 5: load BGA, if any.
-        if (!GameSetup.trackOptions.noVideo &&
+        string videoPath = "";
+        if ((inEditor || GameSetup.trackOptions.backgroundDisplay ==
+                PerTrackOptions.BackgroundDisplay.PatternBga) &&
             GameSetup.pattern.patternMetadata.bga != null &&
             GameSetup.pattern.patternMetadata.bga != "")
         {
-            string fullPath = Path.Combine(GameSetup.trackFolder,
+            videoPath = Path.Combine(GameSetup.trackFolder,
                 GameSetup.pattern.patternMetadata.bga);
-            videoPlayer.url = fullPath;
+        }
+        else if (GameSetup.trackOptions.backgroundDisplay ==
+                PerTrackOptions.BackgroundDisplay.BaseBga &&
+            BaseBga.bgaNames.Length > 0)
+        {
+            videoPath = Path.Combine(Paths.GetBgaRootFolder(),
+                BaseBga.bgaNames[BaseBga.currentIndex]);
+        }
+        if (videoPath.Length > 0)
+        {
+            videoPlayer.url = videoPath;
             videoPlayer.errorReceived += VideoPlayerErrorReceived;
             videoPlayer.Prepare();
             yield return new WaitUntil(() => videoPlayer.isPrepared);
@@ -1073,8 +1085,9 @@ public class Game : MonoBehaviour
             (int)videoPlayer.height,
             depth: 0);
         videoPlayer.targetTexture = renderTexture;
-        videoPlayer.isLooping = GameSetup.pattern.patternMetadata
-            .playBgaOnLoop;
+        videoPlayer.isLooping = GameSetup.trackOptions.backgroundDisplay ==
+            PerTrackOptions.BackgroundDisplay.BaseBga ||
+            GameSetup.pattern.patternMetadata.playBgaOnLoop;
         bga.texture = renderTexture;
         bga.color = Color.white;
         bga.GetComponent<AspectRatioFitter>().aspectRatio =
@@ -1684,7 +1697,8 @@ public class Game : MonoBehaviour
         }
         if (GameSetup.pattern.patternMetadata.bga != null
             && GameSetup.pattern.patternMetadata.bga != ""
-            && !GameSetup.trackOptions.noVideo)
+            && GameSetup.trackOptions.backgroundDisplay !=
+                PerTrackOptions.BackgroundDisplay.PatternImage)
         {
             if (BaseTime >= GameSetup.pattern.patternMetadata
                 .bgaOffset)

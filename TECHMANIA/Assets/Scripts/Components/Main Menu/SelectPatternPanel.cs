@@ -184,9 +184,10 @@ public class SelectPatternPanel : MonoBehaviour
 
     private void OnModifierChanged()
     {
-        bool noVideo = GameSetup.trackOptions.noVideo;
+        PerTrackOptions.BackgroundDisplay bgDisplay =
+            GameSetup.trackOptions.backgroundDisplay;
         modifiersText.SetUp(ModifierSidesheet.GetDisplayString(
-            noVideo, specialModifierColor));
+            bgDisplay, specialModifierColor));
     }
 
     public void OnModifierButtonClick()
@@ -220,6 +221,13 @@ public class SelectPatternPanel : MonoBehaviour
         {
             Modifiers.instance.mode = Modifiers.Mode.AutoPlay;
             OnModifierChanged();
+        }
+
+        if (GameSetup.trackOptions.backgroundDisplay ==
+                PerTrackOptions.BackgroundDisplay.BaseBga &&
+            BaseBga.bgaNames.Length > 0)
+        {
+            BaseBga.GetNextBgaName();
         }
 
         // Save to disk because the game scene will reload options.

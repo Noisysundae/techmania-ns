@@ -229,9 +229,9 @@ It is recommended that you backup your tracks before upgrading.","有一部分�
 ,modifier_sidesheet_fever_label,Fever,Fever,Fever,Fever,피버
 ,modifier_sidesheet_keysound_label,Keysound,按键音,按鍵音,ノート音,연주음
 ,modifier_sidesheet_assist_tick_label,Assist tick,辅助音效,輔助音效,打撃音,클릭음
+,modifier_sidesheet_bg_label,Background Display,,,,
 ,modifier_sidesheet_appearance_title,Appearance,界面,介面,表示,화면 표시
 ,modifier_sidesheet_background_brightness_label,BG brightness,背景亮度,背景亮度,背景の明るさ,BGA 밝기
-,modifier_sidesheet_no_video_label,No video,不播放视频,不播放影片,BGAオフ,BGA 끄기
 ,modifier_sidesheet_special_modifiers_title,Special Modifiers,特殊选项,特殊選項,特殊モディファイア,기타 옵션
 ,modifier_sidesheet_special_modifiers_warning,Warning: these options will invalidate your score.,警告：这些选项会导致你的成绩无效。,警告：這些選項會使成績無效,注意：このオプションを有効にするとスコアが無効になります。,주의: 아래 옵션을 사용하면 스코어를 등록할 수 없습니다.
 ,modifier_sidesheet_mode_label,Mode,模式,模式,モード,모드
@@ -257,6 +257,9 @@ It is recommended that you backup your tracks before upgrading.","有一部分�
 ,modifier_auto_keysound,Auto keysound,自动按键音,自動按鍵音,オートノート音,자동 재생
 ,modifier_assist_tick,Assist tick,辅助音效,輔助音效,打撃音,수동
 ,modifier_auto_assist_tick,Auto assist tick,自动辅助音效,自動輔助音效,オート打撃音,자동
+,modifier_bg_base_bga,Base BGA,,,,
+,modifier_bg_pattern_bga,Pattern BGA,,,,
+,modifier_bg_pattern_image,Pattern Image,,,,
 ,modifier_no_fail,No fail,无失败,無失敗,No Fail,게임오버 없음
 ,modifier_auto_play,Auto play,自动演奏,自動演奏,オートプレイ,자동 연주
 ,modifier_practice,Practice,练习,練習,練習,연습 모드

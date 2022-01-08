@@ -2,6 +2,14 @@
 
 ## Changes
 
+* **New Feature:** Base BGAs
+  * In the Modifier Sidesheet, the "No Video" toggle has been changed into "Background Display" dropdown.
+    * Pick the source of the background...
+      * Pattern BGA (No Video OFF)
+      * Pattern Image (No Video ON)
+      * Base BGA (One of the BGAs stored in the *BGAs* folder)
+    * Base BGA are shuffled every play, ensuring that the same base BGA is not picked twice in a row.
+  * Put supported video files to be played as BGAs into the *BGAs* folder.
 * Add ability to use supported files inside track subfolder(s)
 * Disable empty hits for long notes (Hold, Drag, Repeat Hold)
   * Reference: DJMax Respect V behavior.

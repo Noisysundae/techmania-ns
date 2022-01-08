@@ -263,8 +263,10 @@ public class Options : OptionsBase
             new List<PerTrackOptions>();
         foreach (PerTrackOptions p in perTrackOptions)
         {
-            if (!p.noVideo && p.backgroundBrightness == 
-                PerTrackOptions.kMaxBrightness)
+            if (p.backgroundDisplay !=
+                    PerTrackOptions.BackgroundDisplay.PatternImage &&
+                p.backgroundBrightness == 
+                    PerTrackOptions.kMaxBrightness)
             {
                 continue;
             }
@@ -649,14 +651,26 @@ public class Modifiers
 public class PerTrackOptions
 {
     public string trackGuid;
-    public bool noVideo;
+    public enum BackgroundDisplay
+    {
+        PatternBga,
+        PatternImage,
+        BaseBga
+    }
+    public BackgroundDisplay backgroundDisplay;
+    public static readonly string[] backgroundDisplayKeys =
+    {
+        "modifier_bg_pattern_bga",
+        "modifier_bg_pattern_image",
+        "modifier_bg_base_bga"
+    };
     public int backgroundBrightness;  // 0-10
     public const int kMaxBrightness = 10;
 
     public PerTrackOptions(string trackGuid)
     {
         this.trackGuid = trackGuid;
-        noVideo = false;
+        backgroundDisplay = BackgroundDisplay.PatternBga;
         backgroundBrightness = 6;
     }
 
@@ -664,7 +678,7 @@ public class PerTrackOptions
     {
         return new PerTrackOptions(trackGuid)
         {
-            noVideo = noVideo,
+            backgroundDisplay = backgroundDisplay,
             backgroundBrightness = backgroundBrightness
         };
     }
