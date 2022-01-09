@@ -43,7 +43,6 @@ public abstract class SerializableClass<T> where T : SerializableClass<T>
 
     public string Serialize(bool optimizeForSaving)
     {
-        PrepareToSerialize();
 #if UNITY_2020
         if (optimizeForSaving)
         {

@@ -157,11 +157,6 @@ public class Options : OptionsBase
         trackFilter = new TrackFilter();
     }
 
-    protected override void PrepareToSerialize()
-    {
-        RemoveDefaultPerTrackOptions();
-    }
-
     public static int GetDefaultAudioBufferSize()
     {
         return AudioSettings.GetConfiguration().dspBufferSize;
@@ -255,24 +250,6 @@ public class Options : OptionsBase
         PerTrackOptions newOptions = new PerTrackOptions(guid);
         perTrackOptions.Add(newOptions);  // Not written to disk yet.
         return newOptions;
-    }
-
-    private void RemoveDefaultPerTrackOptions()
-    {
-        List<PerTrackOptions> remainingOptions =
-            new List<PerTrackOptions>();
-        foreach (PerTrackOptions p in perTrackOptions)
-        {
-            if (p.backgroundDisplay !=
-                    PerTrackOptions.BackgroundDisplay.PatternImage &&
-                p.backgroundBrightness == 
-                    PerTrackOptions.kMaxBrightness)
-            {
-                continue;
-            }
-            remainingOptions.Add(p);
-        }
-        perTrackOptions = remainingOptions;
     }
 #endregion
 }
