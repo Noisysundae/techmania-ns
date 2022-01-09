@@ -30,6 +30,8 @@ public class OptionsPanel : MonoBehaviour
     public Toggle showLaneDividersToggle;
     public TMP_Dropdown beatMarkersDropdown;
     public TMP_Dropdown backgroundScalingDropdown;
+    public TMP_Dropdown defaultBackgroundDisplayDropdown;
+    public Toggle forceDefaultBackgroundSettingsToggle;
 
     [Header("Miscellaneous")]
     public TMP_Dropdown rulesetDropdown;
@@ -172,6 +174,8 @@ public class OptionsPanel : MonoBehaviour
             Options.instance.showJudgementTally);
         showLaneDividersToggle.SetIsOnWithoutNotify(
             Options.instance.showLaneDividers);
+        forceDefaultBackgroundSettingsToggle.SetIsOnWithoutNotify(
+            Options.instance.forceDefaultBackgroundSettings);
 
         // Miscellaneous
 
@@ -216,6 +220,13 @@ public class OptionsPanel : MonoBehaviour
         backgroundScalingDropdown.SetValueWithoutNotify(
             (int)Options.instance.backgroundScalingMode);
         backgroundScalingDropdown.RefreshShownValue();
+
+        UIUtils.InitializeDropdownWithLocalizedOptions(
+            defaultBackgroundDisplayDropdown,
+            PerTrackOptions.backgroundDisplayKeys);
+        defaultBackgroundDisplayDropdown.SetValueWithoutNotify(
+            (int)Options.instance.defaultBackgroundDisplay);
+        defaultBackgroundDisplayDropdown.RefreshShownValue();
 
         UIUtils.InitializeDropdownWithLocalizedOptions(
             rulesetDropdown,
@@ -310,6 +321,8 @@ public class OptionsPanel : MonoBehaviour
         Options.instance.backgroundScalingMode =
             (Options.BackgroundScalingMode)
             backgroundScalingDropdown.value;
+        Options.instance.defaultBackgroundDisplay = (PerTrackOptions.BackgroundDisplay) defaultBackgroundDisplayDropdown.value;
+        Options.instance.forceDefaultBackgroundSettings = forceDefaultBackgroundSettingsToggle.isOn;
     }
     #endregion
 

@@ -63,6 +63,9 @@ public class Options : OptionsBase
     public bool showLaneDividers;
     public BeatMarkerVisibility beatMarkers;
     public BackgroundScalingMode backgroundScalingMode;
+    public int defaultBackgroundBrightness;
+    public PerTrackOptions.BackgroundDisplay defaultBackgroundDisplay;
+    public bool forceDefaultBackgroundSettings;
     public string noteSkin;
     public string vfxSkin;
     public string comboSkin;
@@ -135,6 +138,9 @@ public class Options : OptionsBase
         beatMarkers = BeatMarkerVisibility.Hidden;
         backgroundScalingMode = BackgroundScalingMode
             .FillEntireScreen;
+        defaultBackgroundBrightness = 10;
+        defaultBackgroundDisplay = PerTrackOptions.BackgroundDisplay.PatternBga;
+        forceDefaultBackgroundSettings = false;
         noteSkin = "Default";
         vfxSkin = "Default";
         comboSkin = "Default";
@@ -647,8 +653,8 @@ public class PerTrackOptions
     public PerTrackOptions(string trackGuid)
     {
         this.trackGuid = trackGuid;
-        backgroundDisplay = BackgroundDisplay.PatternBga;
-        backgroundBrightness = 6;
+        backgroundDisplay = Options.instance.defaultBackgroundDisplay;
+        backgroundBrightness = Options.instance.defaultBackgroundBrightness;
     }
 
     public PerTrackOptions Clone()

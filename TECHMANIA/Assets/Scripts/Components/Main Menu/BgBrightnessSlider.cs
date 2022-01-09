@@ -16,21 +16,45 @@ public class BgBrightnessSlider : MonoBehaviour
 
     private void MemoryToUI()
     {
-        slider.SetValueWithoutNotify(
-            GameSetup.trackOptions.backgroundBrightness);
+        if (Options.instance.forceDefaultBackgroundSettings)
+        {
+            slider.SetValueWithoutNotify(
+                Options.instance.defaultBackgroundBrightness);
+        }
+        else
+        {
+            slider.SetValueWithoutNotify(
+                GameSetup.trackOptions.backgroundBrightness);
+        }
         RefreshBrightnessDisplay();
     }
 
     private void RefreshBrightnessDisplay()
     {
-        display.text = GameSetup.trackOptions
-            .backgroundBrightness.ToString();
+        if (Options.instance.forceDefaultBackgroundSettings)
+        {
+            display.text = Options.instance
+                .defaultBackgroundBrightness.ToString();
+        }
+        else
+        {
+            display.text = GameSetup.trackOptions
+                .backgroundBrightness.ToString();
+        }
     }
 
     public void UIToMemory()
     {
-        GameSetup.trackOptions.backgroundBrightness =
-            Mathf.FloorToInt(slider.value);
+        if (Options.instance.forceDefaultBackgroundSettings)
+        {
+            Options.instance.defaultBackgroundBrightness =
+                Mathf.FloorToInt(slider.value);
+        }
+        else
+        {
+            GameSetup.trackOptions.backgroundBrightness =
+                Mathf.FloorToInt(slider.value);
+        }
         RefreshBrightnessDisplay();
     }
 }

@@ -19,6 +19,7 @@ public class ModifierSidesheet : MonoBehaviour
 
     [Header("Appearance")]
     public Toggle showJudgementTally;
+    public GameObject forceDefaultBackgroundSettingsIndicator;
     public TMP_Dropdown backgroundDisplay;
 
     [Header("Special modifiers")]
@@ -118,8 +119,16 @@ public class ModifierSidesheet : MonoBehaviour
 
         showJudgementTally.SetIsOnWithoutNotify(
             Options.instance.showJudgementTally);
-        backgroundDisplay.SetValueWithoutNotify(
-            (int)GameSetup.trackOptions.backgroundDisplay);
+        if (Options.instance.forceDefaultBackgroundSettings)
+        {
+            forceDefaultBackgroundSettingsIndicator.SetActive(true);
+            backgroundDisplay.SetValueWithoutNotify(
+                (int)Options.instance.defaultBackgroundDisplay);
+        }
+        else {
+            backgroundDisplay.SetValueWithoutNotify(
+                (int)GameSetup.trackOptions.backgroundDisplay);
+        }
         backgroundDisplay.RefreshShownValue();
 
         // Special modifiers
@@ -162,8 +171,16 @@ public class ModifierSidesheet : MonoBehaviour
 
         Options.instance.showJudgementTally =
             showJudgementTally.isOn;
-        GameSetup.trackOptions.backgroundDisplay =
-            (PerTrackOptions.BackgroundDisplay)backgroundDisplay.value;
+        if (Options.instance.forceDefaultBackgroundSettings)
+        {
+            Options.instance.defaultBackgroundDisplay =
+                (PerTrackOptions.BackgroundDisplay)backgroundDisplay.value;
+        }
+        else
+        {
+            GameSetup.trackOptions.backgroundDisplay =
+                (PerTrackOptions.BackgroundDisplay)backgroundDisplay.value;
+        }
 
         // Special modifiers
 

@@ -229,6 +229,8 @@ It is recommended that you backup your tracks before upgrading.","有一部分�
 ,modifier_sidesheet_fever_label,Fever,Fever,Fever,Fever,피버
 ,modifier_sidesheet_keysound_label,Keysound,按键音,按鍵音,ノート音,연주음
 ,modifier_sidesheet_assist_tick_label,Assist tick,辅助音效,輔助音效,打撃音,클릭음
+,modifier_sidesheet_force_default_bg_label,"Note: Force default BG settings is on in Options.
+The following settings reference defaults, applying globally.",,,,
 ,modifier_sidesheet_bg_label,Background Display,,,,
 ,modifier_sidesheet_appearance_title,Appearance,界面,介面,表示,화면 표시
 ,modifier_sidesheet_background_brightness_label,BG brightness,背景亮度,背景亮度,背景の明るさ,BGA 밝기
@@ -304,6 +306,9 @@ but may cause audio issues such as stuttering.","数值越小，音频延迟越�
 ,options_bg_scaling_label,Background scaling,背景缩放方式,背景縮放方式,BGAのスケーリング,BGA 맞춤
 ,options_bg_scaling_fill_entire_screen,Fill entire screen,覆盖整个屏幕,覆蓋整個螢幕,画面に合わせる,전체 화면
 ,options_bg_scaling_fill_game_area,Fill game area,仅覆盖游戏区域,僅覆蓋遊戲區域,ゲームプレイエリアに合わせる,게임 플레이 영역
+,options_default_background_brightness_label,Default BG brightness,,,,
+,options_default_background_display_label,Default BG display,,,,
+,options_force_default_background_settings_label,Force default BG settings,,,,
 ,options_miscellaneous_header,Miscellaneous,其他,其他,その他,기타
 ,options_ruleset_label,Ruleset,规则,規則,ルールセット,규칙
 ,options_ruleset_standard,Standard,标准,標準,スタンダード,표준

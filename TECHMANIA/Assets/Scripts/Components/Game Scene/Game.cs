@@ -430,7 +430,10 @@ public class Game : MonoBehaviour
 
         // Step 5: load BGA, if any.
         string videoPath = "";
-        if ((inEditor || GameSetup.trackOptions.backgroundDisplay ==
+        PerTrackOptions.BackgroundDisplay bgDisplay = Options.instance.forceDefaultBackgroundSettings ?
+            Options.instance.defaultBackgroundDisplay :
+            GameSetup.trackOptions.backgroundDisplay;
+        if ((inEditor || bgDisplay ==
                 PerTrackOptions.BackgroundDisplay.PatternBga) &&
             GameSetup.pattern.patternMetadata.bga != null &&
             GameSetup.pattern.patternMetadata.bga != "")
@@ -438,7 +441,7 @@ public class Game : MonoBehaviour
             videoPath = Path.Combine(GameSetup.trackFolder,
                 GameSetup.pattern.patternMetadata.bga);
         }
-        else if (GameSetup.trackOptions.backgroundDisplay ==
+        else if (bgDisplay ==
                 PerTrackOptions.BackgroundDisplay.BaseBga &&
             BaseBga.IsInitialized() &&
             !BaseBga.IsBgaPoolEmpty())
@@ -1576,25 +1579,44 @@ public class Game : MonoBehaviour
 
     private void UpdateBrightness()
     {
-        if (Input.GetKeyDown(KeyCode.PageUp))
+        if (Options.instance.forceDefaultBackgroundSettings)
         {
-            GameSetup.trackOptions.backgroundBrightness++;
+                if (Input.GetKeyDown(KeyCode.PageUp))
+            {
+                Options.instance.defaultBackgroundBrightness++;
+            }
+            if (Input.GetKeyDown(KeyCode.PageDown))
+            {
+                Options.instance.defaultBackgroundBrightness--;
+            }
+            Options.instance.defaultBackgroundBrightness =
+                Mathf.Clamp(Options.instance.defaultBackgroundBrightness,
+                0, 10);
         }
-        if (Input.GetKeyDown(KeyCode.PageDown))
+        else
         {
-            GameSetup.trackOptions.backgroundBrightness--;
+            if (Input.GetKeyDown(KeyCode.PageUp))
+            {
+                GameSetup.trackOptions.backgroundBrightness++;
+            }
+            if (Input.GetKeyDown(KeyCode.PageDown))
+            {
+                GameSetup.trackOptions.backgroundBrightness--;
+            }
+            GameSetup.trackOptions.backgroundBrightness =
+                Mathf.Clamp(GameSetup.trackOptions.backgroundBrightness,
+                0, 10);
         }
-        GameSetup.trackOptions.backgroundBrightness =
-            Mathf.Clamp(GameSetup.trackOptions.backgroundBrightness,
-            0, 10);
         
         SetBrightness();
     }
 
     public void SetBrightness()
     {
-        float coverAlpha = 1f - 
-            0.1f * GameSetup.trackOptions.backgroundBrightness;
+        int brightness = Options.instance.forceDefaultBackgroundSettings ?
+            Options.instance.defaultBackgroundBrightness :
+            GameSetup.trackOptions.backgroundBrightness;
+        float coverAlpha = 1f - 0.1f * brightness;
         brightnessCover.color = new Color(
             brightnessCover.color.r,
             brightnessCover.color.g,
