@@ -5,12 +5,12 @@ public static class BaseBga
 {
 	public static string CurrentDirectory = "";
 	public enum PlaybackMode {
-		Sorted,	// A-Z
+		Seeded,	// A-Z
 		Random,
 		Shuffle
 	}
 	private static Random rand = GetNewRandomSeed();
-	private static PlaybackMode currentPlaybackMode = PlaybackMode.Shuffle;
+	private static PlaybackMode currentPlaybackMode = PlaybackMode.Seeded;
 	private static string[] bgaPaths = new string[]{""};
 	private static int currentIndex;
 	private static bool initialized;
@@ -53,7 +53,7 @@ public static class BaseBga
 		return newList;
 	}
 
-	public static void Forward()
+	public static void Forward(string guid = "")
 	{
 		if (bgaPaths.Length > 0)
 		{
@@ -61,12 +61,17 @@ public static class BaseBga
 			int length = bgaPaths.Length;
 			switch (currentPlaybackMode)
 			{
-				case PlaybackMode.Sorted:
-					currentIndex = firstBgaPlayed ? (currentIndex + 1) % length : 0;
-					firstBgaPlayed = true;
+				case PlaybackMode.Seeded:
+					int sum = 0;
+					foreach (byte b in Guid.Parse(guid).ToByteArray())
+					{
+						sum += b;
+					}
+					rand = new Random(sum);
+					currentIndex = rand.Next(length);
 					break;
 				case PlaybackMode.Random:
-					currentIndex = (currentIndex + rand.Next(1, length)) % length;
+					currentIndex = rand.Next(length);
 					break;
 				case PlaybackMode.Shuffle:
 					currentIndex = firstBgaPlayed ? (currentIndex + 1) % length : 0;
@@ -90,9 +95,8 @@ public static class BaseBga
 		rand = GetNewRandomSeed();
 		switch (mode)
 		{
-			case PlaybackMode.Sorted:
+			case PlaybackMode.Seeded:
 				currentIndex = 0;
-				Array.Sort(bgaPaths);
 				break;
 			case PlaybackMode.Random:
 				currentIndex = rand.Next(bgaPaths.Length);
