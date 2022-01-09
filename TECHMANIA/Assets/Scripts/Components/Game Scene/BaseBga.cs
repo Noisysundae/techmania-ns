@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 public static class BaseBga
 {
@@ -10,9 +10,11 @@ public static class BaseBga
 		Shuffle
 	}
 	private static Random rand = GetNewRandomSeed();
-	public static PlaybackMode currentPlaybackMode = PlaybackMode.Shuffle;
-	public static string[] bgaNames = new string[]{""};
-	public static int currentIndex = 0;
+	private static PlaybackMode currentPlaybackMode = PlaybackMode.Shuffle;
+	private static string[] bgaPaths = new string[]{""};
+	private static int currentIndex;
+	private static bool initialized;
+	private static bool firstBgaPlayed;
 
 	private static Random GetNewRandomSeed() { return new Random((int) DateTime.Now.Ticks % 2000000); }
 	// In addition, this is also anti-repetitive:
@@ -20,7 +22,11 @@ public static class BaseBga
 	// This prevents playing the same BGA twice between 2 shuffle cycles.
 	private static string[] UniqueRandom(string[] list)
 	{
-		Stack stack = new Stack();
+		if (list.Length < 2)
+		{
+			return list;
+		}
+		Stack<string> stack = new Stack<string>();
 		foreach (string entry in list)
 		{
 			stack.Push(entry);
@@ -42,36 +48,41 @@ public static class BaseBga
 			{
 				rng = (rng + 1) % length;
 			}
-			newList[rng] = (string) stack.Pop();
+			newList[rng] = stack.Pop();
 		}
 		return newList;
 	}
 
-	public static string GetNextBgaName()
+	public static void Forward()
 	{
-		if (bgaNames.Length > 0)
+		if (bgaPaths.Length > 0)
 		{
-			string name = bgaNames[currentIndex];
-			int length = bgaNames.Length;
+			string name = bgaPaths[currentIndex];
+			int length = bgaPaths.Length;
 			switch (currentPlaybackMode)
 			{
 				case PlaybackMode.Sorted:
-					currentIndex = (currentIndex + 1) % length;
+					currentIndex = firstBgaPlayed ? (currentIndex + 1) % length : 0;
+					firstBgaPlayed = true;
 					break;
 				case PlaybackMode.Random:
 					currentIndex = (currentIndex + rand.Next(1, length)) % length;
 					break;
 				case PlaybackMode.Shuffle:
-					currentIndex = (currentIndex + 1) % length;
-					if (currentIndex == 0)
+					currentIndex = firstBgaPlayed ? (currentIndex + 1) % length : 0;
+					if (firstBgaPlayed && currentIndex == 0)
 					{
-						bgaNames = UniqueRandom(bgaNames);
+						bgaPaths = UniqueRandom(bgaPaths);
 					}
+					firstBgaPlayed = true;
 					break;
 			}
-			return name;
 		}
-		return "";
+	}
+
+	public static string GetCurrentBgaPath()
+	{
+		return bgaPaths.Length > 0 ? bgaPaths[currentIndex] : "";
 	}
 
 	public static void SetMode(PlaybackMode mode)
@@ -80,17 +91,35 @@ public static class BaseBga
 		switch (mode)
 		{
 			case PlaybackMode.Sorted:
-				Array.Sort(bgaNames);
 				currentIndex = 0;
+				Array.Sort(bgaPaths);
 				break;
 			case PlaybackMode.Random:
-				currentIndex = rand.Next(bgaNames.Length);
+				currentIndex = rand.Next(bgaPaths.Length);
 				break;
 			case PlaybackMode.Shuffle:
-				bgaNames = UniqueRandom(bgaNames);
 				currentIndex = 0;
+				bgaPaths = UniqueRandom(bgaPaths);
 				break;
 		}
 		currentPlaybackMode = mode;
 	}
+
+	public static void ResetPaths(List<String> paths)
+	{
+		BaseBga.bgaPaths = paths.ToArray();
+		BaseBga.SetMode(BaseBga.currentPlaybackMode);
+	}
+
+	public static void Initialize(List<String> videoPaths)
+	{
+		if (!initialized)
+		{
+			initialized = true;
+			ResetPaths(videoPaths);
+		}
+	}
+
+	public static bool IsBgaPoolEmpty() { return bgaPaths.Length == 0; }
+	public static bool IsInitialized() { return initialized; }
 }

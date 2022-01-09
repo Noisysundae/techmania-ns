@@ -57,8 +57,7 @@ public class OptionsPanel : MonoBehaviour
         // Options.instance.ApplyGraphicSettings();
         instance.ApplyAudioBufferSize();
         instance.audioSliders.ApplyVolume();
-        BaseBga.bgaNames = Paths.GetAllVideoFiles(Paths.GetBgaRootFolder()).ToArray();
-        BaseBga.SetMode(BaseBga.currentPlaybackMode);
+        BaseBga.Initialize(Paths.GetAllVideoFiles(Paths.GetBgaRootFolder()));
     }
 
     private void LoadOrCreateOptions()

@@ -225,9 +225,9 @@ public class SelectPatternPanel : MonoBehaviour
 
         if (GameSetup.trackOptions.backgroundDisplay ==
                 PerTrackOptions.BackgroundDisplay.BaseBga &&
-            BaseBga.bgaNames.Length > 0)
+            BaseBga.IsInitialized())
         {
-            BaseBga.GetNextBgaName();
+            BaseBga.Forward();
         }
 
         // Save to disk because the game scene will reload options.

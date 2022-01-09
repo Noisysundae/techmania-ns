@@ -440,10 +440,10 @@ public class Game : MonoBehaviour
         }
         else if (GameSetup.trackOptions.backgroundDisplay ==
                 PerTrackOptions.BackgroundDisplay.BaseBga &&
-            BaseBga.bgaNames.Length > 0)
+            BaseBga.IsInitialized() &&
+            !BaseBga.IsBgaPoolEmpty())
         {
-            videoPath = Path.Combine(Paths.GetBgaRootFolder(),
-                BaseBga.bgaNames[BaseBga.currentIndex]);
+            videoPath = Path.Combine(Paths.GetBgaRootFolder(), BaseBga.GetCurrentBgaPath());
         }
         if (videoPath.Length > 0)
         {
