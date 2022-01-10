@@ -134,6 +134,8 @@ public class Game : MonoBehaviour
     public static int maxCombo { get; private set; }
     private int hp;
 
+    private string bgaPath = "";
+
     public enum FeverState
     {
         Idle,  // Accummulates with MAXes
@@ -429,33 +431,48 @@ public class Game : MonoBehaviour
         yield return new WaitUntil(() => keysoundsLoaded);
 
         // Step 5: load BGA, if any.
-        string videoPath = "";
-        PerTrackOptions.BackgroundSource bgSource = Options.instance.alwaysUseDefaultBackgroundSettings ?
+        bool hasPatternBga = GameSetup.pattern.patternMetadata.bga != null &&
+            GameSetup.pattern.patternMetadata.bga != "";
+        bool hasBaseBga = BaseBga.IsInitialized() && !BaseBga.IsBgaPoolEmpty();
+        bool forceLooping = false;
+        switch (Options.instance.alwaysUseDefaultBackgroundSettings ?
             Options.instance.defaultBackgroundSource :
-            GameSetup.trackOptions.backgroundSource;
-        if ((inEditor || bgSource ==
-                PerTrackOptions.BackgroundSource.PatternBga) &&
-            GameSetup.pattern.patternMetadata.bga != null &&
-            GameSetup.pattern.patternMetadata.bga != "")
+            GameSetup.trackOptions.backgroundSource)
         {
-            videoPath = Path.Combine(GameSetup.trackFolder,
-                GameSetup.pattern.patternMetadata.bga);
+            case PerTrackOptions.BackgroundSource.PatternBga:
+                if (hasPatternBga)
+                {
+                    bgaPath = Path.Combine(GameSetup.trackFolder,
+                        GameSetup.pattern.patternMetadata.bga);
+                }
+                else if (hasBaseBga)
+                {
+                    BaseBga.Forward(GameSetup.track.trackMetadata.guid);
+                    bgaPath = Path.Combine(Paths.GetBgaRootFolder(), BaseBga.GetCurrentBgaPath());
+                    forceLooping = true;
+                }
+                break;
+            case PerTrackOptions.BackgroundSource.BaseBga:
+                if (!inEditor && hasBaseBga)
+                {
+                    bgaPath = Path.Combine(Paths.GetBgaRootFolder(), BaseBga.GetCurrentBgaPath());
+                    forceLooping = true;
+                }
+                else if (hasPatternBga)
+                {
+                    bgaPath = Path.Combine(GameSetup.trackFolder,
+                        GameSetup.pattern.patternMetadata.bga);
+                }
+                break;
         }
-        else if (bgSource ==
-                PerTrackOptions.BackgroundSource.BaseBga &&
-            BaseBga.IsInitialized() &&
-            !BaseBga.IsBgaPoolEmpty())
+        if (bgaPath.Length > 0)
         {
-            videoPath = Path.Combine(Paths.GetBgaRootFolder(), BaseBga.GetCurrentBgaPath());
-        }
-        if (videoPath.Length > 0)
-        {
-            videoPlayer.url = videoPath;
+            videoPlayer.url = bgaPath;
             videoPlayer.errorReceived += VideoPlayerErrorReceived;
             videoPlayer.Prepare();
             yield return new WaitUntil(() => videoPlayer.isPrepared);
             videoPlayer.errorReceived -= VideoPlayerErrorReceived;
-            PrepareVideoPlayer();  // This also shows BGA cover
+            PrepareVideoPlayer(forceLooping);  // This also shows BGA cover
             backgroundImage.color = Color.clear;
         }
 
@@ -1081,15 +1098,14 @@ public class Game : MonoBehaviour
         ReportFatalError(error);  // VideoPlayer's error message includes URL
     }
 
-    private void PrepareVideoPlayer()
+    private void PrepareVideoPlayer(bool forceLooping)
     {
         RenderTexture renderTexture = new RenderTexture(
             (int)videoPlayer.width,
             (int)videoPlayer.height,
             depth: 0);
         videoPlayer.targetTexture = renderTexture;
-        videoPlayer.isLooping = GameSetup.trackOptions.backgroundSource ==
-            PerTrackOptions.BackgroundSource.BaseBga ||
+        videoPlayer.isLooping = forceLooping ||
             GameSetup.pattern.patternMetadata.playBgaOnLoop;
         bga.texture = renderTexture;
         bga.color = Color.white;
@@ -1247,8 +1263,7 @@ public class Game : MonoBehaviour
             GameSetup.pattern.patternMetadata.bgaOffset &&
             BaseTime >=
             GameSetup.pattern.patternMetadata.bgaOffset &&
-            GameSetup.pattern.patternMetadata.bga != null &&
-            GameSetup.pattern.patternMetadata.bga != "")
+            bgaPath != "")
         {
             HideBGACover();
             videoPlayer.Play();
@@ -1717,8 +1732,7 @@ public class Game : MonoBehaviour
             audioSourceManager.PlayBackingTrack(backingTrackClip,
                 BaseTime);
         }
-        if (GameSetup.pattern.patternMetadata.bga != null
-            && GameSetup.pattern.patternMetadata.bga != ""
+        if (bgaPath != ""
             && GameSetup.trackOptions.backgroundSource !=
                 PerTrackOptions.BackgroundSource.PatternImage)
         {

@@ -7,10 +7,14 @@
 * **New Feature:** Base BGAs
   * In the Modifier Side Sheet, the "No Video" toggle has been changed into "Background Source" dropdown.
     * Possible Options...
-      * Pattern BGA (No Video OFF)
-      * Pattern Image (No Video ON)
-      * Base BGA (One of the BGAs stored in the *BGAs* folder)
+      * *Pattern BGA* (No Video OFF)
+      * *Pattern Image* (No Video ON)
+      * *Base BGA* (One of the BGAs stored in the *BGAs* folder)
     * A few playback modes are provided, explained and can be set in *Options*.
+    * In case there is no suitable video file for the chosen mode, fallback values are as follow...
+      * *Pattern BGA* -> Base BGA -> Pattern Image
+      * *Pattern Image* -> None (Black background, assuming the player requests minimum motion)
+      * *Base BGA* -> Pattern BGA -> Pattern Image
   * Put video files with a supported format into the *BGAs* folder.
   * **IMPORTANT:** This will remove all track's "No Video" values inside per-track settings.
     * All other settings are still compatible with the official build.
