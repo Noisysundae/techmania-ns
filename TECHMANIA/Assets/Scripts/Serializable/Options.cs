@@ -256,7 +256,10 @@ public class Options : OptionsBase
         }
 
         PerTrackOptions newOptions = new PerTrackOptions(guid);
-        perTrackOptions.Add(newOptions);  // Not written to disk yet.
+        if (!Options.instance.alwaysUseDefaultBackgroundSettings)
+        {
+            perTrackOptions.Add(newOptions);  // Not written to disk yet.
+        }
         return newOptions;
     }
 #endregion
