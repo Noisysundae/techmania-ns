@@ -24,8 +24,8 @@
   * Reference: DJMax Respect V behavior.
 * With "Auto Keysound" on, reroute keysound audio sources to the keysound mixer track
   * This keeps keysounds from using the music volume (from settings) instead of keysound volume.
-* (dirty change) Some default values which are unavailable in settings
-  * Default BGA brightness (from 10 to 6)
+* ~~(dirty change) Some default values which are unavailable in settings~~
+  * ~~Default BGA brightness (from 10 to 6)~~ Replaced with actual configurable value
 * (dirty change) Convert gameplay note collections from lists to dictionaries
   * For optimization, especially on rapid scan jumps in practice mode
 * Prevent screen settings applying at launch, so some command line arguments are usable (e.g. custom screen resolution)
