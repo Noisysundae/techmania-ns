@@ -232,7 +232,7 @@ public class SelectPatternPanel : MonoBehaviour
                 PerTrackOptions.BackgroundDisplay.BaseBga;
         if (isBaseBga && BaseBga.IsInitialized())
         {
-            BaseBga.Forward();
+            BaseBga.Forward(GameSetup.track.trackMetadata.guid);
         }
 
         // Save to disk because the game scene will reload options.

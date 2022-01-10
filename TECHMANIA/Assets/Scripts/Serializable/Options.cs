@@ -66,6 +66,7 @@ public class Options : OptionsBase
     public int defaultBackgroundBrightness;
     public PerTrackOptions.BackgroundDisplay defaultBackgroundDisplay;
     public bool forceDefaultBackgroundSettings;
+    public BaseBga.PlaybackMode baseBgaPlaybackMode;
     public string noteSkin;
     public string vfxSkin;
     public string comboSkin;
@@ -140,6 +141,7 @@ public class Options : OptionsBase
             .FillEntireScreen;
         defaultBackgroundBrightness = 10;
         defaultBackgroundDisplay = PerTrackOptions.BackgroundDisplay.PatternBga;
+        baseBgaPlaybackMode = BaseBga.PlaybackMode.Seeded;
         forceDefaultBackgroundSettings = false;
         noteSkin = "Default";
         vfxSkin = "Default";

@@ -308,6 +308,10 @@ but may cause audio issues such as stuttering.","数值越小，音频延迟越�
 ,options_bg_scaling_fill_game_area,Fill game area,仅覆盖游戏区域,僅覆蓋遊戲區域,ゲームプレイエリアに合わせる,게임 플레이 영역
 ,options_default_background_brightness_label,Default BG brightness,,,,
 ,options_default_background_display_label,Default BG display,,,,
+,options_base_bga_playback_mode_label,Base BGA: Playback mode,,,,
+,options_base_bga_playback_mode_seeded,Seeded,,,,
+,options_base_bga_playback_mode_random,Random,,,,
+,options_base_bga_playback_mode_shuffle,Shuffle,,,,
 ,options_force_default_background_settings_label,Force default BG settings,,,,
 ,options_miscellaneous_header,Miscellaneous,其他,其他,その他,기타
 ,options_ruleset_label,Ruleset,规则,規則,ルールセット,규칙

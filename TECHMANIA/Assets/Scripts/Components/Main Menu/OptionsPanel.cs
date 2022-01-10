@@ -32,6 +32,7 @@ public class OptionsPanel : MonoBehaviour
     public TMP_Dropdown backgroundScalingDropdown;
     public TMP_Dropdown defaultBackgroundDisplayDropdown;
     public Toggle forceDefaultBackgroundSettingsToggle;
+    public TMP_Dropdown baseBgaPlaybackModeDropdown;
 
     [Header("Miscellaneous")]
     public TMP_Dropdown rulesetDropdown;
@@ -59,7 +60,11 @@ public class OptionsPanel : MonoBehaviour
         // Options.instance.ApplyGraphicSettings();
         instance.ApplyAudioBufferSize();
         instance.audioSliders.ApplyVolume();
-        BaseBga.Initialize(Paths.GetAllVideoFiles(Paths.GetBgaRootFolder()));
+        if (!BaseBga.IsInitialized())
+        {
+            BaseBga.SetPaths(Paths.GetAllVideoFiles(Paths.GetBgaRootFolder()));
+            BaseBga.SetMode(Options.instance.baseBgaPlaybackMode);
+        }
     }
 
     private void LoadOrCreateOptions()
@@ -229,6 +234,15 @@ public class OptionsPanel : MonoBehaviour
         defaultBackgroundDisplayDropdown.RefreshShownValue();
 
         UIUtils.InitializeDropdownWithLocalizedOptions(
+            baseBgaPlaybackModeDropdown,
+            "options_base_bga_playback_mode_seeded",
+            "options_base_bga_playback_mode_random",
+            "options_base_bga_playback_mode_shuffle");
+        baseBgaPlaybackModeDropdown.SetValueWithoutNotify(
+            (int)Options.instance.baseBgaPlaybackMode);
+        baseBgaPlaybackModeDropdown.RefreshShownValue();
+
+        UIUtils.InitializeDropdownWithLocalizedOptions(
             rulesetDropdown,
             "options_ruleset_standard",
             "options_ruleset_legacy",
@@ -323,6 +337,8 @@ public class OptionsPanel : MonoBehaviour
             backgroundScalingDropdown.value;
         Options.instance.defaultBackgroundDisplay = (PerTrackOptions.BackgroundDisplay) defaultBackgroundDisplayDropdown.value;
         Options.instance.forceDefaultBackgroundSettings = forceDefaultBackgroundSettingsToggle.isOn;
+        Options.instance.baseBgaPlaybackMode = (BaseBga.PlaybackMode) baseBgaPlaybackModeDropdown.value;
+        BaseBga.SetMode(Options.instance.baseBgaPlaybackMode);
     }
     #endregion
 
