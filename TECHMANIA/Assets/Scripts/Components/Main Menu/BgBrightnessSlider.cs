@@ -16,7 +16,7 @@ public class BgBrightnessSlider : MonoBehaviour
 
     private void MemoryToUI()
     {
-        if (Options.instance.forceDefaultBackgroundSettings)
+        if (Options.instance.alwaysUseDefaultBackgroundSettings)
         {
             slider.SetValueWithoutNotify(
                 Options.instance.defaultBackgroundBrightness);
@@ -31,7 +31,7 @@ public class BgBrightnessSlider : MonoBehaviour
 
     private void RefreshBrightnessDisplay()
     {
-        if (Options.instance.forceDefaultBackgroundSettings)
+        if (Options.instance.alwaysUseDefaultBackgroundSettings)
         {
             display.text = Options.instance
                 .defaultBackgroundBrightness.ToString();
@@ -45,7 +45,7 @@ public class BgBrightnessSlider : MonoBehaviour
 
     public void UIToMemory()
     {
-        if (Options.instance.forceDefaultBackgroundSettings)
+        if (Options.instance.alwaysUseDefaultBackgroundSettings)
         {
             Options.instance.defaultBackgroundBrightness =
                 Mathf.FloorToInt(slider.value);

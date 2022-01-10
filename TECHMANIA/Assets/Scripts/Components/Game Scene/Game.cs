@@ -430,19 +430,19 @@ public class Game : MonoBehaviour
 
         // Step 5: load BGA, if any.
         string videoPath = "";
-        PerTrackOptions.BackgroundDisplay bgDisplay = Options.instance.forceDefaultBackgroundSettings ?
-            Options.instance.defaultBackgroundDisplay :
-            GameSetup.trackOptions.backgroundDisplay;
-        if ((inEditor || bgDisplay ==
-                PerTrackOptions.BackgroundDisplay.PatternBga) &&
+        PerTrackOptions.BackgroundSource bgSource = Options.instance.alwaysUseDefaultBackgroundSettings ?
+            Options.instance.defaultBackgroundSource :
+            GameSetup.trackOptions.backgroundSource;
+        if ((inEditor || bgSource ==
+                PerTrackOptions.BackgroundSource.PatternBga) &&
             GameSetup.pattern.patternMetadata.bga != null &&
             GameSetup.pattern.patternMetadata.bga != "")
         {
             videoPath = Path.Combine(GameSetup.trackFolder,
                 GameSetup.pattern.patternMetadata.bga);
         }
-        else if (bgDisplay ==
-                PerTrackOptions.BackgroundDisplay.BaseBga &&
+        else if (bgSource ==
+                PerTrackOptions.BackgroundSource.BaseBga &&
             BaseBga.IsInitialized() &&
             !BaseBga.IsBgaPoolEmpty())
         {
@@ -1088,8 +1088,8 @@ public class Game : MonoBehaviour
             (int)videoPlayer.height,
             depth: 0);
         videoPlayer.targetTexture = renderTexture;
-        videoPlayer.isLooping = GameSetup.trackOptions.backgroundDisplay ==
-            PerTrackOptions.BackgroundDisplay.BaseBga ||
+        videoPlayer.isLooping = GameSetup.trackOptions.backgroundSource ==
+            PerTrackOptions.BackgroundSource.BaseBga ||
             GameSetup.pattern.patternMetadata.playBgaOnLoop;
         bga.texture = renderTexture;
         bga.color = Color.white;
@@ -1579,7 +1579,7 @@ public class Game : MonoBehaviour
 
     private void UpdateBrightness()
     {
-        if (Options.instance.forceDefaultBackgroundSettings)
+        if (Options.instance.alwaysUseDefaultBackgroundSettings)
         {
                 if (Input.GetKeyDown(KeyCode.PageUp))
             {
@@ -1613,7 +1613,7 @@ public class Game : MonoBehaviour
 
     public void SetBrightness()
     {
-        int brightness = Options.instance.forceDefaultBackgroundSettings ?
+        int brightness = Options.instance.alwaysUseDefaultBackgroundSettings ?
             Options.instance.defaultBackgroundBrightness :
             GameSetup.trackOptions.backgroundBrightness;
         float coverAlpha = 1f - 0.1f * brightness;
@@ -1719,8 +1719,8 @@ public class Game : MonoBehaviour
         }
         if (GameSetup.pattern.patternMetadata.bga != null
             && GameSetup.pattern.patternMetadata.bga != ""
-            && GameSetup.trackOptions.backgroundDisplay !=
-                PerTrackOptions.BackgroundDisplay.PatternImage)
+            && GameSetup.trackOptions.backgroundSource !=
+                PerTrackOptions.BackgroundSource.PatternImage)
         {
             if (BaseTime >= GameSetup.pattern.patternMetadata
                 .bgaOffset)

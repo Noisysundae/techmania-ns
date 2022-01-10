@@ -184,12 +184,12 @@ public class SelectPatternPanel : MonoBehaviour
 
     private void OnModifierChanged()
     {
-        PerTrackOptions.BackgroundDisplay bgDisplay =
-            Options.instance.forceDefaultBackgroundSettings ?
-                Options.instance.defaultBackgroundDisplay :
-                GameSetup.trackOptions.backgroundDisplay;
+        PerTrackOptions.BackgroundSource bgSource =
+            Options.instance.alwaysUseDefaultBackgroundSettings ?
+                Options.instance.defaultBackgroundSource :
+                GameSetup.trackOptions.backgroundSource;
         modifiersText.SetUp(ModifierSidesheet.GetDisplayString(
-            bgDisplay, specialModifierColor));
+            bgSource, specialModifierColor));
     }
 
     public void OnModifierButtonClick()
@@ -225,11 +225,11 @@ public class SelectPatternPanel : MonoBehaviour
             OnModifierChanged();
         }
 
-        bool isBaseBga = Options.instance.forceDefaultBackgroundSettings ?
-            Options.instance.defaultBackgroundDisplay ==
-                PerTrackOptions.BackgroundDisplay.BaseBga :
-            GameSetup.trackOptions.backgroundDisplay ==
-                PerTrackOptions.BackgroundDisplay.BaseBga;
+        bool isBaseBga = Options.instance.alwaysUseDefaultBackgroundSettings ?
+            Options.instance.defaultBackgroundSource ==
+                PerTrackOptions.BackgroundSource.BaseBga :
+            GameSetup.trackOptions.backgroundSource ==
+                PerTrackOptions.BackgroundSource.BaseBga;
         if (isBaseBga && BaseBga.IsInitialized())
         {
             BaseBga.Forward(GameSetup.track.trackMetadata.guid);

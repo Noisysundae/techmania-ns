@@ -19,8 +19,8 @@ public class ModifierSidesheet : MonoBehaviour
 
     [Header("Appearance")]
     public Toggle showJudgementTally;
-    public GameObject forceDefaultBackgroundSettingsIndicator;
-    public TMP_Dropdown backgroundDisplay;
+    public GameObject alwaysUseDefaultBackgroundSettingsIndicator;
+    public TMP_Dropdown backgroundSource;
 
     [Header("Special modifiers")]
     public TMP_Dropdown mode;
@@ -73,8 +73,8 @@ public class ModifierSidesheet : MonoBehaviour
         // Appearance
 
         UIUtils.InitializeDropdownWithLocalizedOptions(
-            backgroundDisplay,
-            PerTrackOptions.backgroundDisplayKeys);
+            backgroundSource,
+            PerTrackOptions.backgroundSourceKeys);
     }
 
     public void MemoryToUI()
@@ -119,17 +119,17 @@ public class ModifierSidesheet : MonoBehaviour
 
         showJudgementTally.SetIsOnWithoutNotify(
             Options.instance.showJudgementTally);
-        if (Options.instance.forceDefaultBackgroundSettings)
+        if (Options.instance.alwaysUseDefaultBackgroundSettings)
         {
-            forceDefaultBackgroundSettingsIndicator.SetActive(true);
-            backgroundDisplay.SetValueWithoutNotify(
-                (int)Options.instance.defaultBackgroundDisplay);
+            alwaysUseDefaultBackgroundSettingsIndicator.SetActive(true);
+            backgroundSource.SetValueWithoutNotify(
+                (int)Options.instance.defaultBackgroundSource);
         }
         else {
-            backgroundDisplay.SetValueWithoutNotify(
-                (int)GameSetup.trackOptions.backgroundDisplay);
+            backgroundSource.SetValueWithoutNotify(
+                (int)GameSetup.trackOptions.backgroundSource);
         }
-        backgroundDisplay.RefreshShownValue();
+        backgroundSource.RefreshShownValue();
 
         // Special modifiers
 
@@ -171,15 +171,15 @@ public class ModifierSidesheet : MonoBehaviour
 
         Options.instance.showJudgementTally =
             showJudgementTally.isOn;
-        if (Options.instance.forceDefaultBackgroundSettings)
+        if (Options.instance.alwaysUseDefaultBackgroundSettings)
         {
-            Options.instance.defaultBackgroundDisplay =
-                (PerTrackOptions.BackgroundDisplay)backgroundDisplay.value;
+            Options.instance.defaultBackgroundSource =
+                (PerTrackOptions.BackgroundSource)backgroundSource.value;
         }
         else
         {
-            GameSetup.trackOptions.backgroundDisplay =
-                (PerTrackOptions.BackgroundDisplay)backgroundDisplay.value;
+            GameSetup.trackOptions.backgroundSource =
+                (PerTrackOptions.BackgroundSource)backgroundSource.value;
         }
 
         // Special modifiers
@@ -195,26 +195,26 @@ public class ModifierSidesheet : MonoBehaviour
     }
 
     public static string GetDisplayString(
-        PerTrackOptions.BackgroundDisplay bgDisplay,
+        PerTrackOptions.BackgroundSource bgSource,
         Color specialModifierColor)
     {
         List<string> regularSegments = new List<string>();
         List<string> specialSegments = new List<string>();
         Modifiers.instance.ToDisplaySegments(
             regularSegments, specialSegments);
-        switch (bgDisplay)
+        switch (bgSource)
         {
-            case PerTrackOptions.BackgroundDisplay.PatternBga:
+            case PerTrackOptions.BackgroundSource.PatternBga:
                 regularSegments.Add(Locale.GetString(
-                    "modifier_bg_pattern_bga"));
+                    "modifier_bg_source_pattern_bga"));
                 break;
-            case PerTrackOptions.BackgroundDisplay.BaseBga: 
+            case PerTrackOptions.BackgroundSource.BaseBga: 
                 regularSegments.Add(Locale.GetString(
-                    "modifier_bg_base_bga"));
+                    "modifier_bg_source_base_bga"));
                 break;
-            case PerTrackOptions.BackgroundDisplay.PatternImage: 
+            case PerTrackOptions.BackgroundSource.PatternImage: 
                 regularSegments.Add(Locale.GetString(
-                    "modifier_bg_pattern_image"));
+                    "modifier_bg_source_pattern_image"));
                 break;
         }
 

@@ -64,8 +64,8 @@ public class Options : OptionsBase
     public BeatMarkerVisibility beatMarkers;
     public BackgroundScalingMode backgroundScalingMode;
     public int defaultBackgroundBrightness;
-    public PerTrackOptions.BackgroundDisplay defaultBackgroundDisplay;
-    public bool forceDefaultBackgroundSettings;
+    public PerTrackOptions.BackgroundSource defaultBackgroundSource;
+    public bool alwaysUseDefaultBackgroundSettings;
     public BaseBga.PlaybackMode baseBgaPlaybackMode;
     public string noteSkin;
     public string vfxSkin;
@@ -140,9 +140,9 @@ public class Options : OptionsBase
         backgroundScalingMode = BackgroundScalingMode
             .FillEntireScreen;
         defaultBackgroundBrightness = 10;
-        defaultBackgroundDisplay = PerTrackOptions.BackgroundDisplay.PatternBga;
+        defaultBackgroundSource = PerTrackOptions.BackgroundSource.PatternBga;
         baseBgaPlaybackMode = BaseBga.PlaybackMode.Seeded;
-        forceDefaultBackgroundSettings = false;
+        alwaysUseDefaultBackgroundSettings = false;
         noteSkin = "Default";
         vfxSkin = "Default";
         comboSkin = "Default";
@@ -636,18 +636,18 @@ public class Modifiers
 public class PerTrackOptions
 {
     public string trackGuid;
-    public enum BackgroundDisplay
+    public enum BackgroundSource
     {
         PatternBga,
         PatternImage,
         BaseBga
     }
-    public BackgroundDisplay backgroundDisplay;
-    public static readonly string[] backgroundDisplayKeys =
+    public BackgroundSource backgroundSource;
+    public static readonly string[] backgroundSourceKeys =
     {
-        "modifier_bg_pattern_bga",
-        "modifier_bg_pattern_image",
-        "modifier_bg_base_bga"
+        "modifier_bg_source_pattern_bga",
+        "modifier_bg_source_pattern_image",
+        "modifier_bg_source_base_bga"
     };
     public int backgroundBrightness;  // 0-10
     public const int kMaxBrightness = 10;
@@ -655,7 +655,7 @@ public class PerTrackOptions
     public PerTrackOptions(string trackGuid)
     {
         this.trackGuid = trackGuid;
-        backgroundDisplay = Options.instance.defaultBackgroundDisplay;
+        backgroundSource = Options.instance.defaultBackgroundSource;
         backgroundBrightness = Options.instance.defaultBackgroundBrightness;
     }
 
@@ -663,7 +663,7 @@ public class PerTrackOptions
     {
         return new PerTrackOptions(trackGuid)
         {
-            backgroundDisplay = backgroundDisplay,
+            backgroundSource = backgroundSource,
             backgroundBrightness = backgroundBrightness
         };
     }

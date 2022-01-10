@@ -30,8 +30,8 @@ public class OptionsPanel : MonoBehaviour
     public Toggle showLaneDividersToggle;
     public TMP_Dropdown beatMarkersDropdown;
     public TMP_Dropdown backgroundScalingDropdown;
-    public TMP_Dropdown defaultBackgroundDisplayDropdown;
-    public Toggle forceDefaultBackgroundSettingsToggle;
+    public TMP_Dropdown defaultBackgroundSourceDropdown;
+    public Toggle alwaysUseDefaultBackgroundSettingsToggle;
     public TMP_Dropdown baseBgaPlaybackModeDropdown;
 
     [Header("Miscellaneous")]
@@ -179,8 +179,8 @@ public class OptionsPanel : MonoBehaviour
             Options.instance.showJudgementTally);
         showLaneDividersToggle.SetIsOnWithoutNotify(
             Options.instance.showLaneDividers);
-        forceDefaultBackgroundSettingsToggle.SetIsOnWithoutNotify(
-            Options.instance.forceDefaultBackgroundSettings);
+        alwaysUseDefaultBackgroundSettingsToggle.SetIsOnWithoutNotify(
+            Options.instance.alwaysUseDefaultBackgroundSettings);
 
         // Miscellaneous
 
@@ -227,11 +227,11 @@ public class OptionsPanel : MonoBehaviour
         backgroundScalingDropdown.RefreshShownValue();
 
         UIUtils.InitializeDropdownWithLocalizedOptions(
-            defaultBackgroundDisplayDropdown,
-            PerTrackOptions.backgroundDisplayKeys);
-        defaultBackgroundDisplayDropdown.SetValueWithoutNotify(
-            (int)Options.instance.defaultBackgroundDisplay);
-        defaultBackgroundDisplayDropdown.RefreshShownValue();
+            defaultBackgroundSourceDropdown,
+            PerTrackOptions.backgroundSourceKeys);
+        defaultBackgroundSourceDropdown.SetValueWithoutNotify(
+            (int)Options.instance.defaultBackgroundSource);
+        defaultBackgroundSourceDropdown.RefreshShownValue();
 
         UIUtils.InitializeDropdownWithLocalizedOptions(
             baseBgaPlaybackModeDropdown,
@@ -335,8 +335,8 @@ public class OptionsPanel : MonoBehaviour
         Options.instance.backgroundScalingMode =
             (Options.BackgroundScalingMode)
             backgroundScalingDropdown.value;
-        Options.instance.defaultBackgroundDisplay = (PerTrackOptions.BackgroundDisplay) defaultBackgroundDisplayDropdown.value;
-        Options.instance.forceDefaultBackgroundSettings = forceDefaultBackgroundSettingsToggle.isOn;
+        Options.instance.defaultBackgroundSource = (PerTrackOptions.BackgroundSource) defaultBackgroundSourceDropdown.value;
+        Options.instance.alwaysUseDefaultBackgroundSettings = alwaysUseDefaultBackgroundSettingsToggle.isOn;
         Options.instance.baseBgaPlaybackMode = (BaseBga.PlaybackMode) baseBgaPlaybackModeDropdown.value;
         BaseBga.SetMode(Options.instance.baseBgaPlaybackMode);
     }

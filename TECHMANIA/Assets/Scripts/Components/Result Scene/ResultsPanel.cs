@@ -160,9 +160,9 @@ public class ResultsPanel : MonoBehaviour
 
         // Modifier display
         modifierDisplay.SetUp(ModifierSidesheet.GetDisplayString(
-            Options.instance.forceDefaultBackgroundSettings ?
-                Options.instance.defaultBackgroundDisplay :
-                GameSetup.trackOptions.backgroundDisplay,
+            Options.instance.alwaysUseDefaultBackgroundSettings ?
+                Options.instance.defaultBackgroundSource :
+                GameSetup.trackOptions.backgroundSource,
             specialModifierColor));
     }
 
