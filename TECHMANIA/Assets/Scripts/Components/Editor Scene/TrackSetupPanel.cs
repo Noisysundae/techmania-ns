@@ -229,6 +229,7 @@ public class TrackSetupPanel : MonoBehaviour
     public TMP_InputField artist;
     public TMP_InputField genre;
     public TMP_InputField additionalCredits;
+    public TMP_InputField gain;
     public EyecatchSelfLoader eyecatchPreview;
     public TMP_Dropdown eyecatchImage;
     public TMP_Dropdown previewTrack;
@@ -245,6 +246,7 @@ public class TrackSetupPanel : MonoBehaviour
         genre.SetTextWithoutNotify(metadata.genre);
         additionalCredits.SetTextWithoutNotify(
             metadata.additionalCredits);
+        gain.SetTextWithoutNotify(metadata.gain.ToString());
 
         UIUtils.MemoryToDropdown(eyecatchImage,
             metadata.eyecatchImage, imageFilesCache);
@@ -260,7 +262,8 @@ public class TrackSetupPanel : MonoBehaviour
             genre,
             additionalCredits,
             startTime,
-            endTime
+            endTime,
+            gain
         })
         {
             field.GetComponent<MaterialTextField>().RefreshMiniLabel();
@@ -283,6 +286,9 @@ public class TrackSetupPanel : MonoBehaviour
         UIUtils.UpdateMetadataInMemory(
             ref metadata.additionalCredits,
             additionalCredits.text, ref madeChange);
+        UIUtils.ClampInputField(gain, double.MinValue, 0.0);
+        UIUtils.UpdateMetadataInMemory(
+            ref metadata.gain, gain.text, ref madeChange);
 
         UIUtils.UpdateMetadataInMemory(
             ref metadata.eyecatchImage, eyecatchImage, ref madeChange);

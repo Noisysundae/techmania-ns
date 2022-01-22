@@ -196,6 +196,7 @@ public class TrackMetadata
     public string artist;
     public string genre;
     public string additionalCredits;  // Multiple lines allowed
+    public double gain; // dB
 
     // In track select screen.
 
@@ -214,6 +215,7 @@ public class TrackMetadata
     public TrackMetadata()
     {
         autoOrderPatterns = true;
+        gain = AudioSourceManager.kDefaultMusicGain;
     }
 
     public TrackMetadata Clone()
@@ -231,6 +233,8 @@ public class TrackMetadata
             previewTrack = previewTrack,
             previewStartTime = previewStartTime,
             previewEndTime = previewEndTime,
+
+            gain = gain,
 
             autoOrderPatterns = autoOrderPatterns
         };

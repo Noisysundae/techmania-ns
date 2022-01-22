@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioSourceManager : MonoBehaviour
 {
@@ -9,10 +10,14 @@ public class AudioSourceManager : MonoBehaviour
     public Transform playableLanesContainer;
     public Transform hiddenLanesContainer;
     public Transform sfxContainer;
+    public AudioMixer mixer;
 
     private AudioSource[] playableLanes;
     private AudioSource[] hiddenLanes;
     private AudioSource[] sfxSources;
+
+    public const double kDefaultMusicGain = -6;
+    public const double kBaseSfxGain = -4.5;
 
     // Start is called before the first frame update
     void Start()
@@ -79,10 +84,11 @@ public class AudioSourceManager : MonoBehaviour
     }
 
     public void PlayBackingTrack(AudioClip clip,
-        float startTime = 0f)
+        float startTime = 0f,
+        float factor = -1f)
     {
         PlaySound(backingTrack, clip, startTime,
-            volumePercent: Note.defaultVolume,
+            volumePercent: factor == -1f ? Note.defaultVolume: (int) factor,
             panPercent: Note.defaultPan);
     }
 
@@ -195,5 +201,20 @@ public class AudioSourceManager : MonoBehaviour
             if (SourceIsPlaying(s)) return true;
         }
         return false;
+    }
+
+    public void SetMasterVolume(double dB)
+    {
+        mixer.SetFloat("MusicMasterVolume", (float) dB);
+    }
+
+    public static double DecibelToAmp(double dB)
+    {
+        return Math.Pow(10d, dB / 20d);
+    }
+
+    public static double AmpToDecibel(double amp)
+    {
+        return amp > 0 ? 20d * Math.Log10(amp) : -100d;
     }
 }

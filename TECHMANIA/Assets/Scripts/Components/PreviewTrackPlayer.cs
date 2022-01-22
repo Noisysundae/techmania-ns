@@ -37,12 +37,14 @@ public class PreviewTrackPlayer : MonoBehaviour
             trackMetadata.previewTrack,
             trackMetadata.previewStartTime,
             trackMetadata.previewEndTime,
+            trackMetadata.gain,
             loop));
     }
 
     private IEnumerator InnerPlay(string trackFolder,
         string previewTrackFilename,
         double startTime, double endTime,
+        double gain,
         bool loop)
     {
         // We could use ResourceLoader.LoadAudio, but this creates
@@ -82,6 +84,8 @@ public class PreviewTrackPlayer : MonoBehaviour
             fadeLength = previewLength * 0.5f;
         }
 
+        float maxAmp = (float) AudioSourceManager.DecibelToAmp(gain);
+
         int numLoops = loop ? int.MaxValue : 1;
         for (int i = 0; i < numLoops; i++)
         {
@@ -90,16 +94,16 @@ public class PreviewTrackPlayer : MonoBehaviour
             
             for (float time = 0f; time < fadeLength; time += Time.deltaTime)
             {
-                float progress = time / fadeLength;
+                float progress = time / fadeLength * maxAmp;
                 source.volume = progress;
                 yield return null;
             }
-            source.volume = 1f;
+            source.volume = maxAmp;
             yield return new WaitForSeconds(previewLength - fadeLength * 2f);
             for (float time = 0f; time < fadeLength; time += Time.deltaTime)
             {
                 float progress = time / fadeLength;
-                source.volume = 1f - progress;
+                source.volume = (1f - progress) * maxAmp;
                 yield return null;
             }
             source.volume = 0f;

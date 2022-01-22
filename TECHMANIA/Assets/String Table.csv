@@ -541,6 +541,7 @@ files exceeds 10.",track_setup_resource_tab_overwrite_omitted_files,... and {0} 
 ,track_setup_metadata_tab_artist_label,Artist,艺术家,演出者,アーティスト,작곡가
 ,track_setup_metadata_tab_genre_label,Genre,流派,曲風,ジャンル,장르
 ,track_setup_metadata_tab_additional_credit_label,Additional credits,其他制作人,其他演出者,その他,비고
+,track_setup_metadata_tab_gain_label,Gain,,,,
 ,track_setup_metadata_tab_preview_header,Preview,预览,預覽,プレビュー,프리뷰
 ,track_setup_metadata_tab_eyecatch_image_label,Eyecatch image,封面,封面圖,アイキャッチイメージ,커버 이미지
 ,track_setup_metadata_tab_preview_track_label,Preview track,预览曲,預覽歌曲,プレビューオーディオ,미리듣기 음악

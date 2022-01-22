@@ -5548,6 +5548,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Audio Sources
       objectReference: {fileID: 0}
+    - target: {fileID: 8968253357677184648, guid: f943b11608b40564fa4fccdfe23334c5,
+        type: 3}
+      propertyPath: mixer
+      value: 
+      objectReference: {fileID: 24100000, guid: 298a58fc432ca944bb9e34d1cc2a69f8,
+        type: 2}
+    - target: {fileID: 8968253357677184648, guid: f943b11608b40564fa4fccdfe23334c5,
+        type: 3}
+      propertyPath: masterMixerTrack
+      value: 
+      objectReference: {fileID: 24100000, guid: 298a58fc432ca944bb9e34d1cc2a69f8,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f943b11608b40564fa4fccdfe23334c5, type: 3}
 --- !u!114 &759281146553490125 stripped

@@ -282,6 +282,7 @@ public class Game : MonoBehaviour
             practiceTopBar.SetActive(true);
             regularTopBar.SetActive(false);
         }
+        audioSourceManager.SetMasterVolume(GameSetup.track.trackMetadata.gain);
 
         // Start the load sequence.
         StartCoroutine(LoadSequence());
@@ -309,6 +310,7 @@ public class Game : MonoBehaviour
                 Destroy(child.gameObject);
             }
         }
+        audioSourceManager.SetMasterVolume(0);
     }
 
     private void OnDestroy()

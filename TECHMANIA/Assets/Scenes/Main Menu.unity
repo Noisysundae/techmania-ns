@@ -30322,7 +30322,13 @@ PrefabInstance:
         type: 3}
       propertyPath: OutputAudioMixerGroup
       value: 
-      objectReference: {fileID: -54748543596441637, guid: 298a58fc432ca944bb9e34d1cc2a69f8,
+      objectReference: {fileID: 2114000438773223316, guid: 298a58fc432ca944bb9e34d1cc2a69f8,
+        type: 2}
+    - target: {fileID: 8968253357677184648, guid: f943b11608b40564fa4fccdfe23334c5,
+        type: 3}
+      propertyPath: mixer
+      value: 
+      objectReference: {fileID: 24100000, guid: 298a58fc432ca944bb9e34d1cc2a69f8,
         type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f943b11608b40564fa4fccdfe23334c5, type: 3}

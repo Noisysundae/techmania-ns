@@ -79,6 +79,8 @@ public class PatternPanel : MonoBehaviour
     public Button previewButton;
     private float? scanlinePulseBeforePreview;
 
+    private float maxAmplitude;
+
     #region Internal Data Structures
     // Each NoteObject contains a reference to a Note, and this
     // dictionary is the reverse of that. Only contains the notes
@@ -206,6 +208,8 @@ public class PatternPanel : MonoBehaviour
         ResourceLoader.CacheAudioResources(
             EditorContext.trackFolder,
             cacheAudioCompleteCallback: OnResourceLoadComplete);
+        maxAmplitude = (float) AudioSourceManager.DecibelToAmp(
+            EditorContext.track.trackMetadata.gain);
 
         Refresh();
         SelectionChanged += RefreshNotesInViewportWhenSelectionChanged;
@@ -3638,7 +3642,7 @@ public class PatternPanel : MonoBehaviour
                     audioSourceManager.PlayKeysound(clip,
                         n.lane >= PlayableLanes,
                         startTime: playbackStartingTime - n.time,
-                        n.volumePercent, n.panPercent);
+                        (int) (n.volumePercent * maxAmplitude), n.panPercent);
                 }
             }
             else
@@ -3711,7 +3715,8 @@ public class PatternPanel : MonoBehaviour
                 ResourceLoader.GetCachedClip(
                     EditorContext.Pattern.patternMetadata
                     .backingTrack),
-                playbackCurrentTime);
+                playbackCurrentTime,
+                maxAmplitude);
         }
 
         // Stop playback after the last scan.
@@ -3741,7 +3746,7 @@ public class PatternPanel : MonoBehaviour
             audioSourceManager.PlayKeysound(clip,
                 nextNote.lane >= PlayableLanes,
                 startTime: 0f,
-                nextNote.volumePercent, nextNote.panPercent);
+                (int) (nextNote.volumePercent * maxAmplitude), nextNote.panPercent);
         }
 
         // Move scanline.
@@ -3762,7 +3767,7 @@ public class PatternPanel : MonoBehaviour
         keysoundPreviewSource = audioSourceManager.PlayKeysound(
             clip,
             n.lane >= PlayableLanes, 0f,
-            n.volumePercent, n.panPercent);
+            (int) (n.volumePercent * maxAmplitude), n.panPercent);
     }
     #endregion
 

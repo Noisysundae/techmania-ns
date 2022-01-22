@@ -2,6 +2,16 @@
 
 ## Changes
 
+* **New Feature:** Track Gain Metadata
+  * TL;DR: A feature to make all tracks equally loud
+  * A new input field called *Gain* in Editor > Track Setup > Metadata
+    * Stores track-wide volume adjustment, in decibel.
+      * Defaults to -6 dB.
+    * Recommended approach for a proper gain value...
+      * Get the full track (a.k.a. the one played in music player, not the game).
+      * Measure per-track gain with ReplayGain.
+        * Even better with target loudness of -16 dB (iTunes), [Foobar2000](https://www.foobar2000.org/) has this in Advanced Configuration.
+* Change volume slider scaling to the actual amplitude-to-decibel formula.
 * Add default background settings and the "Always Use Default BG Settings" toggle, all in *Options*.
   * If the new toggle is on, background settings in the Modifier Side Sheet and Pause Menu also apply to defaults.
 * **New Feature:** Base BGAs
