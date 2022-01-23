@@ -20,6 +20,11 @@ PrefabInstance:
         type: 2}
     - target: {fileID: 2039164074022748979, guid: bfd215a7d6bbd0f498722381df931dcc,
         type: 3}
+      propertyPath: m_lineSpacing
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 2039164074022748979, guid: bfd215a7d6bbd0f498722381df931dcc,
+        type: 3}
       propertyPath: m_wordSpacing
       value: 4
       objectReference: {fileID: 0}
