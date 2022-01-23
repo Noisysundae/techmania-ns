@@ -17,7 +17,7 @@ public class AudioSourceManager : MonoBehaviour
     private AudioSource[] sfxSources;
 
     public const double kDefaultMusicGain = -6;
-    public const double kBaseSfxGain = -4.5;
+    public const double kBaseSfxGain = -6;
 
     // Start is called before the first frame update
     void Start()
