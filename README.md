@@ -2,6 +2,7 @@
 
 ## Changes
 
+* Change underlying volume config value type from integer to decimal (int -> float).
 * **New Feature:** Track Gain Metadata
   * TL;DR: A feature to make all tracks equally loud
   * A new input field called *Gain* in Editor > Track Setup > Metadata

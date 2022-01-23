@@ -38,13 +38,13 @@ public class AudioSliders : MonoBehaviour
     private void UpdateVolumeDisplay()
     {
         masterVolumeDisplay.text =
-            Options.instance.masterVolumePercent.ToString();
+            ((int) Options.instance.masterVolumePercent).ToString();
         musicVolumeDisplay.text = 
-            Options.instance.musicVolumePercent.ToString();
+            ((int) Options.instance.musicVolumePercent).ToString();
         keysoundVolumeDisplay.text = 
-            Options.instance.keysoundVolumePercent.ToString();
+            ((int) Options.instance.keysoundVolumePercent).ToString();
         sfxVolumeDisplay.text = 
-            Options.instance.sfxVolumePercent.ToString();
+            ((int) Options.instance.sfxVolumePercent).ToString();
     }
 
     public void ApplyVolume()
@@ -67,14 +67,10 @@ public class AudioSliders : MonoBehaviour
 
     public void OnVolumeChanged()
     {
-        Options.instance.masterVolumePercent =
-            Mathf.FloorToInt(masterVolumeSlider.value);
-        Options.instance.musicVolumePercent = 
-            Mathf.FloorToInt(musicVolumeSlider.value);
-        Options.instance.keysoundVolumePercent = 
-            Mathf.FloorToInt(keysoundVolumeSlider.value);
-        Options.instance.sfxVolumePercent = 
-            Mathf.FloorToInt(sfxVolumeSlider.value);
+        Options.instance.masterVolumePercent =masterVolumeSlider.value;
+        Options.instance.musicVolumePercent = musicVolumeSlider.value;
+        Options.instance.keysoundVolumePercent = keysoundVolumeSlider.value;
+        Options.instance.sfxVolumePercent = sfxVolumeSlider.value;
 
         UpdateVolumeDisplay();
         ApplyVolume();

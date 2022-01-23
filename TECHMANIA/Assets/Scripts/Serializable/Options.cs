@@ -35,10 +35,10 @@ public class Options : OptionsBase
 
     // Audio
 
-    public int masterVolumePercent;
-    public int musicVolumePercent;
-    public int keysoundVolumePercent;
-    public int sfxVolumePercent;
+    public float masterVolumePercent;
+    public float musicVolumePercent;
+    public float keysoundVolumePercent;
+    public float sfxVolumePercent;
     public int audioBufferSize;
 
     // Appearance
@@ -844,14 +844,10 @@ public class OptionsV1 : OptionsBase
             fullScreenMode = fullScreenMode,
             vSync = vSync,
 
-            masterVolumePercent = Mathf.FloorToInt(
-                masterVolume * 100f),
-            musicVolumePercent = Mathf.FloorToInt(
-                musicVolume * 100f),
-            keysoundVolumePercent = Mathf.FloorToInt(
-                keysoundVolume * 100f),
-            sfxVolumePercent = Mathf.FloorToInt(
-                sfxVolume * 100f),
+            masterVolumePercent = masterVolume * 100f,
+            musicVolumePercent = musicVolume * 100f,
+            keysoundVolumePercent = keysoundVolume * 100f,
+            sfxVolumePercent = sfxVolume * 100f,
             audioBufferSize = audioBufferSize,
 
             locale = locale,
