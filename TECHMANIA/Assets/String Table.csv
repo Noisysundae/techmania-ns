@@ -229,7 +229,7 @@ It is recommended that you backup your tracks before upgrading.","有一部分�
 ,modifier_sidesheet_fever_label,Fever,Fever,Fever,Fever,피버
 ,modifier_sidesheet_keysound_label,Keysound,按键音,按鍵音,ノート音,연주음
 ,modifier_sidesheet_assist_tick_label,Assist tick,辅助音效,輔助音效,打撃音,클릭음
-,modifier_sidesheet_always_use_default_bg_settings_label,"Note: 'Always use default BG settings' is on in Options.
+,modifier_sidesheet_always_use_default_bg_settings_label,"<u>Note:</u> 'Always use default BG settings' is ON in Options.
 The following settings are defaults and apply globally.",,,,
 ,modifier_sidesheet_bg_source_label,Background Source,,,,
 ,modifier_sidesheet_appearance_title,Appearance,界面,介面,表示,화면 표시
@@ -309,9 +309,9 @@ but may cause audio issues such as stuttering.","数值越小，音频延迟越�
 ,options_default_background_brightness_label,Default BG brightness,,,,
 ,options_default_background_display_label,Default BG source,,,,
 ,options_base_bga_playback_mode_label,Base BGA: Playback mode,,,,
-,options_base_bga_playback_mode_caption,"Seeded: Same track, same base BGA
-Random: Randomly pick a base BGA
-Shuffle: Cycles through a shuffled list, guarantees no repeat",,,,
+,options_base_bga_playback_mode_caption,"<i><b>Seeded:</b></i> Same track, same base BGA
+<i><b>Random:</b></i> Randomly pick a base BGA
+<i><b>Shuffle:</b></i> Cycles through a shuffled list, guarantees no repeat",,,,
 ,options_base_bga_playback_mode_seeded,Seeded,,,,
 ,options_base_bga_playback_mode_random,Random,,,,
 ,options_base_bga_playback_mode_shuffle,Shuffle,,,,
