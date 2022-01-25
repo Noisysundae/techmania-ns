@@ -2,6 +2,8 @@
 
 ## Changes
 
+* Rays casted from touches now ignore all inactive note hitboxes.
+  * Was one of the causes of fps drop on touch spamming (e.g. jacking repeat notes) I managed to find.
 * Change underlying volume config value type from integer to decimal (int -> float).
 * **New Feature:** Track Gain Metadata
   * TL;DR: A feature to make all tracks equally loud
