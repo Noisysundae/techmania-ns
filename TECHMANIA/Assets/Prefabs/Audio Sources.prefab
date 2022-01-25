@@ -854,6 +854,7 @@ MonoBehaviour:
   playableLanesContainer: {fileID: 620651560585019919}
   hiddenLanesContainer: {fileID: 3824435111313897583}
   sfxContainer: {fileID: 5696367581567341390}
+  mixer: {fileID: 24100000, guid: 298a58fc432ca944bb9e34d1cc2a69f8, type: 2}
 --- !u!1 &759281147297339012
 GameObject:
   m_ObjectHideFlags: 0
