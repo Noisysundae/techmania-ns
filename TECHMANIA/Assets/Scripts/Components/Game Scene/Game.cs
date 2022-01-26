@@ -2131,15 +2131,20 @@ public class Game : MonoBehaviour
         float correctTime = earliestNote.note.time
             + LatencyForNote(earliestNote.note);
         float difference = Time - correctTime;
-        if (Mathf.Abs(difference) > earliestNote.note.timeWindow[Judgement.Miss] &&
-            earliestNote.note.type != NoteType.Hold &&
-            earliestNote.note.type != NoteType.Drag &&
-            earliestNote.note.type != NoteType.RepeatHeadHold &&
-            earliestNote.note.type != NoteType.RepeatHold)
+        if (Mathf.Abs(difference) >
+            earliestNote.note.timeWindow[Judgement.Miss])
         {
             // The keystroke is too early or too late
             // for this note. Ignore.
-            PlayKeysound(earliestNote, emptyHit: true);
+            if (!new NoteType[]{
+                    NoteType.Hold,
+                    NoteType.Drag,
+                    NoteType.RepeatHeadHold,
+                    NoteType.RepeatHold
+                }.Contains(earliestNote.note.type))
+            {
+                PlayKeysound(earliestNote, emptyHit: true);
+            }
         }
         else
         {
@@ -2208,15 +2213,20 @@ public class Game : MonoBehaviour
         float correctTime = earliestNote.note.time
             + LatencyForNote(earliestNote.note);
         float difference = Time - correctTime;
-        if (Mathf.Abs(difference) > earliestNote.note.timeWindow[Judgement.Miss] &&
-            earliestNote.note.type != NoteType.Hold &&
-            earliestNote.note.type != NoteType.Drag &&
-            earliestNote.note.type != NoteType.RepeatHeadHold &&
-            earliestNote.note.type != NoteType.RepeatHold)
+        if (Mathf.Abs(difference) >
+            earliestNote.note.timeWindow[Judgement.Miss])
         {
             // The keystroke is too early or too late
             // for this note. Ignore.
-            PlayKeysound(earliestNote, emptyHit: true);
+            if (!new NoteType[]{
+                    NoteType.Hold,
+                    NoteType.Drag,
+                    NoteType.RepeatHeadHold,
+                    NoteType.RepeatHold
+                }.Contains(earliestNote.note.type))
+            {
+                PlayKeysound(earliestNote, emptyHit: true);
+            }
         }
         else
         {
@@ -2339,12 +2349,14 @@ public class Game : MonoBehaviour
                 break;
         }
 
-        if (upcomingNote != null &&
-            !ongoingNotes.ContainsKey(upcomingNote) &&
-            upcomingNote.note.type != NoteType.Hold &&
-            upcomingNote.note.type != NoteType.Drag &&
-            upcomingNote.note.type != NoteType.RepeatHeadHold &&
-            upcomingNote.note.type != NoteType.RepeatHold)
+        if (upcomingNote != null
+            && !ongoingNotes.ContainsKey(upcomingNote)
+            && !new NoteType[]{
+                    NoteType.Hold,
+                    NoteType.Drag,
+                    NoteType.RepeatHeadHold,
+                    NoteType.RepeatHold
+                }.Contains(upcomingNote.note.type))
         {
             PlayKeysound(upcomingNote, emptyHit: true);
         }
