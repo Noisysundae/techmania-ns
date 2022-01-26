@@ -2136,12 +2136,12 @@ public class Game : MonoBehaviour
         {
             // The keystroke is too early or too late
             // for this note. Ignore.
-            if (!new NoteType[]{
+            if (!((IList) new NoteType[]{
                     NoteType.Hold,
                     NoteType.Drag,
                     NoteType.RepeatHeadHold,
                     NoteType.RepeatHold
-                }.Contains(earliestNote.note.type))
+                }).Contains(earliestNote.note.type))
             {
                 PlayKeysound(earliestNote, emptyHit: true);
             }
@@ -2218,12 +2218,12 @@ public class Game : MonoBehaviour
         {
             // The keystroke is too early or too late
             // for this note. Ignore.
-            if (!new NoteType[]{
+            if (!((IList) new NoteType[]{
                     NoteType.Hold,
                     NoteType.Drag,
                     NoteType.RepeatHeadHold,
                     NoteType.RepeatHold
-                }.Contains(earliestNote.note.type))
+                }).Contains(earliestNote.note.type))
             {
                 PlayKeysound(earliestNote, emptyHit: true);
             }
@@ -2351,12 +2351,12 @@ public class Game : MonoBehaviour
 
         if (upcomingNote != null
             && !ongoingNotes.ContainsKey(upcomingNote)
-            && !new NoteType[]{
+            && !((IList) new NoteType[]{
                     NoteType.Hold,
                     NoteType.Drag,
                     NoteType.RepeatHeadHold,
                     NoteType.RepeatHold
-                }.Contains(upcomingNote.note.type))
+                }).Contains(upcomingNote.note.type))
         {
             PlayKeysound(upcomingNote, emptyHit: true);
         }
