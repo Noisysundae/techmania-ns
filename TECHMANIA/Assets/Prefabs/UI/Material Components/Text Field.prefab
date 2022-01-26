@@ -185,8 +185,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u200B"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8961a44f18957c64bada90d4e703f314, type: 2}
-  m_sharedMaterial: {fileID: 1121629173804532967, guid: 8961a44f18957c64bada90d4e703f314,
+  m_fontAsset: {fileID: 11400000, guid: cbc8818ad23f9f04e97ed75451173342, type: 2}
+  m_sharedMaterial: {fileID: 1121629173804532967, guid: cbc8818ad23f9f04e97ed75451173342,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -321,8 +321,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Text Field
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8961a44f18957c64bada90d4e703f314, type: 2}
-  m_sharedMaterial: {fileID: 1121629173804532967, guid: 8961a44f18957c64bada90d4e703f314,
+  m_fontAsset: {fileID: 11400000, guid: cbc8818ad23f9f04e97ed75451173342, type: 2}
+  m_sharedMaterial: {fileID: 1121629173804532967, guid: cbc8818ad23f9f04e97ed75451173342,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -636,7 +636,7 @@ MonoBehaviour:
   m_CaretWidth: 1
   m_ReadOnly: 0
   m_RichText: 1
-  m_GlobalFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_GlobalFontAsset: {fileID: 11400000, guid: cbc8818ad23f9f04e97ed75451173342, type: 2}
   m_OnFocusSelectAll: 0
   m_ResetOnDeActivation: 1
   m_RestoreOriginalTextOnEscape: 0

@@ -69,8 +69,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Body: lorem ipsum'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8a028d379d772c34780b2156088ef352, type: 2}
-  m_sharedMaterial: {fileID: 1121629173804532967, guid: 8a028d379d772c34780b2156088ef352,
+  m_fontAsset: {fileID: 11400000, guid: cbc8818ad23f9f04e97ed75451173342, type: 2}
+  m_sharedMaterial: {fileID: 1121629173804532967, guid: cbc8818ad23f9f04e97ed75451173342,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}

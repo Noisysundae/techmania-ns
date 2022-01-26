@@ -16,8 +16,8 @@ MonoBehaviour:
   material: {fileID: 1121629173804532967}
   materialHashCode: 2116253783
   m_Version: 1.1.0
-  m_SourceFontFileGUID: 466e3ce401113344c94a867aa2c7a2e1
-  m_SourceFontFile_EditorRef: {fileID: 12800000, guid: 466e3ce401113344c94a867aa2c7a2e1,
+  m_SourceFontFileGUID: 1214f69fb5c98644fb11d9edcf4e44b7
+  m_SourceFontFile_EditorRef: {fileID: 12800000, guid: 1214f69fb5c98644fb11d9edcf4e44b7,
     type: 3}
   m_SourceFontFile: {fileID: 12800000, guid: 337beae8a5a5c32428b4c7d28194cbdd, type: 3}
   m_AtlasPopulationMode: 1
@@ -10139,13 +10139,13 @@ MonoBehaviour:
   - regularTypeface: {fileID: 0}
     italicTypeface: {fileID: 0}
   - regularTypeface: {fileID: 0}
-    italicTypeface: {fileID: 11400000, guid: c12a9593b6fa1264389de04d9f26c0aa, type: 2}
+    italicTypeface: {fileID: 11400000, guid: 392999785ed26c946ae8a435a094aa67, type: 2}
   - regularTypeface: {fileID: 0}
     italicTypeface: {fileID: 0}
   - regularTypeface: {fileID: 0}
     italicTypeface: {fileID: 0}
-  - regularTypeface: {fileID: 11400000, guid: 38f66abaedb46d0479e12946fd0df899, type: 2}
-    italicTypeface: {fileID: 11400000, guid: 78d1f8879b563a94897b4e2c460b1767, type: 2}
+  - regularTypeface: {fileID: 11400000, guid: 5917dc4a1a2545947be18269624c0dad, type: 2}
+    italicTypeface: {fileID: 11400000, guid: 68f98838561dc9d47b40ff55821a5e79, type: 2}
   - regularTypeface: {fileID: 0}
     italicTypeface: {fileID: 0}
   - regularTypeface: {fileID: 0}

@@ -10417,9 +10417,7 @@ MonoBehaviour:
     m_GlyphPairAdjustmentRecords: []
   fallbackFontAssets: []
   m_FallbackFontAssetTable:
-  - {fileID: 11400000, guid: 6d4b729a77acc8240acda92223c51622, type: 2}
   - {fileID: 11400000, guid: 753ea04a106fa9d4b9997f323cc6beab, type: 2}
-  - {fileID: 11400000, guid: dc30d08663e319844892e5f0a9de2ef7, type: 2}
   - {fileID: 11400000, guid: 17d9992a42a219b4e8346d031d4f95e0, type: 2}
   - {fileID: 11400000, guid: 0fd18bef01b376b4abe77bb8155a220e, type: 2}
   m_CreationSettings:
@@ -10449,7 +10447,7 @@ MonoBehaviour:
   - regularTypeface: {fileID: 0}
     italicTypeface: {fileID: 0}
   - regularTypeface: {fileID: 0}
-    italicTypeface: {fileID: 0}
+    italicTypeface: {fileID: 11400000, guid: 68f98838561dc9d47b40ff55821a5e79, type: 2}
   - regularTypeface: {fileID: 0}
     italicTypeface: {fileID: 0}
   - regularTypeface: {fileID: 0}

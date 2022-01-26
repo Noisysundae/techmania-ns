@@ -306,8 +306,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8111477514134335578}
   m_HandleRect: {fileID: 8111477514134335581}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.6953481
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -725,10 +725,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
+    m_Left: 5
+    m_Right: 5
+    m_Top: 5
+    m_Bottom: 5
   m_ChildAlignment: 0
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
