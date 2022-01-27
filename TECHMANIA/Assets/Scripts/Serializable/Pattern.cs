@@ -590,8 +590,6 @@ public partial class Pattern
     {
         Pattern p = CloneWithDifferentGuid();
         int playableLanes = patternMetadata.playableLanes;
-        const int kAutoKeysoundFirstLane = 64;
-        const int kAutoAssistTickFirstLane = 68;
 
         if (!patternEditPreview)
         {
@@ -644,8 +642,7 @@ public partial class Pattern
                 if (n.lane >= playableLanes) continue;
                 if (n.sound == null || n.sound == "") continue;
                 Note hiddenNote = n.Clone();
-                hiddenNote.lane += kAutoKeysoundFirstLane;
-                hiddenNote.fromAutoKeysound = true;
+                hiddenNote.lane += Pattern.kAutoKeysoundFirstLane;
                 addedNotes.Add(hiddenNote);
                 n.sound = "";
             }
@@ -666,7 +663,7 @@ public partial class Pattern
                 AssistTickNote assistTickNote = new AssistTickNote()
                 {
                     pulse = n.pulse,
-                    lane = n.lane + kAutoAssistTickFirstLane
+                    lane = n.lane + Pattern.kAutoAssistTickFirstLane
                 };
                 addedNotes.Add(assistTickNote);
             }

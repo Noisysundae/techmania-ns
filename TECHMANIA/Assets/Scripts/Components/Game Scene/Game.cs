@@ -1758,17 +1758,15 @@ public class Game : MonoBehaviour
         // Play keysounds before this moment if they last enough.
         foreach (NoteList l in noteObjectsInLane.Values)
         {
-            l.ForEach((NoteObject noteObject) =>
+            l.ForEachRemoved((NoteObject noteObject) =>
             {
                 Note n = noteObject.note;
-                if (n.time > BaseTime) return;
                 if (n.sound == null || n.sound == "") return;
 
                 AudioClip clip = ResourceLoader.GetCachedClip(
                     n.sound);
                 if (clip == null) return;
-                if (n.time < BaseTime &&
-                    n.time + clip.length > BaseTime)
+                if (n.time + clip.length > BaseTime)
                 {
                     audioSourceManager.PlayKeysound(clip,
                         n.lane >= playableLanes,
@@ -2136,15 +2134,7 @@ public class Game : MonoBehaviour
         {
             // The keystroke is too early or too late
             // for this note. Ignore.
-            if (!((IList) new NoteType[]{
-                    NoteType.Hold,
-                    NoteType.Drag,
-                    NoteType.RepeatHeadHold,
-                    NoteType.RepeatHold
-                }).Contains(earliestNote.note.type))
-            {
-                PlayKeysound(earliestNote, emptyHit: true);
-            }
+            PlayKeysound(earliestNote, emptyHit: true);
         }
         else
         {
@@ -2218,15 +2208,7 @@ public class Game : MonoBehaviour
         {
             // The keystroke is too early or too late
             // for this note. Ignore.
-            if (!((IList) new NoteType[]{
-                    NoteType.Hold,
-                    NoteType.Drag,
-                    NoteType.RepeatHeadHold,
-                    NoteType.RepeatHold
-                }).Contains(earliestNote.note.type))
-            {
-                PlayKeysound(earliestNote, emptyHit: true);
-            }
+            PlayKeysound(earliestNote, emptyHit: true);
         }
         else
         {
@@ -2350,13 +2332,7 @@ public class Game : MonoBehaviour
         }
 
         if (upcomingNote != null
-            && !ongoingNotes.ContainsKey(upcomingNote)
-            && !((IList) new NoteType[]{
-                    NoteType.Hold,
-                    NoteType.Drag,
-                    NoteType.RepeatHeadHold,
-                    NoteType.RepeatHold
-                }).Contains(upcomingNote.note.type))
+            && !ongoingNotes.ContainsKey(upcomingNote))
         {
             PlayKeysound(upcomingNote, emptyHit: true);
         }
@@ -2498,7 +2474,19 @@ public class Game : MonoBehaviour
     private Dictionary<Note, AudioSource> noteToAudioSource;
     private void PlayKeysound(NoteObject n, bool emptyHit)
     {
-        bool hidden = n.note.lane >= playableLanes;
+        if (emptyHit
+            && ((IList) new NoteType[]{
+                NoteType.Hold,
+                NoteType.Drag,
+                NoteType.RepeatHeadHold,
+                NoteType.RepeatHold
+            }).Contains(n.note.type))
+        {
+            return;
+        }
+
+        bool hidden = n.note.lane >= playableLanes
+            && n.note.lane < Pattern.kAutoKeysoundFirstLane;
         if (Modifiers.instance.assistTick == 
             Modifiers.AssistTick.AssistTick
             && !hidden
@@ -2518,8 +2506,7 @@ public class Game : MonoBehaviour
         AudioSource source = audioSourceManager.PlayKeysound(clip,
             hidden,
             startTime: 0f,
-            n.note.volumePercent, n.note.panPercent,
-            n.note.fromAutoKeysound);
+            n.note.volumePercent, n.note.panPercent);
         noteToAudioSource[n.note] = source;
     }
 
