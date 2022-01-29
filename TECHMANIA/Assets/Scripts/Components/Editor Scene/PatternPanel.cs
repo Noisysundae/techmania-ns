@@ -2483,6 +2483,8 @@ public class PatternPanel : MonoBehaviour
         int lastScan = lastPulse / pulsesPerScan;
         // 1 empty scan at the end
         numScans = Mathf.Max(numScansBackup, lastScan + 2);
+        // Minimal 16 scans
+        numScans = Mathf.Max(numScans, 16);
 
         return numScans != numScansBackup;
     }
