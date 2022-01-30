@@ -2,6 +2,8 @@
 
 ## Changes
 
+* Add volume slider values in decibel after the percentage values
+  * Only percentages are stored in options. Decibel values are just for display.
 * Rays casted from touches now ignore all inactive note hitboxes.
   * Was one of the causes of fps drop on touch spamming (e.g. jacking repeat notes) I managed to find.
 * Change underlying volume config value type from integer to decimal (int -> float).
@@ -14,7 +16,9 @@
       * Get the full track (a.k.a. the one played in music player, not the game).
       * Measure per-track gain with ReplayGain.
         * Even better with target loudness of -16 dB (iTunes), [Foobar2000](https://www.foobar2000.org/) has this in Advanced Configuration.
-* Change volume slider scaling to the actual amplitude-to-decibel formula.
+  * Add an option to toggle per-track gain on or off
+* Change volume slider scaling to the ~~actual amplitude-to-decibel~~ amplitude-square-to-decibel formula.
+  * Update: Used squared amplitude to make the slider more linear, and closer to the human perception.
 * Add default background settings and the "Always Use Default BG Settings" toggle, all in *Options*.
   * If the new toggle is on, background settings in the Modifier Side Sheet and Pause Menu also apply to defaults.
 * **New Feature:** Base BGAs
