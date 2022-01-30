@@ -1,15 +1,16 @@
 **Disclaimer:** This fork is intended for personal use. These commits are published in case anyone is interested, and I might not be actively maintaining this (at least I will merge changes from the original repository from time to time).
 
+## Releases
+
+Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) section of the master branch (Windows only).
+
 ## Changes
 
-* Change Options, Ruleset, and Records JSON location to `<Build Dir>/Configurations`
-  * This separates them from official ones, and other builds'.
-* Add volume slider values in decibel after the percentage values
-  * Only percentages are stored in options. Decibel values are just for display.
-* Rays casted from touches now ignore all inactive note hitboxes.
-  * Was one of the causes of fps drop on touch spamming (e.g. jacking repeat notes) I managed to find.
-* Change underlying volume config value type from integer to decimal (int -> float).
-* **New Feature:** Track Gain Metadata
+**Note:** Each list is sorted by the date published (newest first).
+
+### New Features
+
+* Track Gain Metadata
   * TL;DR: A feature to make all tracks equally loud
   * A new input field called *Gain* in Editor > Track Setup > Metadata
     * Stores track-wide volume adjustment, in decibel.
@@ -19,11 +20,7 @@
       * Measure per-track gain with ReplayGain.
         * Even better with target loudness of -16 dB (iTunes), [Foobar2000](https://www.foobar2000.org/) has this in Advanced Configuration.
   * Add an option to toggle per-track gain on or off
-* Change volume slider scaling to the ~~actual amplitude-to-decibel~~ amplitude-square-to-decibel formula.
-  * Update: Used squared amplitude to make the slider more linear, and closer to the human perception.
-* Add default background settings and the "Always Use Default BG Settings" toggle, all in *Options*.
-  * If the new toggle is on, background settings in the Modifier Side Sheet and Pause Menu also apply to defaults.
-* **New Feature:** Base BGAs
+* Base BGAs
   * In the Modifier Side Sheet, the "No Video" toggle has been changed into "Background Source" dropdown.
     * Possible Options...
       * *Pattern BGA* (No Video OFF)
@@ -37,30 +34,52 @@
   * Put video files with a supported format into the *BGAs* folder.
   * **IMPORTANT:** This will remove all track's "No Video" values inside per-track settings.
     * All other settings are still compatible with the official build.
-* New fever sound effect, made by me.
-* Add ability to use supported files inside track subfolder(s)
+
+### Paths
+
+* Change Options, Ruleset, and Records JSON location to `<Build Dir>/Configurations`
+  * This separates them from official ones, and other builds'.
+* Add an ability to use supported files inside track subfolder(s)
   * Those files are displayed, or stored into track.tech as a relative path separated by "/" (e.g. *Notes/synth_001.ogg*).
+
+### Audio
+
+* Add volume slider values in decibel after the percentage values
+  * Only percentages are stored in options. Decibel values are just for display.
+* Change underlying volume config value type from integer to decimal (int -> float).
+  * Allows finer volume adjustment.
+* Change volume slider scaling to the ~~actual amplitude-to-decibel~~ amplitude-square-to-decibel formula.
+  * Update: Used squared amplitude to make the slider more linear, and closer to human perception.
+* New fever sound effect, made by me.
+
+### Optimization
+
+* Rays casted from touches now ignore all inactive note hitboxes.
+  * Was one of the causes of fps drop on touch spamming (e.g. jacking repeat notes) I managed to find.
 * Disable empty hits for long notes (Hold, Drag, Repeat Hold)
   * Reference: DJMax Respect V behavior.
-* With "Auto Keysound" on, reroute keysound audio sources to the keysound mixer track
-  * This keeps keysounds from using the music volume (from settings) instead of keysound volume.
-* ~~(dirty change) Some default values which are unavailable in settings~~
-  * ~~Default BGA brightness (from 10 to 6)~~ Replaced with actual configurable value
 * (dirty change) Convert gameplay note collections from lists to dictionaries
   * For optimization, especially on rapid scan jumps in practice mode
-* Prevent screen settings applying at launch, so some command line arguments are usable (e.g. custom screen resolution)
-  * You can still apply them in settings.
 * Optimize Unity physics and shading
   * Since TECHMANIA does not actually utilize 3D-space shading, some settings are tweaked for unlit kind of shading.
   * Other minor game scene adjustments, such as 2D culling mask and clipping distance
+
+### Miscellaneous
+
+* Add default background settings and the "Always Use Default BG Settings" toggle, all in *Options*.
+  * If the new toggle is on, background settings in the Modifier Side Sheet and Pause Menu also apply to defaults.
+* With "Auto Keysound" on, reroute keysound audio sources to the keysound mixer track
+  * This keeps keysounds from using the music volume (from settings) instead of keysound volume.
+* ~~(dirty change) Some default values which are unavailable in settings~~
+  * ~~Default BGA brightness (from 10 to 6)~~ Replaced with actual configurable value, described above.
+* Prevent screen settings applying at launch, so some command line arguments are usable (e.g. custom screen resolution)
+  * You can still apply them in settings.
+* Fix Scan Jump Playing Keysounds Right at the Start Twice
+* Pattern Editor: Fixed Keysound Off-By-One Errors
 * UI text changes
   * [Tex Gyre Adventor](https://www.fontsquirrel.com/fonts/tex-gyre-adventor) as default font (TMP)
   * Readjusted text styling and spacing
   * Original fonts kept as fallbacks
-* Bug fixes
-  * Fix Scan Jump Playing Keysounds Right at the Start Twice
-  * Pattern Editor: Fixed Keysound Off-By-One Errors
-
 
 Below is the content from the original README.
 
