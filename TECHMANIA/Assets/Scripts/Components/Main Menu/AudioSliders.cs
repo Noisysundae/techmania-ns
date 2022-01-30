@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -35,16 +36,26 @@ public class AudioSliders : MonoBehaviour
         UpdateVolumeDisplay();
     }
 
+    private string VolumeToVolumeText(float percent)
+    {
+        return ((int) percent).ToString() + "%\n<size=16>"
+            + Math.Round(
+                AudioSourceManager.AmpToDecibel(percent / 100d),
+                1,
+                MidpointRounding.AwayFromZero)
+            + " dB</size>";
+    }
+
     private void UpdateVolumeDisplay()
     {
         masterVolumeDisplay.text =
-            ((int) Options.instance.masterVolumePercent).ToString();
+            VolumeToVolumeText(Options.instance.masterVolumePercent);
         musicVolumeDisplay.text = 
-            ((int) Options.instance.musicVolumePercent).ToString();
+            VolumeToVolumeText(Options.instance.musicVolumePercent);
         keysoundVolumeDisplay.text = 
-            ((int) Options.instance.keysoundVolumePercent).ToString();
+            VolumeToVolumeText(Options.instance.keysoundVolumePercent);
         sfxVolumeDisplay.text = 
-            ((int) Options.instance.sfxVolumePercent).ToString();
+            VolumeToVolumeText(Options.instance.sfxVolumePercent);
     }
 
     public void ApplyVolume()
