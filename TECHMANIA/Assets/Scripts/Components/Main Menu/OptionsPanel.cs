@@ -20,6 +20,7 @@ public class OptionsPanel : MonoBehaviour
     [Header("Audio")]
     public AudioSliders audioSliders;
     public TMP_Dropdown audioBufferDropdown;
+    public Toggle usePerTrackGainToggle;
 
     [Header("Appearance")]
     public TMP_Dropdown languageDropdown;
@@ -155,6 +156,8 @@ public class OptionsPanel : MonoBehaviour
         UIUtils.MemoryToDropdown(audioBufferDropdown,
             Options.instance.audioBufferSize.ToString(),
             defaultValue: 0);
+        usePerTrackGainToggle.SetIsOnWithoutNotify(
+            Options.instance.usePerTrackGain);
 
         // Appearance
 
@@ -288,6 +291,7 @@ public class OptionsPanel : MonoBehaviour
 
         ApplyAudioBufferSize();
         audioSliders.ApplyVolume();
+        Options.instance.usePerTrackGain = usePerTrackGainToggle.isOn;
     }
 
     // This resets the audio mixer, AND it only happens in

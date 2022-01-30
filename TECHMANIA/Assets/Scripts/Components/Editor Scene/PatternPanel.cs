@@ -208,8 +208,10 @@ public class PatternPanel : MonoBehaviour
         ResourceLoader.CacheAudioResources(
             EditorContext.trackFolder,
             cacheAudioCompleteCallback: OnResourceLoadComplete);
-        maxAmplitude = (float) AudioSourceManager.DecibelToAmp(
-            EditorContext.track.trackMetadata.gain);
+        maxAmplitude = Options.instance.usePerTrackGain ?
+            (float) AudioSourceManager.DecibelToAmp(
+                EditorContext.track.trackMetadata.gain)
+            : 1f;
 
         Refresh();
         SelectionChanged += RefreshNotesInViewportWhenSelectionChanged;

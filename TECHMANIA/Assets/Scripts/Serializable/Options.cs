@@ -40,6 +40,7 @@ public class Options : OptionsBase
     public float keysoundVolumePercent;
     public float sfxVolumePercent;
     public int audioBufferSize;
+    public bool usePerTrackGain;
 
     // Appearance
 
@@ -130,6 +131,7 @@ public class Options : OptionsBase
         // and calling AudioSettings.GetConfiguration() at that time
         // causes an exception.
         audioBufferSize = 512;
+        usePerTrackGain = true;
 
         locale = Locale.kDefaultLocale;
         showLoadingBar = true;

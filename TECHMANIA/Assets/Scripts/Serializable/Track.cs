@@ -215,7 +215,9 @@ public class TrackMetadata
     public TrackMetadata()
     {
         autoOrderPatterns = true;
-        gain = AudioSourceManager.kDefaultMusicGain;
+        gain = Options.instance.usePerTrackGain ?
+            AudioSourceManager.kDefaultMusicGain
+            : 0;
     }
 
     public TrackMetadata Clone()

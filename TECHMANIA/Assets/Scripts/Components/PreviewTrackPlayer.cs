@@ -84,7 +84,9 @@ public class PreviewTrackPlayer : MonoBehaviour
             fadeLength = previewLength * 0.5f;
         }
 
-        float maxAmp = (float) AudioSourceManager.DecibelToAmp(gain);
+        float maxAmp = Options.instance.usePerTrackGain ?
+            (float) AudioSourceManager.DecibelToAmp(gain)
+            : 1f;
 
         int numLoops = loop ? int.MaxValue : 1;
         for (int i = 0; i < numLoops; i++)

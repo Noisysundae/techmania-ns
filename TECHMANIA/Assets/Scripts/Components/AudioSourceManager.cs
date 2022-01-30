@@ -204,7 +204,11 @@ public class AudioSourceManager : MonoBehaviour
 
     public void SetMasterVolume(double dB)
     {
-        mixer.SetFloat("MusicMasterVolume", (float) dB);
+        mixer.SetFloat(
+            "MusicMasterVolume",
+            Options.instance.usePerTrackGain ?
+                (float) dB
+                : 0);
     }
 
     public static double DecibelToAmp(double dB)

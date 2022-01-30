@@ -82,7 +82,9 @@ public class AudioSliders : MonoBehaviour
             (float)(
                 AmpToScaledDecibel(
                     Options.instance.sfxVolumePercent)
-                + AudioSourceManager.kBaseSfxGain));
+                + (Options.instance.usePerTrackGain ?
+                    AudioSourceManager.kBaseSfxGain
+                    : 0)));
     }
 
     public void OnVolumeChanged()

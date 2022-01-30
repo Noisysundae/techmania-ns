@@ -284,6 +284,8 @@ The following settings are defaults and apply globally.",,,,
 ,options_music_volume_label,Music,音乐音量,音樂音量,音楽,반주음
 ,options_keysounds_volume_label,Keysounds,按键音音量,按鍵音音量,ノート音,연주음
 ,options_sfx_volume_label,Sound effects,音效音量,音效音量,効果音,효과음
+,options_use_per_track_gain_label,Use per-track gain,,,,
+,options_use_per_track_gain_caption,"If toggled on, per-track gain property (or default value) is applied on top of audio volume.",,,,
 ,options_audio_buffer_size_label,Audio buffer size,音频缓冲长度,音效緩衝長度,オーディオバッファ,오디오 버퍼 크기
 ,options_audio_buffer_size_explanation,"Lower value reduces audio latency,
 but may cause audio issues such as stuttering.","数值越小，音频延迟越低，
