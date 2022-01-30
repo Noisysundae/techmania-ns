@@ -57,4 +57,12 @@ public class BgBrightnessSlider : MonoBehaviour
         }
         RefreshBrightnessDisplay();
     }
+
+    public void OptionsUIToMemory()
+    {
+        Options.instance.defaultBackgroundBrightness =
+            Mathf.FloorToInt(slider.value);
+        display.text = Options.instance
+            .defaultBackgroundBrightness.ToString();
+    }
 }
