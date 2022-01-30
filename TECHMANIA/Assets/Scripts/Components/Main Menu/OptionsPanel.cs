@@ -290,8 +290,8 @@ public class OptionsPanel : MonoBehaviour
             audioBufferDropdown.value].text);
 
         ApplyAudioBufferSize();
-        audioSliders.ApplyVolume();
         Options.instance.usePerTrackGain = usePerTrackGainToggle.isOn;
+        audioSliders.ApplyVolume();
     }
 
     // This resets the audio mixer, AND it only happens in

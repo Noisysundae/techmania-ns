@@ -220,4 +220,17 @@ public class AudioSourceManager : MonoBehaviour
     {
         return amp > 0 ? 20d * Math.Log10(amp) : -100d;
     }
+
+    public static double AmpToScaledDecibel(double amp)
+    {
+        return AmpToDecibel(
+            Math.Pow(
+                amp / 100,
+                2));
+    }
+
+    public static double DecibelToScaledAmp(double dB)
+    {
+        return DecibelToAmp(dB / 2);
+    }
 }
