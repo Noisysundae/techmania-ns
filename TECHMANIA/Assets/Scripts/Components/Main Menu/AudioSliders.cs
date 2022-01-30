@@ -36,11 +36,20 @@ public class AudioSliders : MonoBehaviour
         UpdateVolumeDisplay();
     }
 
+    private float AmpToScaledDecibel(float amp)
+    {
+        return (float) AudioSourceManager
+            .AmpToDecibel(
+                Math.Pow(
+                    amp / 100d,
+                    2));
+    }
+
     private string VolumeToVolumeText(float percent)
     {
         return ((int) percent).ToString() + "%\n<size=16>"
-            + Math.Round(
-                AudioSourceManager.AmpToDecibel(percent / 100d),
+            + (float) Math.Round(
+                AmpToScaledDecibel(percent),
                 1,
                 MidpointRounding.AwayFromZero)
             + " dB</size>";
@@ -61,18 +70,18 @@ public class AudioSliders : MonoBehaviour
     public void ApplyVolume()
     {
         audioMixer.SetFloat("MasterVolume",
-            (float) AudioSourceManager.AmpToDecibel(
-                Options.instance.masterVolumePercent / 100d));
+            AmpToScaledDecibel(
+                Options.instance.masterVolumePercent));
         audioMixer.SetFloat("MusicVolume",
-            (float) AudioSourceManager.AmpToDecibel(
-                Options.instance.musicVolumePercent / 100d));
+            AmpToScaledDecibel(
+                Options.instance.musicVolumePercent));
         audioMixer.SetFloat("KeysoundVolume",
-            (float) AudioSourceManager.AmpToDecibel(
-                Options.instance.keysoundVolumePercent / 100d));
+            AmpToScaledDecibel(
+                Options.instance.keysoundVolumePercent));
         audioMixer.SetFloat("SfxVolume",
             (float)(
-                AudioSourceManager.AmpToDecibel(
-                    Options.instance.sfxVolumePercent / 100d)
+                AmpToScaledDecibel(
+                    Options.instance.sfxVolumePercent)
                 + AudioSourceManager.kBaseSfxGain));
     }
 
