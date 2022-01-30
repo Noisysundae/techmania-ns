@@ -103,9 +103,8 @@ public static class Paths
             "TECHMANIA");
 #else
         dataFolder = Path.Combine(
-            System.Environment.GetFolderPath(
-            System.Environment.SpecialFolder.MyDocuments),
-            "TECHMANIA");
+            workingDirectory,
+            "Configurations");
 #endif
         Directory.CreateDirectory(dataFolder);
     }
@@ -240,7 +239,7 @@ public static class Paths
     }
     #endregion
 
-    #region Things in document folder
+    #region Things in data folder
     public static string GetOptionsFilePath()
     {
         return Path.Combine(dataFolder, "options.json");

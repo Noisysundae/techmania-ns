@@ -2,6 +2,8 @@
 
 ## Changes
 
+* Change Options, Ruleset, and Records JSON location to `<Build Dir>/Configurations`
+  * This separates them from official ones, and other builds'.
 * Add volume slider values in decibel after the percentage values
   * Only percentages are stored in options. Decibel values are just for display.
 * Rays casted from touches now ignore all inactive note hitboxes.
