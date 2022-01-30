@@ -51,6 +51,10 @@ Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) se
 * Change volume slider scaling to the ~~actual amplitude-to-decibel~~ amplitude-square-to-decibel formula.
   * Update: Used squared amplitude to make the slider more linear, and closer to human perception.
 * New fever sound effect, made by me.
+* With "Auto Keysound" on, reroute keysound audio sources to the keysound mixer track
+  * This keeps keysounds from using the music volume (from settings) instead of keysound volume.
+* Fix Scan Jump Playing Keysounds Right at the Start Twice
+* Pattern Editor: Fixed Keysound Off-By-One Errors
 
 ### Optimization
 
@@ -68,14 +72,10 @@ Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) se
 
 * Add default background settings and the "Always Use Default BG Settings" toggle, all in *Options*.
   * If the new toggle is on, background settings in the Modifier Side Sheet and Pause Menu also apply to defaults.
-* With "Auto Keysound" on, reroute keysound audio sources to the keysound mixer track
-  * This keeps keysounds from using the music volume (from settings) instead of keysound volume.
 * ~~(dirty change) Some default values which are unavailable in settings~~
   * ~~Default BGA brightness (from 10 to 6)~~ Replaced with actual configurable value, described above.
 * Prevent screen settings applying at launch, so some command line arguments are usable (e.g. custom screen resolution)
   * You can still apply them in settings.
-* Fix Scan Jump Playing Keysounds Right at the Start Twice
-* Pattern Editor: Fixed Keysound Off-By-One Errors
 * UI text changes
   * [Tex Gyre Adventor](https://www.fontsquirrel.com/fonts/tex-gyre-adventor) as default font (TMP)
   * Readjusted text styling and spacing
