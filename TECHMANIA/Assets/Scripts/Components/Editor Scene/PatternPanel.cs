@@ -3644,7 +3644,7 @@ public class PatternPanel : MonoBehaviour
                 if (n.time + clip.length > playbackStartingTime)
                 {
                     audioSourceManager.PlayKeysound(clip,
-                        n.lane >= PlayableLanes,
+                        EditorContext.Pattern.IsHiddenNote(n.lane),
                         startTime: playbackStartingTime - n.time,
                         (int) (n.volumePercent * maxAmplitude), n.panPercent);
                 }
@@ -3748,7 +3748,7 @@ public class PatternPanel : MonoBehaviour
                 clip = assistTick;
             }
             audioSourceManager.PlayKeysound(clip,
-                nextNote.lane >= PlayableLanes,
+                EditorContext.Pattern.IsHiddenNote(nextNote.lane),
                 startTime: 0f,
                 (int) (nextNote.volumePercent * maxAmplitude), nextNote.panPercent);
         }
@@ -3770,8 +3770,10 @@ public class PatternPanel : MonoBehaviour
             n.sound);
         keysoundPreviewSource = audioSourceManager.PlayKeysound(
             clip,
-            n.lane >= PlayableLanes, 0f,
-            (int) (n.volumePercent * maxAmplitude), n.panPercent);
+            EditorContext.Pattern.IsHiddenNote(n.lane),
+            0f,
+            (int) (n.volumePercent * maxAmplitude),
+            n.panPercent);
     }
     #endregion
 

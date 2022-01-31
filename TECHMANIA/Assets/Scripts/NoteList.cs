@@ -76,8 +76,7 @@ public class NoteList
             }
             else if (list[i].note.pulse == pulseThreshold)
             {
-                beforeThreshold = list[i].note.endOfScan
-                    && list[i].note.lane < Pattern.kAutoKeysoundFirstLane;
+                beforeThreshold = list[i].note.endOfScan;
             }
             else
             {
@@ -116,14 +115,8 @@ public class NoteList
         for (int i = 0; i < Count; i++) active[i] = true;
     }
 
-    // This applies to inactive elements too.
-    public void ForEach(Action<NoteObject> action)
-    {
-        list.Values.ToList().ForEach(action);
-    }
-
     public void ForEachRemoved(Action<NoteObject> action)
     {
-        list.Values.Where((e, i) => !active[i]).ToList<NoteObject>().ForEach(action);
+        list.Values.Where((e, i) => !active[i]).ToList().ForEach(action);
     }
 }

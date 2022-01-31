@@ -39,7 +39,7 @@ Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) se
 
 * Change Options, Ruleset, and Records JSON location to `<Build Dir>/Configurations`
   * This separates them from official ones, and other builds'.
-* Add an ability to use supported files inside track subfolder(s)
+* ~~Add an ability to use supported files inside track subfolder(s)~~ *Merged into the official build (1.0.2)*
   * Those files are displayed, or stored into track.tech as a relative path separated by "/" (e.g. *Notes/synth_001.ogg*).
 
 ### Audio
@@ -51,16 +51,16 @@ Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) se
 * Change volume slider scaling to the ~~actual amplitude-to-decibel~~ amplitude-square-to-decibel formula.
   * Update: Used squared amplitude to make the slider more linear, and closer to human perception.
 * New fever sound effect, made by me.
-* With "Auto Keysound" on, reroute keysound audio sources to the keysound mixer track
+* ~~With "Auto Keysound" on, reroute keysound audio sources to the keysound mixer track~~ *Merged into the official build (1.0.2)*
   * This keeps keysounds from using the music volume (from settings) instead of keysound volume.
-* Fix Scan Jump Playing Keysounds Right at the Start Twice
-* Pattern Editor: Fixed Keysound Off-By-One Errors
+* ~~Fix Scan Jump Playing Keysounds Right at the Start Twice~~ *Merged into the official build (1.0.2)*
+* ~~Pattern Editor: Fixed Keysound Off-By-One Errors~~ *Merged into the official build (1.0.2)*
 
 ### Optimization
 
-* Rays casted from touches now ignore all inactive note hitboxes.
+* ~~Rays casted from touches now ignore all inactive note hitboxes.~~ *Merged into the official build (1.0.2)*
   * Was one of the causes of fps drop on touch spamming (e.g. jacking repeat notes) I managed to find.
-* Disable empty hits for long notes (Hold, Drag, Repeat Hold)
+* ~~Disable empty hits for long notes (Hold, Drag, Repeat Hold)~~ *Merged into the official build (1.0.2)*
   * Reference: DJMax Respect V behavior.
 * (dirty change) Convert gameplay note collections from lists to dictionaries
   * For optimization, especially on rapid scan jumps in practice mode
