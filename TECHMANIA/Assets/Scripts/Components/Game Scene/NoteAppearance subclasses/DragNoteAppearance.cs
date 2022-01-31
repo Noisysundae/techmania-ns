@@ -28,6 +28,7 @@ public class DragNoteAppearance : NoteAppearance,
         {
             case State.Inactive:
             case State.Resolved:
+                SetNoteReceiveRaycast(false);
                 SetNoteImageVisibility(Visibility.Hidden);
                 SetFeverOverlayVisibility(Visibility.Hidden);
                 SetCurveVisibility(Visibility.Hidden);

@@ -49,7 +49,7 @@ Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) se
 * Change underlying volume config value type from integer to decimal (int -> float).
   * Allows finer volume adjustment.
 * Change volume slider scaling to the ~~actual amplitude-to-decibel~~ amplitude-square-to-decibel formula.
-  * Update: Used squared amplitude to make the slider more linear, and closer to human perception.
+  * **Update:** Used squared amplitude to make the slider more linear, and closer to human perception.
 * New fever sound effect, made by me.
 * ~~With "Auto Keysound" on, reroute keysound audio sources to the keysound mixer track~~ *Merged into the official build (1.0.2)*
   * This keeps keysounds from using the music volume (from settings) instead of keysound volume.
@@ -60,6 +60,7 @@ Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) se
 
 * ~~Rays casted from touches now ignore all inactive note hitboxes.~~ *Merged into the official build (1.0.2)*
   * Was one of the causes of fps drop on touch spamming (e.g. jacking repeat notes) I managed to find.
+  * **Update:** Stricter rule; Now ignores all but the notes currently in its judgement window.
 * ~~Disable empty hits for long notes (Hold, Drag, Repeat Hold)~~ *Merged into the official build (1.0.2)*
   * Reference: DJMax Respect V behavior.
 * (dirty change) Convert gameplay note collections from lists to dictionaries

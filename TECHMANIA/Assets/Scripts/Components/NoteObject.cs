@@ -7,4 +7,5 @@ public class NoteObject : MonoBehaviour
     // in the editor, the cursor contains a made-up Note to help
     // with repositioning.
     public Note note;
+    public NoteAppearance appearance;
 }

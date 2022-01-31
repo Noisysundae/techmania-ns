@@ -11,6 +11,7 @@ public class HoldNoteAppearance : NoteAppearance
         {
             case State.Inactive:
             case State.Resolved:
+                SetNoteReceiveRaycast(false);
                 SetNoteImageVisibility(Visibility.Hidden);
                 SetFeverOverlayVisibility(Visibility.Hidden);
                 break;
