@@ -1652,7 +1652,12 @@ public class Game : MonoBehaviour
     #region Practice Mode
     private void UpdatePracticeMode()
     {
-        if (Modifiers.instance.mode != Modifiers.Mode.Practice) return;
+        if (Modifiers.instance.mode != Modifiers.Mode.Practice
+            || IsPaused())
+        {
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.F3))
         {
             JumpToPreviousScan();

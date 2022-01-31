@@ -71,6 +71,7 @@ Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) se
 
 ### Miscellaneous
 
+* Fix Practice Mode Shortcuts Being Available on Pause
 * Add default background settings and the "Always Use Default BG Settings" toggle, all in *Options*.
   * If the new toggle is on, background settings in the Modifier Side Sheet and Pause Menu also apply to defaults.
 * ~~(dirty change) Some default values which are unavailable in settings~~
