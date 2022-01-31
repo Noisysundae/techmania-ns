@@ -645,8 +645,7 @@ public class Game : MonoBehaviour
 
             NoteObject noteObject = SpawnNoteObject(
                 n, scanObjects[scanOfN], hidden);
-            NoteAppearance appearance = noteObject
-                .GetComponent<NoteAppearance>();
+            noteObject.appearance = noteObject.GetComponent<NoteAppearance>();
 
             while (noteObjectsInLane.Count <= n.lane)
             {
@@ -690,7 +689,7 @@ public class Game : MonoBehaviour
             if (n.type == NoteType.ChainHead ||
                 n.type == NoteType.ChainNode)
             {
-                (appearance as ChainAppearanceBase).SetNextChainNode(
+                (noteObject.appearance as ChainAppearanceBase).SetNextChainNode(
                     nextChainNode?.gameObject);
                 if (n.type == NoteType.ChainHead)
                 {
@@ -988,8 +987,7 @@ public class Game : MonoBehaviour
         {
             HoldExtension extension = scanObjects[crossedScan]
                 .SpawnHoldExtension(extensionPrefab, holdNote);
-            n.GetComponent<NoteAppearance>()
-                .RegisterHoldExtension(extension);
+            n.appearance.RegisterHoldExtension(extension);
         }
     }
 
@@ -1300,6 +1298,15 @@ public class Game : MonoBehaviour
                         && !ongoingNotes.ContainsKey(upcomingNote))
                     {
                         ResolveNote(upcomingNote, Judgement.Break);
+                    }
+                    // Enable note raycast target past earliest miss time window.
+                    else if (Time > upcomingNote.note.time
+                            + LatencyForNote(upcomingNote.note)
+                            - upcomingNote.note.timeWindow[
+                                Judgement.Miss] * speed
+                        && !ongoingNotes.ContainsKey(upcomingNote))
+                    {
+                        upcomingNote.appearance.SetNoteReceiveRaycast(true);
                     }
                 }
             }
@@ -2250,7 +2257,7 @@ public class Game : MonoBehaviour
                     // Register an ongoing note.
                     ongoingNotes.Add(n, judgement);
                     ongoingNoteIsHitOnThisFrame.Add(n, true);
-                    n.GetComponent<NoteAppearance>().SetOngoing();
+                    n.appearance.SetOngoing();
                 }
                 break;
             default:
@@ -2395,7 +2402,7 @@ public class Game : MonoBehaviour
 
         // Appearances and VFX.
         vfxSpawner.SpawnVFXOnResolve(n, judgement);
-        n.GetComponent<NoteAppearance>().Resolve();
+        n.appearance.Resolve();
         // Call this after updating combo to show the correct
         // combo on judgement text.
         comboText.Show(n, judgement);

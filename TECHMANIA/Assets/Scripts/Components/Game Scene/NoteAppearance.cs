@@ -184,6 +184,15 @@ public class NoteAppearance : MonoBehaviour
         return alpha;
     }
 
+    // Only raycast notes being in its judgement time window.
+    public void SetNoteReceiveRaycast(bool value)
+    {
+        if (hitboxImage != null)
+        {
+            hitboxImage.raycastTarget = value;
+        }
+    }
+
     // This includes approach overlay and hit box.
     protected void SetNoteImageVisibility(Visibility v,
         bool bypassNoteOpacityModifier = false)
@@ -204,11 +213,6 @@ public class NoteAppearance : MonoBehaviour
         if (hitbox != null)
         {
             hitbox.gameObject.SetActive(v != Visibility.Hidden);
-            if (hitboxImage != null)
-            {
-                // So that raycasting ignores invisible notes.
-                hitboxImage.raycastTarget = v != Visibility.Hidden;
-            }
         }
     }
 
@@ -447,6 +451,7 @@ public class NoteAppearance : MonoBehaviour
         if (hitboxImage == null)
         {
             hitboxImage = hitbox.GetComponent<Image>();
+            SetNoteReceiveRaycast(false);
         }
         hitboxImage.color = new Color(
             hitboxImage.color.r,

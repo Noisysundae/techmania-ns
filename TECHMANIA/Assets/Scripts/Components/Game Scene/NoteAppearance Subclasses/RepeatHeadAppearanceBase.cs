@@ -35,6 +35,7 @@ public class RepeatHeadAppearanceBase : NoteAppearance
         {
             case State.Inactive:
             case State.Resolved:
+                SetNoteReceiveRaycast(false);
                 SetNoteImageVisibility(Visibility.Hidden,
                     bypassNoteOpacityModifier: true);
                 SetFeverOverlayVisibility(Visibility.Hidden,
