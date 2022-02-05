@@ -172,6 +172,10 @@ public class NoteSkin : NoteSkinBase
     public SpriteSheet repeatPath;
     public SpriteSheet repeatPathEnd;
 
+    public bool rotateDragHead = true;
+    public bool rotateChainHead = true;
+    public bool rotateChainNode = true;
+
     public NoteSkin()
     {
         version = kVersion;

@@ -125,9 +125,12 @@ public class DragNoteAppearance : NoteAppearance,
         approachOverlay.GetComponent<RectTransform>().anchoredPosition
             = Vector2.zero;
         hitbox.anchoredPosition = Vector2.zero;
-        UIUtils.RotateToward(noteImage.rectTransform,
-                selfPos: pointsOnCurve[0],
-                targetPos: pointsOnCurve[1]);
+        if (GlobalResource.noteSkin.rotateDragHead)
+        {
+            UIUtils.RotateToward(noteImage.rectTransform,
+                    selfPos: pointsOnCurve[0],
+                    targetPos: pointsOnCurve[1]);
+        }
     }
 
     protected override void TypeSpecificInitialize()
@@ -171,7 +174,8 @@ public class DragNoteAppearance : NoteAppearance,
             .anchoredPosition = visiblePointsOnCurve[0]; 
         approachOverlay.GetComponent<RectTransform>()
              .anchoredPosition = visiblePointsOnCurve[0];
-        if (visiblePointsOnCurve.Count > 1)
+        if (visiblePointsOnCurve.Count > 1
+            && GlobalResource.noteSkin.rotateDragHead)
         {
             UIUtils.RotateToward(imageRect,
                 selfPos: visiblePointsOnCurve[0],

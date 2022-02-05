@@ -10,6 +10,11 @@ Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) se
 
 ### New Features
 
+* New Properties for Note Skins
+  * `rotateDragHead` (true/false)
+  * `rotateChainHead` (true/false)
+  * `rotateChainNode` (true/false)
+  * This makes non-circular note design possible on drag and chain notes.
 * Track Gain Metadata
   * TL;DR: A feature to make all tracks equally loud
   * A new input field called *Gain* in Editor > Track Setup > Metadata
