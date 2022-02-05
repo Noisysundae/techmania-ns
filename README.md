@@ -60,7 +60,7 @@ Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) se
 
 * ~~Rays casted from touches now ignore all inactive note hitboxes.~~ *Merged into the official build (1.0.2)*
   * Was one of the causes of fps drop on touch spamming (e.g. jacking repeat notes) I managed to find.
-  * **Update:** Stricter rule; Now ignores all but the notes currently in its judgement window.
+  * **Update:** Stricter rule; Now ignores all but the notes currently in their judgement window.
 * ~~Disable empty hits for long notes (Hold, Drag, Repeat Hold)~~ *Merged into the official build (1.0.2)*
   * Reference: DJMax Respect V behavior.
 * (dirty change) Convert gameplay note collections from lists to dictionaries
