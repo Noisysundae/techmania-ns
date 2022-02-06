@@ -11,6 +11,7 @@ Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) se
 ### New Features
 
 * Sprite Sheet Property: `directionTracking`
+  * Note Skins Only
   * Possible Values: `"none"`, `"mirror"`, and `"rotate"`
     * **`"none"`:** No note rotation or mirror.
     * **`"mirror"`:** Mirror note depending on the scan direction it is in.
