@@ -20,6 +20,14 @@ public class SpriteSheet
     public float speed;  // Relative to 60 fps
     public bool additiveShader;
 
+    public static class DirectionTracking
+    {
+        public const string None = "none";
+        public const string Mirror = "mirror";
+        public const string Rotate = "rotate";
+    }
+    public string directionTracking = null;  // Note skin, non-trails only
+
     [NonSerialized]  // Loaded at runtime
     public Texture2D texture;
     [NonSerialized]
@@ -37,6 +45,8 @@ public class SpriteSheet
         scale = 1f;
         speed = 1f;
         additiveShader = false;
+
+        // directionTracking = DirectionTracking.None;
     }
 
     // Call after loading texture.
@@ -172,17 +182,38 @@ public class NoteSkin : NoteSkinBase
     public SpriteSheet repeatPath;
     public SpriteSheet repeatPathEnd;
 
-    public bool rotateDragHead = true;
-    public bool rotateChainHead = true;
-    public bool rotateChainNode = true;
-
     public NoteSkin()
     {
         version = kVersion;
     }
 
+    private void setDefaultTrackingIfNull(SpriteSheet spriteSheet, string value)
+    {
+        if (spriteSheet == null)
+        {
+            spriteSheet.directionTracking = value;
+        }
+    }
+
     public List<SpriteSheet> GetReferenceToAllSpriteSheets()
     {
+        setDefaultTrackingIfNull(basic, SpriteSheet.DirectionTracking.None);
+        setDefaultTrackingIfNull(chainHead, SpriteSheet.DirectionTracking.Rotate);
+        setDefaultTrackingIfNull(chainNode, SpriteSheet.DirectionTracking.Rotate);
+        setDefaultTrackingIfNull(chainPath, SpriteSheet.DirectionTracking.Rotate);
+        setDefaultTrackingIfNull(dragHead, SpriteSheet.DirectionTracking.Rotate);
+        setDefaultTrackingIfNull(dragCurve, SpriteSheet.DirectionTracking.Rotate);
+        setDefaultTrackingIfNull(holdHead, SpriteSheet.DirectionTracking.None);
+        setDefaultTrackingIfNull(holdTrail, SpriteSheet.DirectionTracking.Mirror);
+        setDefaultTrackingIfNull(holdTrailEnd, SpriteSheet.DirectionTracking.Mirror);
+        setDefaultTrackingIfNull(holdOngoingTrail, SpriteSheet.DirectionTracking.Mirror);
+        setDefaultTrackingIfNull(repeatHead, SpriteSheet.DirectionTracking.None);
+        setDefaultTrackingIfNull(repeat, SpriteSheet.DirectionTracking.None);
+        setDefaultTrackingIfNull(repeatHoldTrail, SpriteSheet.DirectionTracking.Mirror);
+        setDefaultTrackingIfNull(repeatHoldTrailEnd, SpriteSheet.DirectionTracking.Mirror);
+        setDefaultTrackingIfNull(repeatPath, SpriteSheet.DirectionTracking.Mirror);
+        setDefaultTrackingIfNull(repeatPathEnd, SpriteSheet.DirectionTracking.Mirror);
+
         List<SpriteSheet> list = new List<SpriteSheet>();
 
         list.Add(basic);

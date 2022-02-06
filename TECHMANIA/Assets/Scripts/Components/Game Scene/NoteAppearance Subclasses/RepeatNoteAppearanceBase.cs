@@ -48,6 +48,13 @@ public class RepeatNoteAppearanceBase : NoteAppearance
 
     protected override void UpdateSprites()
     {
+        if (GlobalResource.noteSkin.repeat.directionTracking ==
+            SpriteSheet.DirectionTracking.Mirror)
+        {
+            UIUtils.ConditionalMirror(
+                noteImage.GetComponent<RectTransform>(),
+                scanRef.direction == Scan.Direction.Left);
+        }
         noteImage.sprite = GlobalResource.noteSkin.repeat
             .GetSpriteAtFloatIndex(Game.FloatBeat);
     }

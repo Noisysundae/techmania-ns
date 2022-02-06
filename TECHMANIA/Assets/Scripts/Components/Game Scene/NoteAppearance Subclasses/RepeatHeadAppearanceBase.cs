@@ -93,6 +93,13 @@ public class RepeatHeadAppearanceBase : NoteAppearance
 
     protected override void UpdateSprites()
     {
+        if (GlobalResource.noteSkin.repeatHead.directionTracking ==
+            SpriteSheet.DirectionTracking.Mirror)
+        {
+            UIUtils.ConditionalMirror(
+                noteImage.GetComponent<RectTransform>(),
+                scanRef.direction == Scan.Direction.Left);
+        }
         noteImage.sprite = GlobalResource.noteSkin.repeatHead
             .GetSpriteAtFloatIndex(Game.FloatBeat);
         GetComponent<RepeatPathManager>().UpdateSprites();

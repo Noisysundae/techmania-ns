@@ -22,31 +22,48 @@ public class ChainAppearanceBase : NoteAppearance
             this.nextChainNode = nextChainNode;
             nextChainNode.GetComponent<ChainNodeAppearance>()
                 .PointPathTowards(GetComponent<RectTransform>());
-            if (GlobalResource.noteSkin.rotateChainHead)
+            switch (GlobalResource.noteSkin.chainHead.directionTracking)
             {
-                UIUtils.RotateToward(
-                    noteImage.GetComponent<RectTransform>(),
-                    selfPos: GetComponent<RectTransform>()
-                        .anchoredPosition,
-                    targetPos: nextChainNode
-                        .GetComponent<RectTransform>()
-                        .anchoredPosition);
+                case SpriteSheet.DirectionTracking.Rotate:
+                    UIUtils.RotateToward(
+                        noteImage.GetComponent<RectTransform>(),
+                        selfPos: GetComponent<RectTransform>()
+                            .anchoredPosition,
+                        targetPos: nextChainNode
+                            .GetComponent<RectTransform>()
+                            .anchoredPosition);
+                    break;
+                case SpriteSheet.DirectionTracking.Mirror:
+                    UIUtils.ConditionalMirror(
+                        noteImage.GetComponent<RectTransform>(),
+                        scanRef.direction == Scan.Direction.Left);
+                    break;
             }
 
             if (nextChainNode.GetComponent<ChainNodeAppearance>()
-                .nextChainNode == null
-                && GlobalResource.noteSkin.rotateChainNode)
+                .nextChainNode == null)
             {
                 // Next node is the last node in the chain, so we
                 // also rotate that node.
-                UIUtils.RotateToward(
-                    nextChainNode.GetComponent<NoteAppearance>()
-                        .noteImage.GetComponent<RectTransform>(),
-                    selfPos: GetComponent<RectTransform>()
-                        .anchoredPosition,
-                    targetPos: nextChainNode
-                        .GetComponent<RectTransform>()
-                        .anchoredPosition);
+                switch (GlobalResource.noteSkin.chainNode.directionTracking)
+                {
+                    case SpriteSheet.DirectionTracking.Rotate:
+                        UIUtils.RotateToward(
+                            nextChainNode.GetComponent<NoteAppearance>()
+                                .noteImage.GetComponent<RectTransform>(),
+                            selfPos: GetComponent<RectTransform>()
+                                .anchoredPosition,
+                            targetPos: nextChainNode
+                                .GetComponent<RectTransform>()
+                                .anchoredPosition);
+                        break;
+                    case SpriteSheet.DirectionTracking.Mirror:
+                        UIUtils.ConditionalMirror(
+                            nextChainNode.GetComponent<NoteAppearance>()
+                                .noteImage.GetComponent<RectTransform>(),
+                            scanRef.direction == Scan.Direction.Left);
+                        break;
+                }
             }
         }
     }

@@ -200,7 +200,7 @@ public class UIUtils
         return filename.Replace(".wav", "").Replace(".ogg", "");
     }
 
-    #region Rotate/Point Toward
+    #region Rotate/Point/Mirror
     public static void RotateToward(RectTransform self,
         Vector2 selfPos, Vector2 targetPos)
     {
@@ -243,6 +243,15 @@ public class UIUtils
         Vector2 selfPos = self.anchoredPosition;
         Vector2 targetPos = target.anchoredPosition;
         PointToward(self, selfPos, targetPos);
+    }
+
+    public static void ConditionalMirror(RectTransform self,
+        bool toMirror)
+    {
+        self.localScale = new Vector3(
+            Mathf.Abs(self.localScale.x) * (toMirror ? -1f: 1f),
+            self.localScale.y,
+            self.localScale.z);
     }
     #endregion
 

@@ -125,11 +125,18 @@ public class DragNoteAppearance : NoteAppearance,
         approachOverlay.GetComponent<RectTransform>().anchoredPosition
             = Vector2.zero;
         hitbox.anchoredPosition = Vector2.zero;
-        if (GlobalResource.noteSkin.rotateDragHead)
+        switch (GlobalResource.noteSkin.dragHead.directionTracking)
         {
-            UIUtils.RotateToward(noteImage.rectTransform,
+            case SpriteSheet.DirectionTracking.Rotate:
+                UIUtils.RotateToward(noteImage.rectTransform,
                     selfPos: pointsOnCurve[0],
                     targetPos: pointsOnCurve[1]);
+                break;
+            case SpriteSheet.DirectionTracking.Mirror:
+                UIUtils.ConditionalMirror(
+                    noteImage.rectTransform,
+                    scanRef.direction == Scan.Direction.Left);
+                break;
         }
     }
 
@@ -174,12 +181,21 @@ public class DragNoteAppearance : NoteAppearance,
             .anchoredPosition = visiblePointsOnCurve[0]; 
         approachOverlay.GetComponent<RectTransform>()
              .anchoredPosition = visiblePointsOnCurve[0];
-        if (visiblePointsOnCurve.Count > 1
-            && GlobalResource.noteSkin.rotateDragHead)
+        if (visiblePointsOnCurve.Count > 1)
         {
-            UIUtils.RotateToward(imageRect,
-                selfPos: visiblePointsOnCurve[0],
-                targetPos: visiblePointsOnCurve[1]);
+            switch (GlobalResource.noteSkin.dragHead.directionTracking)
+            {
+                case SpriteSheet.DirectionTracking.Rotate:
+                    UIUtils.RotateToward(imageRect,
+                        selfPos: visiblePointsOnCurve[0],
+                        targetPos: visiblePointsOnCurve[1]);
+                    break;
+                case SpriteSheet.DirectionTracking.Mirror:
+                    UIUtils.ConditionalMirror(
+                        imageRect,
+                        scanRef.direction == Scan.Direction.Left);
+                    break;
+            }
         }
 
         // To calculate the hitbox's position, we need to compensate

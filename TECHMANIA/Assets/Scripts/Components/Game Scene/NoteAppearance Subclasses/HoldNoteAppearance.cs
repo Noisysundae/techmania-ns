@@ -33,6 +33,13 @@ public class HoldNoteAppearance : NoteAppearance
 
     protected override void UpdateSprites()
     {
+        if (GlobalResource.noteSkin.holdHead.directionTracking ==
+            SpriteSheet.DirectionTracking.Mirror)
+        {
+            UIUtils.ConditionalMirror(
+                noteImage.GetComponent<RectTransform>(),
+                scanRef.direction == Scan.Direction.Left);
+        }
         noteImage.sprite = GlobalResource.noteSkin.holdHead
             .GetSpriteAtFloatIndex(Game.FloatBeat);
     }

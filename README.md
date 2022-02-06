@@ -10,13 +10,19 @@ Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) se
 
 ### New Features
 
-* New Properties for Note Skins
-  * `rotateDragHead` (true/false)
-  * `rotateChainHead` (true/false)
-  * `rotateChainNode` (true/false)
-  * This makes non-circular note design possible on drag and chain notes.
+* Sprite Sheet Property: `directionTracking`
+  * Possible Values: `"none"`, `"mirror"`, and `"rotate"`
+    * **`"none"`:** No note rotation or mirror.
+    * **`"mirror"`:** Mirror note depending on the scan direction it is in.
+    * **`"rotate"`:** Rotate note towards a type-specific target.
+      * e.g. Rotate a Chain Head note towards its first Chain Node
+  * Availability by Note Types...
+    * **Drag Note Head, Chain Note Head, Chain Node:** All
+    * **Basic Note, Hold Note Head, Repeat Note Head, Repeat Note:** `"none"` / `"mirror"`
+    * Otherwise, `directionTracking` provides no effect.
+  * This also makes non-circular note design possible.
 * Track Gain Metadata
-  * TL;DR: A feature to make all tracks equally loud
+  * **TL;DR:** A feature to make all tracks equally loud
   * A new input field called *Gain* in Editor > Track Setup > Metadata
     * Stores track-wide volume adjustment, in decibel.
       * Defaults to -6 dB.
@@ -59,7 +65,7 @@ Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) se
 * ~~With "Auto Keysound" on, reroute keysound audio sources to the keysound mixer track~~ *Merged into the official build (1.0.2)*
   * This keeps keysounds from using the music volume (from settings) instead of keysound volume.
 * ~~Fix Scan Jump Playing Keysounds Right at the Start Twice~~ *Merged into the official build (1.0.2)*
-* ~~Pattern Editor: Fixed Keysound Off-By-One Errors~~ *Merged into the official build (1.0.2)*
+* ~~**Pattern Editor:** Fixed Keysound Off-By-One Errors~~ *Merged into the official build (1.0.2)*
 
 ### Optimization
 
@@ -67,7 +73,7 @@ Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) se
   * Was one of the causes of fps drop on touch spamming (e.g. jacking repeat notes) I managed to find.
   * **Update:** Stricter rule; Now ignores all but the notes currently in their judgement window.
 * ~~Disable empty hits for long notes (Hold, Drag, Repeat Hold)~~ *Merged into the official build (1.0.2)*
-  * Reference: DJMax Respect V behavior.
+  * **Reference:** DJMax Respect V behavior.
 * (dirty change) Convert gameplay note collections from lists to dictionaries
   * For optimization, especially on rapid scan jumps in practice mode
 * Optimize Unity physics and shading
