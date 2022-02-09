@@ -282,6 +282,10 @@ public class Game : MonoBehaviour
             practiceTopBar.SetActive(true);
             regularTopBar.SetActive(false);
         }
+        else
+        {
+            DiscordController.SetActivity(DiscordActivityType.Game);
+        }
         audioSourceManager.SetMasterVolume(GameSetup.track.trackMetadata.gain);
 
         // Start the load sequence.
