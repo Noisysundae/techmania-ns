@@ -70,6 +70,7 @@ Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) se
 
 ### Optimization
 
+* Disable all `Console.Log()`s on builds.
 * ~~Rays casted from touches now ignore all inactive note hitboxes.~~ *Merged into the official build (1.0.2)*
   * Was one of the causes of fps drop on touch spamming (e.g. jacking repeat notes) I managed to find.
   * **Update:** Stricter rule; Now ignores all but the notes currently in their judgement window.
@@ -83,6 +84,8 @@ Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) se
 
 ### Miscellaneous
 
+* Fix Curtain Open (Fade in From Black) Transition Not Completely Open
+  * Was the reason why the game screen sometimes looks dimmed.
 * Fix Practice Mode Shortcuts Being Available on Pause
 * Add default background settings and the "Always Use Default BG Settings" toggle, all in *Options*.
   * If the new toggle is on, background settings in the Modifier Side Sheet and Pause Menu also apply to defaults.

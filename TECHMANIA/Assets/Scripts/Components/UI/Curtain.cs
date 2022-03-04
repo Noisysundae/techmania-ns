@@ -55,6 +55,7 @@ public class Curtain : MonoBehaviour
             yield return null;
         }
 
+        image.color = new Color(0f, 0f, 0f, 0f);
         image.raycastTarget = false;
     }
 
@@ -69,6 +70,8 @@ public class Curtain : MonoBehaviour
             image.color = new Color(0f, 0f, 0f, progress);
             yield return null;
         }
+
+        image.color = new Color(0f, 0f, 0f, 1f);
         yield return new WaitUntil(() =>
         {
             return !audioSourceManager.IsAnySourcePlaying();
@@ -88,6 +91,8 @@ public class Curtain : MonoBehaviour
             image.color = new Color(0f, 0f, 0f, progress);
             yield return null;
         }
+
+        image.color = new Color(0f, 0f, 0f, 1f);
         yield return new WaitUntil(() =>
         {
             return !audioSourceManager.IsAnySourcePlaying();
