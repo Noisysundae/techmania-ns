@@ -70,6 +70,10 @@ Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) se
 
 ### Optimization
 
+* Automagically merge all keysounds in hidden notes into a long one.
+  * Greatly reduces the number of audio played at once, especially on easier patterns with a lot of keysounds.
+  * Will extend this to auto keysound and auto assist tick in the future.
+* On gameplay initialization, remove all hidden notes with no keysound.
 * Disable all `Console.Log()`s on builds.
 * ~~Rays casted from touches now ignore all inactive note hitboxes.~~ *Merged into the official build (1.0.2)*
   * Was one of the causes of fps drop on touch spamming (e.g. jacking repeat notes) I managed to find.
@@ -84,7 +88,7 @@ Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) se
 
 ### Miscellaneous
 
-* Fix Curtain Open (Fade in From Black) Transition Not Completely Open
+* Fix Curtain Open (Fade in From Black) Transition Not Completely Opening
   * Was the reason why the game screen sometimes looks dimmed.
 * Fix Practice Mode Shortcuts Being Available on Pause
 * Add default background settings and the "Always Use Default BG Settings" toggle, all in *Options*.
