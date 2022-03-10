@@ -345,7 +345,8 @@ public class ResourceLoader : MonoBehaviour
     // TODO: Merge automatic keysounds as well.
     public static void MergeNonInteractableClips(Pattern pattern)
     {
-        if (cachedPatternFingerprint != pattern.fingerprint)
+        if (audioClips.Count > 1
+            && cachedPatternFingerprint != pattern.fingerprint)
         {
             audioClips.Remove(backgroundClipName);
             audioClips.Remove(autoKeysoundClipName);
