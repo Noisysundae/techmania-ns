@@ -425,13 +425,19 @@ public class Game : MonoBehaviour
             backingTrackClip = null;
         }
 
-        // Step 4: load keysounds, if any.
+        // Step 4: initialize pattern. This sadly cannot be done
+        // asynchronously.
+        InitializePattern();
+
+        // Step 5: load keysounds, if any,
+        // then merge non-interactable ones.
         keysoundsLoaded = false;
         ResourceLoader.CacheAllKeysounds(GameSetup.trackFolder,
             GameSetup.pattern,
             OnKeysoundLoadComplete,
             OnKeysoundLoadProgress);
         yield return new WaitUntil(() => keysoundsLoaded);
+        ResourceLoader.MergeNonInteractableClips(GameSetup.pattern);
 
         // Step 5: load BGA, if any.
         if (!GameSetup.trackOptions.noVideo &&
@@ -449,9 +455,8 @@ public class Game : MonoBehaviour
             backgroundImage.color = Color.clear;
         }
 
-        // Step 6: initialize pattern. This sadly cannot be done
-        // asynchronously.
-        InitializePattern();
+        // Step 7: initialize pattern: Part 2 (after loading audio).
+        InitializePatternPostAudio();
 
         // Loading complete.
         loading = false;
@@ -578,6 +583,23 @@ public class Game : MonoBehaviour
             firstScan--;
             initialTime = GameSetup.pattern.PulseToTime(
                 firstScan * PulsesPerScan);
+        }
+    }
+
+    private void InitializePatternPostAudio()
+    {
+        // Remove all hidden notes with no sound.
+        List<Note> notesToRemove = new List<Note>();
+        foreach (Note n in GameSetup.pattern.notes)
+        {
+            if (n.sound == "" && GameSetup.pattern.IsHiddenNote(n.lane))
+            {
+                notesToRemove.Add(n);
+            }
+        }
+        foreach (Note n in notesToRemove)
+        {
+            GameSetup.pattern.notes.Remove(n);
         }
 
         // Find last scan. Make sure it ends later than the backing

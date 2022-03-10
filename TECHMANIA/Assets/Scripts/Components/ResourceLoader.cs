@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -8,6 +9,17 @@ using UnityEngine.Networking;
 
 public class ResourceLoader : MonoBehaviour
 {
+    private struct AudioSamplesWithRate
+    {
+        public int rate;
+        public float[] samples;
+
+        public AudioSamplesWithRate (int r, float[] s)
+        {
+            rate = r;
+            samples = s;
+        }
+    }
     public AudioClip emptyClip;
 
     private static ResourceLoader GetInstance()
@@ -22,6 +34,14 @@ public class ResourceLoader : MonoBehaviour
     // will not be cleared.
     private static string cachedFolder;
 
+    // For keysound merging
+    private const string backgroundClipName = "::background";
+    private const string autoKeysoundClipName = "::autoKeysound";
+    private const int targetChannels = 2;
+    private const int targetSampleRate = 44100;
+    private static Dictionary<string, AudioSamplesWithRate> audioSamples;
+    private static string cachedPatternFingerprint;
+
     // Modifying audio buffer size will unload all clips. Therefore,
     // OptionsPanel should set this flag when the buffer size changes.
     public static bool forceReload;
@@ -29,6 +49,8 @@ public class ResourceLoader : MonoBehaviour
     static ResourceLoader()
     {
         audioClips = new Dictionary<string, AudioClip>();
+        audioSamples = new Dictionary<string, AudioSamplesWithRate>();
+        cachedPatternFingerprint = "";
         cachedFolder = "";
         forceReload = false;
     }
@@ -53,6 +75,7 @@ public class ResourceLoader : MonoBehaviour
             c.UnloadAudioData();
         }
         audioClips.Clear();
+        audioSamples.Clear();
     }
 
     // Cache all audio files in the given path.
@@ -98,7 +121,9 @@ public class ResourceLoader : MonoBehaviour
         HashSet<string> filenames = new HashSet<string>();
         foreach (Note n in pattern.notes)
         {
-            if (n.sound != null && n.sound != "")
+            if (n.sound != null
+                && n.sound != ""
+                && !n.sound.StartsWith("::"))
             {
                 filenames.Add(Path.Combine(trackFolder, n.sound));
             }
@@ -156,6 +181,7 @@ public class ResourceLoader : MonoBehaviour
                     yield break;
                 }
                 audioClips.Add(fileRelativePath, clip);
+                AddAudioSamples(fileRelativePath, clip);
             }
             
             numLoaded++;
@@ -270,6 +296,141 @@ public class ResourceLoader : MonoBehaviour
                 "resource_loader_unsupported_format_error_format",
                 fullPath);
             return;
+        }
+    }
+
+    private static float GetQuantizedSample(
+        float[] samples,
+        float index,
+        int channelIndex,
+        int channelCount)
+    {
+        return 0;
+    }
+
+    private static void AddAudioSamples(string path, AudioClip clip)
+    {
+        float[] samples = new float[clip.samples * clip.channels];
+        float[] convertedSamples = new float[clip.samples * targetChannels];
+
+        clip.GetData(samples, 0);
+        if (targetChannels > clip.channels)
+        {
+            for (int i = 0; i < convertedSamples.Length; i++)
+            {
+                convertedSamples[i] = samples[i / targetChannels];
+            }
+        }
+        else if (targetChannels == clip.channels)
+        {
+            for (int i = 0; i < convertedSamples.Length; i++)
+            {
+                convertedSamples[i] = samples[i];
+            }
+        }
+        else
+        {
+            int diff = clip.channels - targetChannels;
+            for (int i = 0; i < convertedSamples.Length; i++)
+            {
+                convertedSamples[i] = samples[i
+                    + (i / targetChannels * diff)];
+            }
+        }
+        audioSamples.Add(
+            path,
+            new AudioSamplesWithRate(clip.frequency, samples));
+    }
+
+    // TODO: Merge automatic keysounds as well.
+    public static void MergeNonInteractableClips(Pattern pattern)
+    {
+        if (cachedPatternFingerprint != pattern.fingerprint)
+        {
+            audioClips.Remove(backgroundClipName);
+            audioClips.Remove(autoKeysoundClipName);
+
+            Note earliestHiddenNote = null;
+            float[] mergedSamples;
+            AudioClip mergedClip;
+            int mergedSamplesLength = 0;
+            float mergedClipStartTimestamp = float.PositiveInfinity;
+            float mergedClipEndTimestamp = 0;
+
+            // Find merged audio duration + related attributes
+            foreach (Note note in pattern.notes)
+            {
+                AudioClip sound = GetCachedClip(note.sound);
+                float noteTimestamp = pattern.PulseToTime(note.pulse);
+                float clipEndTimestamp = noteTimestamp;
+                if (null != sound)
+                {
+                    clipEndTimestamp += sound.length;
+                }
+                if (mergedClipEndTimestamp < clipEndTimestamp)
+                {
+                    mergedClipEndTimestamp = clipEndTimestamp;
+                }
+                if (pattern.IsHiddenNote(note.lane)
+                    && mergedClipStartTimestamp > noteTimestamp)
+                {
+                    mergedClipStartTimestamp = noteTimestamp;
+                    earliestHiddenNote = note;
+                }
+            }
+
+            // Actual merging
+            // TODO: Note Pan
+            List<Note> notesToRemove = new List<Note>();
+            mergedSamplesLength = (int) (
+                mergedClipEndTimestamp - mergedClipStartTimestamp)
+                * targetSampleRate;
+            mergedSamples =
+                new float[mergedSamplesLength * targetChannels];
+            Parallel.ForEach(pattern.notes, (Note note) =>
+            {
+                if (audioSamples.ContainsKey(note.sound)
+                    && pattern.IsHiddenNote(note.lane))
+                {
+                    AudioSamplesWithRate clipSamples =
+                        audioSamples[note.sound];
+                    int clipStartOffset = (int) ((
+                            pattern.PulseToTime(note.pulse)
+                            - mergedClipStartTimestamp)
+                        * targetSampleRate
+                        * targetChannels);
+                    float scale = (float) targetSampleRate / clipSamples.rate;
+                    int scaledLength = (int) (clipSamples.samples.Length * scale);
+                    for (int i = 0;
+                        i < scaledLength
+                            && clipStartOffset + i < mergedSamples.Length;
+                        i++)
+                    {
+                        int channelIndex = i % targetChannels;
+                        // Current index as located in the clip, at channel 0
+                        int clipIndex = (int) ((i - channelIndex) / scale);
+
+                        mergedSamples[clipStartOffset + i] += (float) (
+                            clipSamples.samples[clipIndex + channelIndex]
+                            * (note.volumePercent / 100f));
+                    }
+                    note.sound = "";
+                }
+            });
+
+            earliestHiddenNote.sound = backgroundClipName;
+            earliestHiddenNote.panPercent = 0;
+            earliestHiddenNote.volumePercent = 100;
+
+            mergedClip = AudioClip.Create(
+                name: backgroundClipName,
+                lengthSamples: mergedSamplesLength,
+                channels: targetChannels,
+                frequency: targetSampleRate,
+                stream: false);
+            mergedClip.SetData(mergedSamples, 0);
+            audioClips.Add(backgroundClipName, mergedClip);
+            cachedPatternFingerprint = pattern.fingerprint;
         }
     }
     #endregion

@@ -156,6 +156,19 @@ public partial class Pattern
 
         return null;
     }
+
+    // Is the note non-interactive?
+    public bool IsBackgroundNote(Note note)
+    {
+        return note.lane >= patternMetadata.playableLanes
+            && note.lane < Pattern.kAutoKeysoundFirstLane;
+    }
+    // Is the note auto-keysound?
+    public bool IsNoteAutoKeysound(Note note)
+    {
+        return note.lane >= Pattern.kAutoKeysoundFirstLane
+            && note.lane < Pattern.kAutoAssistTickFirstLane;
+    }
     #endregion
 
     #region Timing
