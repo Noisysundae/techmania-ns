@@ -415,8 +415,8 @@ public class ResourceLoader : MonoBehaviour
                         {
                             channelIndex *=
                                 channelIndex == 0
-                                    ? -Math.Min(note.volumePercent, 0) / 100d
-                                    : Math.Max(note.volumePercent, 0) / 100d;
+                                    ? (int) (-Math.Min(note.volumePercent, 0) / 100d)
+                                    : (int) (Math.Max(note.volumePercent, 0) / 100d);
                         }
                         mergedSamples[clipStartOffset + i] += (float) (
                             clipSamples.samples[clipIndex + channelIndex]
