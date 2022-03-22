@@ -493,6 +493,7 @@ public class Game : MonoBehaviour
         InitializePatternPostAudio();
 
         // Loading complete.
+        Resources.UnloadUnusedAssets();
         loading = false;
         topBar.SetActive(true);
         if (Options.instance.backgroundScalingMode == 

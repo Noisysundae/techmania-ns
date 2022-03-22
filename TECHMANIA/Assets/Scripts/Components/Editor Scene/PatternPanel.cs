@@ -208,8 +208,8 @@ public class PatternPanel : MonoBehaviour
         ResourceLoader.CacheAudioResources(
             EditorContext.trackFolder,
             cacheAudioCompleteCallback: OnResourceLoadComplete);
-        maxAmplitude = Options.instance.usePerTrackGain ?
-            (float) AudioSourceManager.DecibelToAmp(
+        maxAmplitude = Options.instance.usePerTrackGain
+            ? (float) AudioSourceManager.DecibelToAmp(
                 EditorContext.track.trackMetadata.gain)
             : 1f;
 
@@ -2439,6 +2439,7 @@ public class PatternPanel : MonoBehaviour
         DestroyAndRespawnAllMarkers();
         ResizeWorkspace();
         RefreshPlaybackBar();
+        Resources.UnloadUnusedAssets();
     }
 
     // Returns whether the number changed.
