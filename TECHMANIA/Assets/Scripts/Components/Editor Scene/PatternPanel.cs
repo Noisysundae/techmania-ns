@@ -2428,6 +2428,7 @@ public class PatternPanel : MonoBehaviour
         DestroyAndRespawnAllMarkers();
         ResizeWorkspace();
         RefreshPlaybackBar();
+        Resources.UnloadUnusedAssets();
     }
 
     // Returns whether the number changed.
