@@ -381,6 +381,7 @@ public class ResourceLoader : MonoBehaviour
             }
 
             // Actual merging
+            // TODO: Note Pan
             List<Note> notesToRemove = new List<Note>();
             mergedSamplesLength = (int) (
                 mergedClipEndTimestamp - mergedClipStartTimestamp)
@@ -409,18 +410,10 @@ public class ResourceLoader : MonoBehaviour
                         int channelIndex = i % targetChannels;
                         // Current index as located in the clip, at channel 0
                         int clipIndex = (int) ((i - channelIndex) / scale);
-                        double ampFactor = note.volumePercent / 100d;
 
-                        if (targetChannels == 2)
-                        {
-                            channelIndex *=
-                                channelIndex == 0
-                                    ? -Math.Min(note.volumePercent, 0) / 100d
-                                    : Math.Max(note.volumePercent, 0) / 100d;
-                        }
                         mergedSamples[clipStartOffset + i] += (float) (
                             clipSamples.samples[clipIndex + channelIndex]
-                            * ampFactor);
+                            * (note.volumePercent / 100f));
                     }
                     note.sound = "";
                 }
