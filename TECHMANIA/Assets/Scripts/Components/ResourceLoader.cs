@@ -381,7 +381,6 @@ public class ResourceLoader : MonoBehaviour
             }
 
             // Actual merging
-            // TODO: Note Pan
             List<Note> notesToRemove = new List<Note>();
             mergedSamplesLength = (int) (
                 mergedClipEndTimestamp - mergedClipStartTimestamp)
