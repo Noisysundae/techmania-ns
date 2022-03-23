@@ -10,6 +10,12 @@ Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) se
 
 ### New Features
 
+* Sprite Sheet Property: `randomOrientationSeed`
+  * VFX Skins Only
+  * If Set, Randomly Rotates and Flips Each VFX Sprite Layer Instance
+  * Possible Values: Any Positive Integer
+    * If the same number is shared between different layers, they will be rotated / flipped by the same amount.
+    * Default Value: -1 (Not Randomized)
 * Sprite Sheet Property: `directionTracking`
   * Note Skins Only
   * Possible Values: `"none"`, `"mirror"`, and `"rotate"`

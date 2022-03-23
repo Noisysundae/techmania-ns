@@ -26,7 +26,8 @@ public class SpriteSheet
         public const string Mirror = "mirror";
         public const string Rotate = "rotate";
     }
-    public string directionTracking = null;  // Note skin, non-trails only
+    public string directionTracking;  // Note skin, non-trails only
+    public int randomOrientationSeed;  // VFX skin
 
     [NonSerialized]  // Loaded at runtime
     public Texture2D texture;
@@ -46,7 +47,8 @@ public class SpriteSheet
         speed = 1f;
         additiveShader = false;
 
-        // directionTracking = DirectionTracking.None;
+        directionTracking = null;
+        randomOrientationSeed = -1;
     }
 
     // Call after loading texture.

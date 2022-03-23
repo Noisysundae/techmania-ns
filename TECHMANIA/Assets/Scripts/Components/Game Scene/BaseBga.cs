@@ -64,7 +64,7 @@ public static class BaseBga
 					{
 						hash += b;
 					}
-					rand = new Random(hash);
+					rand = new Random(hash + (int) System.DateTime.Now.Ticks);
 					currentIndex = rand.Next(length);
 					break;
 				case PlaybackMode.Random:
