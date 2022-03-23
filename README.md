@@ -70,6 +70,8 @@ Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) se
 
 ### Optimization
 
+* Manually call garbage collector (GC) after finishing loading a game scene or a pattern editor.
+  * To get rid of most CPU and memory hogs, right before a period that requires quick interaction.
 * Automagically merge all keysounds in hidden notes into a long one.
   * Greatly reduces the number of audio played at once, especially on easier patterns with a lot of keysounds.
   * Will extend this to auto keysound and auto assist tick in the future.
