@@ -3745,15 +3745,24 @@ public class PatternPanel : MonoBehaviour
             sortedNotesForPlayback.Dequeue();
             AudioClip clip = ResourceLoader.GetCachedClip(
                 nextNote.sound);
-            if (clip == null && Options.instance.editorOptions
-                .assistTickOnSilentNotes)
+            bool isAssistTick =
+                clip == null
+                && Options.instance.editorOptions
+                    .assistTickOnSilentNotes;
+            if (isAssistTick)
             {
                 clip = assistTick;
             }
             audioSourceManager.PlayKeysound(clip,
                 EditorContext.Pattern.IsHiddenNote(nextNote.lane),
                 startTime: 0f,
-                (int) (nextNote.volumePercent * maxAmplitude), nextNote.panPercent);
+                isAssistTick
+                ? (int) (
+                    AudioSourceManager.DecibelToAmp(
+                        AudioSourceManager.kBaseSfxGain)
+                    * 100)
+                : (int) (nextNote.volumePercent * maxAmplitude),
+                nextNote.panPercent);
         }
 
         // Move scanline.
