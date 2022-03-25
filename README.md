@@ -96,6 +96,9 @@ Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) se
 
 ### Miscellaneous
 
+* Fix Long Note Behavior with Brief Input Release
+  * This is related to the *Grace Period* rule, and it should not apply to consecutive "begin pressing" inputs on a note.
+  * In other words, split-second finger lifting on a long note no longer works!
 * Fix Curtain Open (Fade in From Black) Transition Not Completely Opening
   * Was the reason why the game screen sometimes looks dimmed.
 * Fix Practice Mode Shortcuts Being Available on Pause

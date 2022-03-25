@@ -236,7 +236,12 @@ public class Game : MonoBehaviour
     // Value is the judgement at note's head.
     private Dictionary<NoteObject, Judgement> ongoingNotes;
     private Dictionary<NoteObject, bool> ongoingNoteIsHitOnThisFrame;
-    private Dictionary<NoteObject, float> ongoingNoteLastInput;
+
+    private struct OngoingNoteLastInputInfo {
+        public float timestamp;
+        public bool lifted;
+    }
+    private Dictionary<NoteObject, OngoingNoteLastInputInfo> ongoingNoteLastInput;
 
     #region Monobehavior messages
     // Start is called before the first frame update
@@ -828,7 +833,7 @@ public class Game : MonoBehaviour
         ongoingNotes = new Dictionary<NoteObject, Judgement>();
         ongoingNoteIsHitOnThisFrame =
             new Dictionary<NoteObject, bool>();
-        ongoingNoteLastInput = new Dictionary<NoteObject, float>();
+        ongoingNoteLastInput = new Dictionary<NoteObject, OngoingNoteLastInputInfo>();
         noteToAudioSource = new Dictionary<Note, AudioSource>();
     }
 
@@ -1348,30 +1353,32 @@ public class Game : MonoBehaviour
                 }
                 else
                 {
-                    // Check for Break on upcoming notes in each
-                    // playable lane.
-                    if (Time > upcomingNote.note.time
-                            + LatencyForNote(upcomingNote.note)
-                            + upcomingNote.note.timeWindow[
-                                Judgement.Miss] * speed
-                        && !ongoingNotes.ContainsKey(upcomingNote))
+                    float noteTimeWithLatency =
+                        upcomingNote.note.time
+                        + LatencyForNote(upcomingNote.note);
+                    float noteMissJudgementTime =
+                        upcomingNote.note.timeWindow[Judgement.Miss]
+                        * speed;
+
+                    if (!ongoingNotes.ContainsKey(upcomingNote))
                     {
-                        ResolveNote(upcomingNote, Judgement.Break);
-                    }
-                    // Enable note raycast target past earliest miss time window.
-                    else if (Time > upcomingNote.note.time
-                            + LatencyForNote(upcomingNote.note)
-                            - upcomingNote.note.timeWindow[
-                                Judgement.Miss] * speed
-                        && !ongoingNotes.ContainsKey(upcomingNote))
-                    {
-                        upcomingNote.appearance.SetNoteReceiveRaycast(true);
+                        // Check for Break on upcoming notes in each
+                        // playable lane.
+                        if (Time > noteTimeWithLatency + noteMissJudgementTime)
+                        {
+                            ResolveNote(upcomingNote, Judgement.Break);
+                        }
+                        // Enable note raycast target past earliest miss time window.
+                        else if (Time >= noteTimeWithLatency - noteMissJudgementTime)
+                        {
+                            upcomingNote.appearance.SetNoteReceiveRaycast(true);
+                        }
                     }
                 }
             }
             else
             {
-                // Play keyounds of upcoming notes in each
+                // Play keysounds of upcoming notes in each
                 // hidden lane, regardless of note type.
                 if (BaseTime >= upcomingNote.note.time)
                 {
@@ -1569,14 +1576,20 @@ public class Game : MonoBehaviour
             }
 
             // Update time of last input.
-            if (pair.Value == true)
+            bool contains = ongoingNoteLastInput.ContainsKey(pair.Key);
+            if (pair.Value
+                && !(contains && ongoingNoteLastInput[pair.Key].lifted))
             {
                 // Will create new element if not existing.
-                ongoingNoteLastInput[pair.Key] = Time;
+                ongoingNoteLastInput[pair.Key] =
+                    new OngoingNoteLastInputInfo{
+                        timestamp = Time,
+                        lifted = false
+                    };
             }
             else if (!autoPlay)
             {
-                float lastInput = ongoingNoteLastInput[pair.Key];
+                float lastInput = ongoingNoteLastInput[pair.Key].timestamp;
                 if (Time > lastInput + gracePeriodLength)
                 {
                     // No input on this note for too long, resolve
@@ -1585,6 +1598,18 @@ public class Game : MonoBehaviour
                     StopKeysoundIfPlaying(pair.Key);
                     ongoingNotes.Remove(pair.Key);
                     ongoingNoteLastInput.Remove(pair.Key);
+                }
+                else
+                {
+                    // Input has been lifted.
+                    // Block any further last input time application
+                    // so spamming an ongoing note
+                    // does not work
+                    ongoingNoteLastInput[pair.Key] =
+                        new OngoingNoteLastInputInfo{
+                            timestamp = lastInput,
+                            lifted = true
+                        };
                 }
             }
         }
@@ -2265,7 +2290,7 @@ public class Game : MonoBehaviour
         foreach (KeyValuePair<NoteObject, bool> pair in
             ongoingNoteIsHitOnThisFrame)
         {
-            if (pair.Value == true) continue;
+            if (pair.Value) continue;
             if (pair.Key.note.lane != lane) continue;
             noteToMark = pair.Key;
             break;
@@ -2284,7 +2309,7 @@ public class Game : MonoBehaviour
         foreach (KeyValuePair<NoteObject, bool> pair in
             ongoingNoteIsHitOnThisFrame)
         {
-            if (pair.Value == true) continue;
+            if (pair.Value) continue;
             noteToMark = pair.Key;
             break;
         }
