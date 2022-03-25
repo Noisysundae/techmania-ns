@@ -597,6 +597,10 @@ public class Game : MonoBehaviour
 
     private void InitializePatternPostAudio()
     {
+        GameSetup.noteReference.Clear();
+        GameSetup.repeatHeadReference.Clear();
+        GameSetup.emptyTouchReceiverReference.Clear();
+
         // Remove all hidden notes with no sound.
         List<Note> notesToRemove = new List<Note>();
         foreach (Note n in GameSetup.pattern.notes)
