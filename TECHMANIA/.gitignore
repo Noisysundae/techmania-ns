@@ -1,5 +1,4 @@
 /ProjectSettings/SceneTemplateSettings.json
-/UserSettings
 
 # This .gitignore file should be placed at the root of your Unity project directory
 #
@@ -11,6 +10,7 @@
 /[Bb]uild/
 /[Bb]uilds/
 /[Ll]ogs/
+/[Uu]ser[Ss]ettings/
 /[Mm]emoryCaptures/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
