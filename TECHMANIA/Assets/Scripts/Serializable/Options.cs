@@ -85,6 +85,7 @@ public class Options : OptionsBase
 
     public enum Ruleset
     {
+        Redefined = -1,
         Standard,
         Legacy,
         Custom

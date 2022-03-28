@@ -252,11 +252,12 @@ public class OptionsPanel : MonoBehaviour
 
         UIUtils.InitializeDropdownWithLocalizedOptions(
             rulesetDropdown,
+            "options_ruleset_redefined",
             "options_ruleset_standard",
             "options_ruleset_legacy",
             "options_ruleset_custom");
         rulesetDropdown.SetValueWithoutNotify(
-            (int)Options.instance.ruleset);
+            (int) Options.instance.ruleset + 1);
         rulesetDropdown.RefreshShownValue();
     }
 
@@ -354,8 +355,8 @@ public class OptionsPanel : MonoBehaviour
     #region Miscellaneous
     public void OnRulesetChanged()
     {
-        Options.instance.ruleset = (Options.Ruleset)
-            rulesetDropdown.value;
+        Options.instance.ruleset =
+            (Options.Ruleset) (rulesetDropdown.value - 1);
         if (Options.instance.ruleset == Options.Ruleset.Custom)
         {
             // Attempt to load custom ruleset.

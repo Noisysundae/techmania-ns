@@ -262,12 +262,71 @@ public class Ruleset : RulesetBase
 
     #region Instances
     public static readonly Ruleset standard;
+    public static readonly Ruleset redefined;
     public static readonly Ruleset legacy;
     public static Ruleset custom;
 
     static Ruleset()
     {
         standard = new Ruleset();
+        redefined = new Ruleset()
+        {
+            timeWindows = new List<float>()
+                {
+                    /*** 1.5/60 ***/ 0.025f,
+                    /*** 3.5/60 ***/ 0.058333333333333334f,
+                    /*** 5.5/60 ***/ 0.09166666666666666f,
+                    /*** 7.5/60 ***/ 0.125f,
+                    /*** 9.5/60 ***/ 0.15833333333333333f
+                },
+            timeWindowsInPulses = false,
+            longNoteGracePeriod = 0.1f,
+            longNoteGracePeriodInPulses = false,
+
+            scanMarginTopBottom = new List<float>()
+                { 0.05f, 0.05f, 0.05f },
+            scanMarginMiddle = new List<float>()
+                { 0.05f, 0.05f, 0.05f },
+            scanMarginBeforeFirstBeat = 0.2f,
+            scanMarginAfterLastBeat = 0.1365f,
+            hitboxWidth = 1.25f,
+            hitboxHeight = 1.15f,
+            chainHeadHitboxWidth = 1.25f,
+            chainNodeHitboxWidth = 1.25f,
+            dragHitboxWidth = 1.25f,
+            dragHitboxHeight = 1.15f,
+            ongoingDragHitboxWidth = 1.75f,
+            ongoingDragHitboxHeight = 1.75f,
+
+            maxHp = 10000,
+            hpDeltaBasic = new List<int>()
+                { 30, 30, 15, 0, -300, -600 },
+            hpDeltaChain = new List<int>()
+                { 30, 30, 15, 0, -350, -500 },
+            hpDeltaHold = new List<int>()
+                { 30, 30, 15, 0, -350, -500 },
+            hpDeltaDrag = new List<int>()
+                { 30, 30, 15, 0, -350, -500 },
+            hpDeltaRepeat = new List<int>()
+                { 30, 30, 15, 0, -350, -500 },
+            hpDeltaBasicDuringFever = new List<int>()
+                { 30, 30, 30, 0, -300, -600 },
+            hpDeltaChainDuringFever = new List<int>()
+                { 30, 30, 30, 0, -350, -500 },
+            hpDeltaHoldDuringFever = new List<int>()
+                { 30, 30, 30, 0, -350, -500 },
+            hpDeltaDragDuringFever = new List<int>()
+                { 30, 30, 30, 0, -350, -500 },
+            hpDeltaRepeatDuringFever = new List<int>()
+                { 30, 30, 30, 0, -350, -500 },
+
+            comboBonus = true,
+
+            constantFeverCoefficient = true,
+            feverBonusOnMax = 1,
+            feverBonusOnCool = 1,
+            feverBonusOnGood = 0
+        };
         legacy = new Ruleset()
         {
             timeWindows = new List<float>()
@@ -330,6 +389,8 @@ public class Ruleset : RulesetBase
         {
             case Options.Ruleset.Standard:
                 return standard;
+            case Options.Ruleset.Redefined:
+                return redefined;
             case Options.Ruleset.Legacy:
                 return legacy;
             case Options.Ruleset.Custom:

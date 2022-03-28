@@ -84,6 +84,8 @@ public class Records : RecordsBase
             Dictionary<string, Record>>();
         recordDict[Options.Ruleset.Standard] =
             new Dictionary<string, Record>();
+        recordDict[Options.Ruleset.Redefined] =
+            new Dictionary<string, Record>();
         recordDict[Options.Ruleset.Legacy] =
             new Dictionary<string, Record>();
     }
@@ -222,6 +224,7 @@ public class Records : RecordsBase
     protected override void InitAfterDeserialize()
     {
         recordDict[Options.Ruleset.Standard].Clear();
+        recordDict[Options.Ruleset.Redefined].Clear();
         recordDict[Options.Ruleset.Legacy].Clear();
         foreach (Record r in records)
         {

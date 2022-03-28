@@ -136,6 +136,10 @@ public class ResultsPanel : MonoBehaviour
                 ruleset.text = Locale.GetString(
                     "options_ruleset_standard");
                 break;
+            case Options.Ruleset.Redefined:
+                ruleset.text = Locale.GetString(
+                    "options_ruleset_redefined");
+                break;
             case Options.Ruleset.Legacy:
                 ruleset.text = Locale.GetString(
                     "options_ruleset_legacy");

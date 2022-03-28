@@ -323,6 +323,7 @@ Existing per-track settings are left untouched.",,,,
 ,options_miscellaneous_header,Miscellaneous,其他,其他,その他,기타
 ,options_ruleset_label,Ruleset,规则,規則,ルールセット,규칙
 ,options_ruleset_standard,Standard,标准,標準,スタンダード,표준
+,options_ruleset_redefined,Redefined,,,,
 ,options_ruleset_legacy,Legacy,经典,經典,レガシー,레거시
 ,options_ruleset_custom,Custom,自定义,自訂,カスタム,사용자 지정
 ,custom_ruleset_not_found_error_format,"The ruleset file (expected at {0}) is not found. Please make sure the file exists, and then try again.",找不到规则文件（{0}）。请确保此文件存在，然后重试。,找不到規則檔案（{0}）。請確認檔案存在後再試一次。,ルールセットファイル（{0}）が見つかりません。ファイルが存在するか確認してからもう一度試してください。,규칙 정의 파일을 {0}에서 찾지 못했습니다. 파일이 올바른 경로에 있는지 확인하고 다시 시도하십시오.
