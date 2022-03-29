@@ -276,8 +276,8 @@ public class Ruleset : RulesetBase
                     /*** 1.5/60 ***/ 0.025f,
                     /*** 3.5/60 ***/ 0.058333333333333334f,
                     /*** 5.5/60 ***/ 0.09166666666666666f,
-                    /*** 7.5/60 ***/ 0.125f,
-                    /*** 9.5/60 ***/ 0.15833333333333333f
+                    /*** 8.5/60 ***/ 0.14166666666666666f,
+                    /*** 11.5/60 ***/ 0.19166666666666668f
                 },
             timeWindowsInPulses = false,
             longNoteGracePeriod = 0.1f,
@@ -292,11 +292,11 @@ public class Ruleset : RulesetBase
             hitboxWidth = 1.25f,
             hitboxHeight = 1.15f,
             chainHeadHitboxWidth = 1.25f,
-            chainNodeHitboxWidth = 1.25f,
+            chainNodeHitboxWidth = 1.8f,
             dragHitboxWidth = 1.25f,
             dragHitboxHeight = 1.15f,
-            ongoingDragHitboxWidth = 1.75f,
-            ongoingDragHitboxHeight = 1.75f,
+            ongoingDragHitboxWidth = 1.8f,
+            ongoingDragHitboxHeight = 1.8f,
 
             maxHp = 10000,
             hpDeltaBasic = new List<int>()

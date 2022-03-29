@@ -12,9 +12,11 @@ Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) se
 
 * New Default Ruleset: `Redefined`
   * A ruleset with stricter timing, but a little wider note hitboxes overall.
-    * Timing window values are defined based on various frame durations of 60 FPS because of Unity's input polling behavior.
+    * Actually stricter towards Rainbow MAX.
+    * Timing window values are defined based on frame duration of 60 FPS because of Unity's input polling behavior.
+      * Judgement Frame Timing Array: [±1, ±3, ±5, ±8, ±11]
   * Designed for monitors with widescreen ratio (16:9).
-  * This is put inside the build, so records can be saved with this ruleset.
+  * This is put inside the build, so records can be saved with this ruleset, completely separated from others.
 * Sprite Sheet Property: `randomOrientationSeed`
   * VFX Skins Only
   * If Set, Randomly Rotates and Flips Each VFX Sprite Layer Instance
