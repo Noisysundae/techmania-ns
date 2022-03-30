@@ -59,7 +59,9 @@ public class OptionsPanel : MonoBehaviour
 
         Locale.Initialize(instance.stringTable);
         Locale.SetLocale(Options.instance.locale);
-        // Options.instance.ApplyGraphicSettings();
+#if UNITY_IOS || UNITY_ANDROID
+        Options.instance.ApplyGraphicSettings();
+#endif
         instance.ApplyAudioBufferSize();
         instance.audioSliders.ApplyVolume();
         if (!BaseBga.IsInitialized())
