@@ -202,20 +202,11 @@ public class ModifierSidesheet : MonoBehaviour
         List<string> specialSegments = new List<string>();
         Modifiers.instance.ToDisplaySegments(
             regularSegments, specialSegments);
-        switch (bgSource)
+        if (bgSource ==
+            PerTrackOptions.BackgroundSource.PatternImage)
         {
-            case PerTrackOptions.BackgroundSource.PatternBga:
-                regularSegments.Add(Locale.GetString(
-                    "modifier_bg_source_pattern_bga"));
-                break;
-            case PerTrackOptions.BackgroundSource.BaseBga: 
-                regularSegments.Add(Locale.GetString(
-                    "modifier_bg_source_base_bga"));
-                break;
-            case PerTrackOptions.BackgroundSource.PatternImage: 
-                regularSegments.Add(Locale.GetString(
-                    "modifier_bg_source_pattern_image"));
-                break;
+            regularSegments.Add(Locale.GetString(
+                "modifier_sidesheet_no_video_label"));
         }
 
         List<string> allSegments = new List<string>();

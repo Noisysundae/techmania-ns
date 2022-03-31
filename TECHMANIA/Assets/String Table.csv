@@ -309,6 +309,7 @@ but may cause audio issues such as stuttering.","数值越小，音频延迟越�
 ,options_bg_scaling_fill_entire_screen,Fill entire screen,覆盖整个屏幕,覆蓋整個螢幕,画面に合わせる,전체 화면
 ,options_bg_scaling_fill_game_area,Fill game area,仅覆盖游戏区域,僅覆蓋遊戲區域,ゲームプレイエリアに合わせる,게임 플레이 영역
 ,options_default_background_brightness_label,Default BG brightness,,,,
+,modifier_sidesheet_no_video_label,No video,不播放视频,不播放影片,BGAオフ,BGA 끄기
 ,options_default_background_display_label,Default BG source,,,,
 ,options_base_bga_playback_mode_label,Base BGA: Playback mode,,,,
 ,options_base_bga_playback_mode_caption,"<i><b>Seeded:</b></i> Same track, same base BGA
