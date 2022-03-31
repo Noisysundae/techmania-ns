@@ -46,6 +46,8 @@ public static class Paths
     private static string streamingTrackRootFolder;
     private static string skinFolder;
     private static string streamingSkinFolder;
+    private static string bgaFolder;
+    private static string streamingBgaFolder;
     private static string dataFolder;
 
     public static void PrepareFolders()
@@ -90,11 +92,17 @@ public static class Paths
         streamingSkinFolder = Path.Combine(
             streamingAssetsFolder, kSkinFolderName);
 
+        // BGA folder
+        bgaFolder = Path.Combine(workingDirectory, 
+            kBgaFolderName);
+        Directory.CreateDirectory(bgaFolder);
+        streamingBgaFolder = Path.Combine(
+            streamingAssetsFolder, kBgaFolderName);
+
         Directory.CreateDirectory(GetNoteSkinRootFolder());
         Directory.CreateDirectory(GetVfxSkinRootFolder());
         Directory.CreateDirectory(GetComboSkinRootFolder());
         Directory.CreateDirectory(GetGameUiSkinRootFolder());
-        Directory.CreateDirectory(GetBgaRootFolder());
 
         // Data folder
 #if UNITY_ANDROID || UNITY_IOS
@@ -125,6 +133,7 @@ public static class Paths
 #endif
             trackRootFolder = Options.instance.tracksFolderLocation;
             skinFolder = Options.instance.skinsFolderLocation;
+            bgaFolder = Options.instance.bgaFolderLocation;
         }
         else
         {
@@ -132,6 +141,8 @@ public static class Paths
                 kTrackFolderName);
             skinFolder = Path.Combine(workingDirectory,
                 kSkinFolderName);
+            bgaFolder = Path.Combine(workingDirectory,
+                kBgaFolderName);
         }
     }
     #endregion
@@ -227,15 +238,15 @@ public static class Paths
             temp :
             Path.Combine(GetStreamingGameUiSkinRootFolder(), name);
     }
-    
-    public static string GetBgaRootFolder()
+
+    public static string GetBgaFolder()
     {
-        return Path.Combine(workingDirectory, kBgaFolderName);
+        return bgaFolder;
     }
-    public static string GetStreamingBgaRootFolder()
+
+    public static string GetStreamingBgaFolder()
     {
-        return Path.Combine(streamingSkinFolder, 
-            kBgaFolderName);
+        return streamingBgaFolder;
     }
     #endregion
 
@@ -351,6 +362,8 @@ public static class Paths
             .Replace(Paths.GetTrackRootFolder(), "Tracks")
             .Replace(Paths.GetStreamingSkinFolder(), "Skins")
             .Replace(Paths.GetSkinFolder(), "Skins")
+            .Replace(Paths.GetStreamingBgaFolder(), "BGAs")
+            .Replace(Paths.GetBgaFolder(), "BGAs")
             .Replace(dataFolder, "TECHMANIA");
 #else
         return fullPath;

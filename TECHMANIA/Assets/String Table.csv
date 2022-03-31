@@ -331,6 +331,7 @@ Existing per-track settings are left untouched.",,,,
 ,options_custom_data_location_browse_button,Browse,浏览,瀏覽,参照…,찾아보기
 ,options_tracks_folder_label,Tracks folder,曲目文件夹,歌曲資料夾,トラックフォルダ,음악 폴더
 ,options_skins_folder_label,Skins folder,皮肤文件夹,造型資料夾,スキンフォルダ,스킨 폴더
+,options_bga_folder_label,BGA folder,,,,
 ,options_touchscreen_test_label,Touchscreen test,触屏测试,觸控測試,タッチスクリーンテスト,터치스크린 테스트
 ,options_touchscreen_test_button,START,开始,開始,開始,시작
 ,options_offset_latency_label,Offset & latency,偏移与延迟,偏移與延遲,オフセット/遅延,오프셋/지연

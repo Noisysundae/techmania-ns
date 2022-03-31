@@ -18,6 +18,13 @@ public class Startup : MonoBehaviour
         Records.RefreshInstance();
         BetterStreamingAssets.Initialize();
         GetComponent<GlobalResourceLoader>().StartLoading();
+
+        if (!BaseBga.IsInitialized())
+        {
+            BaseBga.SetPaths(Paths.GetAllVideoFiles(Paths.GetBgaFolder()));
+            BaseBga.SetMode(Options.instance.baseBgaPlaybackMode);
+        }
+
         DiscordController.Start();
         DiscordController.SetActivity(DiscordActivityType.MainMenu);
     }

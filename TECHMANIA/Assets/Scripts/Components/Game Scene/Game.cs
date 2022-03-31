@@ -469,14 +469,14 @@ public class Game : MonoBehaviour
                 else if (hasBaseBga)
                 {
                     BaseBga.Forward(GameSetup.track.trackMetadata.guid);
-                    bgaPath = Path.Combine(Paths.GetBgaRootFolder(), BaseBga.GetCurrentBgaPath());
+                    bgaPath = Path.Combine(Paths.GetBgaFolder(), BaseBga.GetCurrentBgaPath());
                     forceLooping = true;
                 }
                 break;
             case PerTrackOptions.BackgroundSource.BaseBga:
                 if (!inEditor && hasBaseBga)
                 {
-                    bgaPath = Path.Combine(Paths.GetBgaRootFolder(), BaseBga.GetCurrentBgaPath());
+                    bgaPath = Path.Combine(Paths.GetBgaFolder(), BaseBga.GetCurrentBgaPath());
                     forceLooping = true;
                 }
                 else if (hasPatternBga)

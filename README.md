@@ -57,6 +57,7 @@ Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) se
       * *Pattern Image* -> None (Black background, assuming the player requests minimum motion)
       * *Base BGA* -> Pattern BGA -> Pattern Image
   * Put video files with a supported format into the *BGAs* folder.
+    * Now also supports custom location, the same as tracks and skins folders.
   * **IMPORTANT:** This will remove all track's "No Video" values inside per-track settings.
     * All other settings are still compatible with the official build.
 

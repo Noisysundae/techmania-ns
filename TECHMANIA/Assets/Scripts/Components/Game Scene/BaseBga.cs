@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 public static class BaseBga
 {
-	public static string CurrentDirectory = "";
 	public enum PlaybackMode {
 		Seeded,	// A-Z
 		Random,
@@ -89,20 +88,23 @@ public static class BaseBga
 
 	public static void SetMode(PlaybackMode mode)
 	{
-		if ((int) mode != currentPlaybackMode)
+		currentIndex = -1;
+		if (mode == PlaybackMode.Random ||
+			mode == PlaybackMode.Shuffle)
 		{
-			currentIndex = -1;
-			if (mode == PlaybackMode.Random ||
-				mode == PlaybackMode.Shuffle)
-			{
-				rand = new Random((int) DateTime.Now.Ticks % 2000000);
-				bgaPaths = UniqueRandom(bgaPaths);
-			}
-			currentPlaybackMode = (int) mode;
+			rand = new Random((int) DateTime.Now.Ticks % 2000000);
+			bgaPaths = UniqueRandom(bgaPaths);
 		}
+		currentPlaybackMode = (int) mode;
 	}
 
 	public static void SetPaths(List<String> paths) { bgaPaths = paths.ToArray(); }
+
+	public static void Reset(String path)
+	{
+		SetPaths(Paths.GetAllVideoFiles(path));
+		SetMode((PlaybackMode) currentPlaybackMode);
+	}
 
 	public static bool IsBgaPoolEmpty() { return bgaPaths.Length == 0; }
 

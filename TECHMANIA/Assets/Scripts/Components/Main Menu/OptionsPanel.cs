@@ -42,6 +42,8 @@ public class OptionsPanel : MonoBehaviour
     public ScrollingText tracksFolderDisplay;
     public GameObject skinsFolder;
     public ScrollingText skinsFolderDisplay;
+    public GameObject bgaFolder;
+    public ScrollingText bgaFolderDisplay;
     public TextMeshProUGUI latencyDisplay;
     public Toggle pauseWhenGameLosesFocusToggle;
 
@@ -64,11 +66,6 @@ public class OptionsPanel : MonoBehaviour
 #endif
         instance.ApplyAudioBufferSize();
         instance.audioSliders.ApplyVolume();
-        if (!BaseBga.IsInitialized())
-        {
-            BaseBga.SetPaths(Paths.GetAllVideoFiles(Paths.GetBgaRootFolder()));
-            BaseBga.SetMode(Options.instance.baseBgaPlaybackMode);
-        }
     }
 
     private void LoadOrCreateOptions()
@@ -200,6 +197,9 @@ public class OptionsPanel : MonoBehaviour
         skinsFolder.SetActive(Options.instance.customDataLocation);
         skinsFolderDisplay.SetUp(Options.instance
             .skinsFolderLocation);
+        bgaFolder.SetActive(Options.instance.customDataLocation);
+        bgaFolderDisplay.SetUp(Options.instance
+            .bgaFolderLocation);
         latencyDisplay.text = $"{Options.instance.touchOffsetMs}/{Options.instance.touchLatencyMs}/{Options.instance.keyboardMouseOffsetMs}/{Options.instance.keyboardMouseLatencyMs} ms";
         pauseWhenGameLosesFocusToggle.SetIsOnWithoutNotify(
             Options.instance.pauseWhenGameLosesFocus);
@@ -403,11 +403,19 @@ public class OptionsPanel : MonoBehaviour
                 Options.instance.skinsFolderLocation =
                     Paths.GetSkinFolder();
             }
+            if (string.IsNullOrEmpty(
+                Options.instance.bgaFolderLocation))
+            {
+                Options.instance.bgaFolderLocation =
+                    Paths.GetBgaFolder();
+            }
         }
         SelectTrackPanel.RemoveCachedLists();
         SelectTrackPanel.ResetLocation();
         MemoryToUI();
         Paths.ApplyCustomDataLocation();
+
+        BaseBga.Reset(Paths.GetBgaFolder());
     }
 
     public void OnTracksFolderBrowseButtonClick()
@@ -442,6 +450,22 @@ public class OptionsPanel : MonoBehaviour
 #endif
     }
 
+    public void OnBgaFolderBrowseButtonClick()
+    {
+#if UNITY_ANDROID
+        AndroidPlugin.OpenStorageFolder(gameObject.name, "OnAndroidBgaFolderSelected", "", true);
+#else
+        string[] folders = SFB.StandaloneFileBrowser
+            .OpenFolderPanel("",
+            Options.instance.bgaFolderLocation,
+            multiselect: false);
+        if (folders.Length == 1)
+        {
+            OnBgaFolderSelected(folders[0]);
+        }
+#endif
+    }
+
     private void OnAndroidTracksFolderSelected(string result)
     {
         if (result[0] == '{')
@@ -460,6 +484,15 @@ public class OptionsPanel : MonoBehaviour
         }
     }
 
+    private void OnAndroidBgaFolderSelected(string result)
+    {
+        if (result[0] == '{')
+        {
+            ContentInfo info = JsonUtility.FromJson<ContentInfo>(result);
+            OnBgaFolderSelected(info.path);
+        }
+    }
+
     private void OnTracksFolderSelected(string fullPath)
     {
         Options.instance.tracksFolderLocation = fullPath;
@@ -472,6 +505,14 @@ public class OptionsPanel : MonoBehaviour
     private void OnSkinsFolderSelected(string fullPath)
     {
         Options.instance.skinsFolderLocation = fullPath;
+        MemoryToUI();
+        Paths.ApplyCustomDataLocation();
+    }
+
+    private void OnBgaFolderSelected(string fullPath)
+    {
+        Options.instance.bgaFolderLocation = fullPath;
+        BaseBga.Reset(fullPath);
         MemoryToUI();
         Paths.ApplyCustomDataLocation();
     }
