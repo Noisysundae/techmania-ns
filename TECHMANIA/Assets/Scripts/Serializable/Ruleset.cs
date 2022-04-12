@@ -22,11 +22,11 @@ public class Ruleset : RulesetBase
 
     // 5 time windows for Rainbow MAX, MAX, COOL, GOOD and MISS,
     // respectively. No input after the MISS window = BREAK.
-    public List<float> timeWindows;
+    public List<double> timeWindows;
     // True: time windows are in pulses.
     // False: time windows are in seconds.
     public bool timeWindowsInPulses;
-    public float longNoteGracePeriod;
+    public double longNoteGracePeriod;
     public bool longNoteGracePeriodInPulses;
 
     // Hitbox sizes
@@ -75,10 +75,10 @@ public class Ruleset : RulesetBase
 
         // The constructor constructs the standard ruleset, so
         // custom ruleset can selectively override fields.
-        timeWindows = new List<float>()
-            { 0.04f, 0.07f, 0.1f, 0.15f, 0.2f };
+        timeWindows = new List<double>()
+            { 0.04d, 0.07d, 0.1d, 0.15d, 0.2d };
         timeWindowsInPulses = false;
-        longNoteGracePeriod = 0.15f;
+        longNoteGracePeriod = 0.15d;
         longNoteGracePeriodInPulses = false;
 
         scanMarginTopBottom = new List<float>()
@@ -271,16 +271,16 @@ public class Ruleset : RulesetBase
         standard = new Ruleset();
         redefined = new Ruleset()
         {
-            timeWindows = new List<float>()
+            timeWindows = new List<double>()
                 {
-                    /*** 1.5/60 ***/ 0.025f,
-                    /*** 3.5/60 ***/ 0.058333333333333334f,
-                    /*** 5.5/60 ***/ 0.09166666666666666f,
-                    /*** 8.5/60 ***/ 0.14166666666666666f,
-                    /*** 11.5/60 ***/ 0.19166666666666668f
+                    /*** 1.5/60 ***/ 0.025d,
+                    /*** 3.5/60 ***/ 0.058333333333333334d,
+                    /*** 5.5/60 ***/ 0.09166666666666666d,
+                    /*** 8.5/60 ***/ 0.14166666666666666d,
+                    /*** 11.5/60 ***/ 0.19166666666666668d
                 },
             timeWindowsInPulses = false,
-            longNoteGracePeriod = 0.1f,
+            longNoteGracePeriod = 0.1d,
             longNoteGracePeriodInPulses = false,
 
             scanMarginTopBottom = new List<float>()
@@ -329,10 +329,10 @@ public class Ruleset : RulesetBase
         };
         legacy = new Ruleset()
         {
-            timeWindows = new List<float>()
-            { 12.5f, 37.5f, 51.25f, 65f, 83.75f },
+            timeWindows = new List<double>()
+            { 12.5d, 37.5d, 51.25d, 65d, 83.75d },
             timeWindowsInPulses = true,
-            longNoteGracePeriod = 0.1f,
+            longNoteGracePeriod = 0.1d,
             longNoteGracePeriodInPulses = false,
 
             scanMarginTopBottom = new List<float>()
@@ -413,12 +413,12 @@ public class RulesetV1 : RulesetBase
     public const string kVersion = "1";
 
     // Timing window
-    public float rainbowMaxWindow;
-    public float maxWindow;
-    public float coolWindow;
-    public float goodWindow;
-    public float breakThreshold;
-    public float longNoteGracePeriod;
+    public double rainbowMaxWindow;
+    public double maxWindow;
+    public double coolWindow;
+    public double goodWindow;
+    public double breakThreshold;
+    public double longNoteGracePeriod;
 
     // Hitbox size
     public float scanMargin;
@@ -448,7 +448,7 @@ public class RulesetV1 : RulesetBase
     {
         return new Ruleset()
         {
-            timeWindows = new List<float>()
+            timeWindows = new List<double>()
             { 
                 rainbowMaxWindow,
                 maxWindow,

@@ -42,6 +42,6 @@ public class BasicNoteAppearance : NoteAppearance
                 scanRef.direction == Scan.Direction.Left);
         }
         noteImage.sprite = GlobalResource.noteSkin.basic
-            .GetSpriteAtFloatIndex(Game.FloatBeat);
+            .GetSpriteAtFloatIndex(Game.DoubleBeat);
     }
 }

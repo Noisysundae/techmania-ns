@@ -77,7 +77,7 @@ public class PatternPanel : MonoBehaviour
 
     [Header("Preview")]
     public Button previewButton;
-    private float? scanlinePulseBeforePreview;
+    private double? scanlinePulseBeforePreview;
 
     private float maxAmplitude;
 
@@ -187,7 +187,7 @@ public class PatternPanel : MonoBehaviour
         zoom = 100;
 
         // Scanline
-        scanline.floatPulse = 0f;
+        scanline.doublePulse = 0f;
         scanline.GetComponent<SelfPositionerInEditor>().Reposition();
         workspaceScrollRect.horizontalNormalizedPosition = 0f;
         headerScrollRect.horizontalNormalizedPosition = 0f;
@@ -245,7 +245,7 @@ public class PatternPanel : MonoBehaviour
         // Restore editing session
         if (scanlinePulseBeforePreview.HasValue)
         {
-            scanline.floatPulse = scanlinePulseBeforePreview.Value;
+            scanline.doublePulse = scanlinePulseBeforePreview.Value;
             scanline.GetComponent<SelfPositionerInEditor>()
                 .Reposition();
             scanlinePulseBeforePreview = null;
@@ -595,7 +595,7 @@ public class PatternPanel : MonoBehaviour
         float cursorPulse = cursorScan * bps * Pattern.pulsesPerBeat;
         int snappedCursorPulse = SnapPulse(cursorPulse);
 
-        scanline.floatPulse = snappedCursorPulse;
+        scanline.doublePulse = snappedCursorPulse;
         scanline.GetComponent<SelfPositionerInEditor>().Reposition();
         RefreshPlaybackBar();
     }
@@ -687,9 +687,9 @@ public class PatternPanel : MonoBehaviour
             }
         }
 
-        UnityAction<float> moveScanlineTo = (float pulse) =>
+        UnityAction<double> moveScanlineTo = (double pulse) =>
         {
-            scanline.floatPulse = pulse;
+            scanline.doublePulse = pulse;
             scanline.GetComponent<SelfPositionerInEditor>()
                 .Reposition();
             RefreshPlaybackBar();
@@ -708,15 +708,15 @@ public class PatternPanel : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.PageUp))
         {
-            moveScanlineTo(Mathf.Max(
-                scanline.floatPulse - pulsesPerScan,
-                0f));
+            moveScanlineTo(Math.Max(
+                scanline.doublePulse - pulsesPerScan,
+                0d));
         }
         if (Input.GetKeyDown(KeyCode.PageDown))
         {
             float maxPulse = numScans * pulsesPerScan;
-            moveScanlineTo(Mathf.Min(
-                scanline.floatPulse + pulsesPerScan,
+            moveScanlineTo(Math.Min(
+                scanline.doublePulse + pulsesPerScan,
                 maxPulse));
         }
     }
@@ -1159,7 +1159,7 @@ public class PatternPanel : MonoBehaviour
 
     public void OnTimeEventButtonClick()
     {
-        int scanlineIntPulse = (int)scanline.floatPulse;
+        int scanlineIntPulse = (int)scanline.doublePulse;
         BpmEvent currentBpmEvent = EditorContext.Pattern.bpmEvents.
             Find((BpmEvent e) =>
         {
@@ -1386,15 +1386,15 @@ public class PatternPanel : MonoBehaviour
         }
     }
 
-    public void OnScanlinePositionSliderValueChanged(float newValue)
+    public void OnScanlinePositionSliderValueChanged(double newValue)
     {
         if (isPlaying) return;
 
         int totalPulses = numScans
             * EditorContext.Pattern.patternMetadata.bps
             * Pattern.pulsesPerBeat;
-        float scanlineRawPulse = totalPulses * newValue;
-        scanline.floatPulse = SnapPulse(scanlineRawPulse);
+        double scanlineRawPulse = totalPulses * newValue;
+        scanline.doublePulse = SnapPulse(scanlineRawPulse);
         scanline.GetComponent<SelfPositionerInEditor>().Reposition();
         ScrollScanlineIntoView();
         RefreshScanlineTimeDisplay();
@@ -1474,11 +1474,11 @@ public class PatternPanel : MonoBehaviour
                 .ApplyModifiers(Modifiers.instance, patternEditPreview: true);
         }
         GameSetup.beginningScanInEditorPreview =
-            Mathf.FloorToInt(
-                scanline.floatPulse / 
+            (int) Math.Floor(
+                scanline.doublePulse / 
                 Pattern.pulsesPerBeat /
                 GameSetup.pattern.patternMetadata.bps);
-        scanlinePulseBeforePreview = scanline.floatPulse;
+        scanlinePulseBeforePreview = scanline.doublePulse;
         previewButton.GetComponent<TransitionToPanel>().Invoke();
     }
 
@@ -2520,8 +2520,8 @@ public class PatternPanel : MonoBehaviour
 
     private void RefreshScanlineTimeDisplay()
     {
-        float scanlineTime = EditorContext.Pattern.PulseToTime(
-            (int)scanline.floatPulse);
+        double scanlineTime = EditorContext.Pattern.PulseToTime(
+            (int)scanline.doublePulse);
         timeDisplay.text = UIUtils.FormatTime(scanlineTime,
             includeMillisecond: true);
     }
@@ -2532,10 +2532,10 @@ public class PatternPanel : MonoBehaviour
         RefreshScanlineTimeDisplay();
 
         int bps = EditorContext.Pattern.patternMetadata.bps;
-        float scanlineNormalizedPosition = scanline.floatPulse /
+        double scanlineNormalizedPosition = scanline.doublePulse /
             (numScans * bps * Pattern.pulsesPerBeat);
        
-        scanlinePositionSlider.SetValueWithoutNotify(scanlineNormalizedPosition);
+        scanlinePositionSlider.SetValueWithoutNotify((float) scanlineNormalizedPosition);
     }
     #endregion
 
@@ -3457,7 +3457,7 @@ public class PatternPanel : MonoBehaviour
         if (clipboard.Count == 0) return;
         if (isPlaying) return;
 
-        int scanlinePulse = (int)scanline.floatPulse;
+        int scanlinePulse = (int)scanline.doublePulse;
         int deltaPulse = scanlinePulse - minPulseInClipboard;
 
         // Can we paste here?
@@ -3568,11 +3568,11 @@ public class PatternPanel : MonoBehaviour
     //   and dragging the scanline position slider.
     private bool audioLoaded;
     private bool isPlaying;
-    private float playbackStartingPulse;
-    private float playbackStartingTime;
+    private double playbackStartingPulse;
+    private double playbackStartingTime;
     private bool backingTrackPlaying;
     private DateTime systemTimeOnPlaybackStart;
-    private float playbackBeatOnPreviousFrame;  // For metronome
+    private double playbackBeatOnPreviousFrame;  // For metronome
 
     // When playing, sort all notes by pulse so it's easy to tell if
     // it's time to play the next note in the queue. Once played,
@@ -3627,7 +3627,7 @@ public class PatternPanel : MonoBehaviour
         pattern.PrepareForTimeCalculation();
         pattern.CalculateTimeOfAllNotes(
             calculateTimeWindows: false);
-        playbackStartingPulse = scanline.floatPulse;
+        playbackStartingPulse = scanline.doublePulse;
         playbackStartingTime = pattern.PulseToTime(
             (int)playbackStartingPulse);
 
@@ -3644,7 +3644,7 @@ public class PatternPanel : MonoBehaviour
                 AudioClip clip = ResourceLoader.GetCachedClip(
                     n.sound);
                 if (clip == null) continue;
-                if (n.time + clip.length > playbackStartingTime)
+                if (n.time + AudioSourceManager.getDoubleLength(clip) > playbackStartingTime)
                 {
                     audioSourceManager.PlayKeysound(clip,
                         EditorContext.Pattern.IsHiddenNote(n.lane),
@@ -3677,7 +3677,7 @@ public class PatternPanel : MonoBehaviour
 
         if (Options.instance.editorOptions.returnScanlineAfterPlayback)
         {
-            scanline.floatPulse = playbackStartingPulse;
+            scanline.doublePulse = playbackStartingPulse;
         }
         scanline.GetComponent<SelfPositionerInEditor>().Reposition();
         ScrollScanlineIntoView();
@@ -3689,21 +3689,21 @@ public class PatternPanel : MonoBehaviour
     public void UpdatePlayback()
     {
         // Calculate time.
-        float elapsedTime = (float)(DateTime.Now - 
+        double elapsedTime = (DateTime.Now - 
             systemTimeOnPlaybackStart).TotalSeconds;
-        float playbackCurrentTime = playbackStartingTime + 
+        double playbackCurrentTime = playbackStartingTime + 
             elapsedTime;
-        float playbackCurrentPulse = EditorContext.Pattern
+        double playbackCurrentPulse = EditorContext.Pattern
             .TimeToPulse(playbackCurrentTime);
         
         // Play metronome sound if necessary.
         if (Options.instance.editorOptions.metronome)
         {
-            float beat = playbackCurrentPulse / Pattern.pulsesPerBeat;
-            if (Mathf.FloorToInt(beat) >
-                Mathf.FloorToInt(playbackBeatOnPreviousFrame))
+            double beat = playbackCurrentPulse / Pattern.pulsesPerBeat;
+            if ((int) Math.Floor(beat) >
+                (int) Math.Floor(playbackBeatOnPreviousFrame))
             {
-                int wholeBeat = Mathf.FloorToInt(beat);
+                int wholeBeat = (int) Math.Floor(beat);
                 bool wholeScan = wholeBeat % 
                     EditorContext.Pattern.patternMetadata.bps == 0;
                 AudioClip clip = wholeScan ? metronome2 : metronome1;
@@ -3766,7 +3766,7 @@ public class PatternPanel : MonoBehaviour
         }
 
         // Move scanline.
-        scanline.floatPulse = playbackCurrentPulse;
+        scanline.doublePulse = playbackCurrentPulse;
         scanline.GetComponent<SelfPositionerInEditor>().Reposition();
         ScrollScanlineIntoView();
         RefreshPlaybackBar();
@@ -3790,11 +3790,11 @@ public class PatternPanel : MonoBehaviour
     #endregion
 
     #region Utilities
-    private int SnapPulse(float rawPulse)
+    private int SnapPulse(double rawPulse)
     {
         int pulsesPerDivision = Pattern.pulsesPerBeat
             / Options.instance.editorOptions.beatSnapDivisor;
-        int snappedPulse = Mathf.RoundToInt(
+        int snappedPulse = (int) Math.Floor(
             rawPulse / pulsesPerDivision)
             * pulsesPerDivision;
         return snappedPulse;

@@ -142,9 +142,9 @@ public class Game : MonoBehaviour
         Ready,  // No longer accummulates, awaiting activation
         Active  // Decreases with time
     }
-    private float feverCoefficient;
+    private double feverCoefficient;
     public static FeverState feverState { get; private set; }
-    public static float feverAmount { get; private set; }
+    public static double feverAmount { get; private set; }
 
     public static int playableLanes => 
         GameSetup.pattern.patternMetadata.playableLanes;
@@ -167,12 +167,12 @@ public class Game : MonoBehaviour
     // The stopwatch provides the "base time", which drives
     // the backing track, BGA, hidden notes and auto-played notes.
     private Stopwatch stopwatch;
-    private static float BaseTime { get; set; }
+    private static double BaseTime { get; set; }
 
-    private static float offset;
+    private static double offset;
     // The public timer is compensated for offset, to be used for
     // scanlines and notes. All public timers are based on this time.
-    public static float Time
+    public static double Time
     {
         get
         {
@@ -181,19 +181,19 @@ public class Game : MonoBehaviour
         }
     }
     public static int PulsesPerScan { get; private set; }
-    public static float FloatPulse { get; private set; }
-    public static float FloatBeat { get; private set; }
-    public static float FloatScan { get; private set; }
+    public static double DoublePulse { get; private set; }
+    public static double DoubleBeat { get; private set; }
+    public static double DoubleScan { get; private set; }
     private static int Pulse { get; set; }
     public static int Scan { get; private set; }
-    private float endOfPatternBaseTime;
+    private double endOfPatternBaseTime;
     private int firstScan;
     private int lastScan;
     private Stopwatch feverTimer;
-    private float initialTime;
+    private double initialTime;
 
-    public static void InjectBaseTimeAndOffset(float baseTime,
-        float offset)
+    public static void InjectBaseTimeAndOffset(double baseTime,
+        double offset)
     {
         BaseTime = baseTime;
         autoPlay = false;
@@ -238,7 +238,7 @@ public class Game : MonoBehaviour
     private Dictionary<NoteObject, bool> ongoingNoteIsHitOnThisFrame;
 
     private struct OngoingNoteLastInputInfo {
-        public float timestamp;
+        public double timestamp;
         public bool lifted;
     }
     private Dictionary<NoteObject, OngoingNoteLastInputInfo> ongoingNoteLastInput;
@@ -612,7 +612,7 @@ public class Game : MonoBehaviour
         // Rewind till 1 scan before the backing track starts.
         PulsesPerScan = Pattern.pulsesPerBeat *
             GameSetup.pattern.patternMetadata.bps;
-        while (initialTime >= 0f)
+        while (initialTime >= 0d)
         {
             firstScan--;
             initialTime = GameSetup.pattern.PulseToTime(
@@ -800,13 +800,13 @@ public class Game : MonoBehaviour
             Pattern.pulsesPerBeat;
         if (Ruleset.instance.constantFeverCoefficient)
         {
-            feverCoefficient = 8f;
+            feverCoefficient = 8d;
         }
         else
         {
-            float trackLength =
+            double trackLength =
                 GameSetup.pattern.PulseToTime(lastPulse);
-            feverCoefficient = trackLength / 12.5f;
+            feverCoefficient = trackLength / 12.5d;
         }
         Debug.Log("Fever coefficient is: " + feverCoefficient);
 
@@ -929,11 +929,11 @@ public class Game : MonoBehaviour
 
     private void CalculateEndOfPattern()
     {
-        endOfPatternBaseTime = 0f;
+        endOfPatternBaseTime = 0d;
         if (backingTrackClip != null)
         {
-            endOfPatternBaseTime = Mathf.Max(endOfPatternBaseTime,
-                backingTrackClip.length);
+            endOfPatternBaseTime = Math.Max(endOfPatternBaseTime,
+                AudioSourceManager.getDoubleLength(backingTrackClip));
         }
         bool waitForEndOfBga = GameSetup.pattern.patternMetadata
             .waitForEndOfBga;
@@ -943,45 +943,45 @@ public class Game : MonoBehaviour
         }
         if (videoPlayer.url != null && waitForEndOfBga)
         {
-            endOfPatternBaseTime = Mathf.Max(endOfPatternBaseTime,
-                (float)GameSetup.pattern.patternMetadata.bgaOffset +
-                (float)videoPlayer.length);
+            endOfPatternBaseTime = Math.Max(endOfPatternBaseTime,
+                GameSetup.pattern.patternMetadata.bgaOffset +
+                videoPlayer.length);
         }
         foreach (Note n in GameSetup.pattern.notes)
         {
-            float noteStartTime = n.time;
+            double noteStartTime = n.time;
             float duration = 0f;
             if (n.sound != null && n.sound != "")
             {
                 duration = ResourceLoader.GetCachedClip(
                     n.sound).length;
             }
-            float noteEndTime = noteStartTime + duration;
+            double noteEndTime = noteStartTime + duration;
 
             // For long notes, additionally check the note length, as
             // they may be longer than the keysounds.
             if (n is HoldNote)
             {
                 int noteEndPulse = n.pulse + (n as HoldNote).duration;
-                noteEndTime = Mathf.Max(noteEndTime,
+                noteEndTime = Math.Max(noteEndTime,
                     GameSetup.pattern.PulseToTime(noteEndPulse)
                     + offset);
             }
             if (n is DragNote)
             {
                 int noteEndPulse = n.pulse + (n as DragNote).Duration();
-                noteEndTime = Mathf.Max(noteEndTime,
+                noteEndTime = Math.Max(noteEndTime,
                     GameSetup.pattern.PulseToTime(noteEndPulse)
                     + offset);
             }
 
-            endOfPatternBaseTime = Mathf.Max(endOfPatternBaseTime, 
+            endOfPatternBaseTime = Math.Max(endOfPatternBaseTime, 
                 noteEndTime);
         }
 
-        float maxPulse = GameSetup.pattern.TimeToPulse(
+        double maxPulse = GameSetup.pattern.TimeToPulse(
             endOfPatternBaseTime);
-        lastScan = Mathf.FloorToInt(
+        lastScan = (int) Math.Floor(
             maxPulse / PulsesPerScan);
     }
 
@@ -1189,11 +1189,11 @@ public class Game : MonoBehaviour
         }
     }
 
-    private static float LatencyForNote(Note n)
+    private static double LatencyForNote(Note n)
     {
         int latencyMs = Options.instance.GetLatencyForDevice(
             DeviceForNote(n));
-        return autoPlay ? 0f : latencyMs * 0.001f;
+        return autoPlay ? 0d : latencyMs * 0.001d;
     }
 
     private void ShowBGACover()
@@ -1279,15 +1279,15 @@ public class Game : MonoBehaviour
 
     private void UpdateTime()
     {
-        float oldBaseTime = BaseTime;
-        float oldTime = Time;
-        BaseTime = (float)stopwatch.Elapsed.TotalSeconds * speed
+        double oldBaseTime = BaseTime;
+        double oldTime = Time;
+        BaseTime = stopwatch.Elapsed.TotalSeconds * speed
             + initialTime;
-        FloatPulse = GameSetup.pattern.TimeToPulse(Time);
-        FloatBeat = FloatPulse / Pattern.pulsesPerBeat;
-        FloatScan = FloatPulse / PulsesPerScan;
-        int newPulse = Mathf.FloorToInt(FloatPulse);
-        int newScan = Mathf.FloorToInt(FloatScan);
+        DoublePulse = GameSetup.pattern.TimeToPulse(Time);
+        DoubleBeat = DoublePulse / Pattern.pulsesPerBeat;
+        DoubleScan = DoublePulse / PulsesPerScan;
+        int newPulse = (int) Math.Floor(DoublePulse);
+        int newScan = (int) Math.Floor(DoubleScan);
 
         // Play backing track if base time hits 0.
         if (oldBaseTime < 0f && BaseTime >= 0f &&
@@ -1359,10 +1359,10 @@ public class Game : MonoBehaviour
                 }
                 else
                 {
-                    float noteTimeWithLatency =
+                    double noteTimeWithLatency =
                         upcomingNote.note.time
                         + LatencyForNote(upcomingNote.note);
-                    float noteMissJudgementTime =
+                    double noteMissJudgementTime =
                         upcomingNote.note.timeWindow[Judgement.Miss]
                         * speed;
 
@@ -1558,9 +1558,9 @@ public class Game : MonoBehaviour
             ongoingNoteIsHitOnThisFrame)
         {
             // Has the note's duration finished?
-            float latency = LatencyForNote(pair.Key.note);
-            float endTime = 0f;
-            float gracePeriodLength = 0f;
+            double latency = LatencyForNote(pair.Key.note);
+            double endTime = 0d;
+            double gracePeriodLength = 0d;
             if (pair.Key.note is HoldNote)
             {
                 HoldNote holdNote = pair.Key.note as HoldNote;
@@ -1595,7 +1595,7 @@ public class Game : MonoBehaviour
             }
             else if (!autoPlay)
             {
-                float lastInput = ongoingNoteLastInput[pair.Key].timestamp;
+                double lastInput = ongoingNoteLastInput[pair.Key].timestamp;
                 if (Time > lastInput + gracePeriodLength)
                 {
                     // No input on this note for too long, resolve
@@ -1635,13 +1635,15 @@ public class Game : MonoBehaviour
         if (regularTopBar.activeSelf)
         {
             feverButtonFilling.anchorMax =
-                new Vector2(feverAmount, 1f);
+                new Vector2((float) feverAmount, 1f);
             feverButtonAnimator.SetBool("Fever Ready",
                 feverState == FeverState.Ready);
             middleFeverBarFilling.anchorMin = new Vector2(
-                0.5f - feverAmount * 0.5f, 0f);
+                0.5f - (float) feverAmount * 0.5f,
+                0f);
             middleFeverBarFilling.anchorMax = new Vector2(
-                0.5f + feverAmount * 0.5f, 1f);
+                0.5f + (float) feverAmount * 0.5f,
+                1f);
             middleFeverText.SetActive(
                 feverState == FeverState.Ready);
         }
@@ -1768,10 +1770,10 @@ public class Game : MonoBehaviour
 
         // Set timer.
         Scan = scan;
-        FloatBeat = Scan * GameSetup.pattern.patternMetadata.bps;
-        FloatScan = Scan;
+        DoubleBeat = Scan * GameSetup.pattern.patternMetadata.bps;
+        DoubleScan = Scan;
         Pulse = PulsesPerScan * Scan;
-        FloatPulse = Pulse;
+        DoublePulse = Pulse;
         BaseTime = GameSetup.pattern.PulseToTime(Pulse);
         ResetInitialTime();
         previousComboTick = Pulse;
@@ -1837,7 +1839,8 @@ public class Game : MonoBehaviour
                 AudioClip clip = ResourceLoader.GetCachedClip(
                     n.sound);
                 if (clip == null) return;
-                if (n.time + clip.length > BaseTime)
+                if (n.time + AudioSourceManager.getDoubleLength(clip)
+                    > BaseTime)
                 {
                     audioSourceManager.PlayKeysound(clip,
                         GameSetup.pattern.IsHiddenNote(n.lane),
@@ -1856,8 +1859,8 @@ public class Game : MonoBehaviour
 
     public void JumpToPreviousScan()
     {
-        float floatScan = FloatPulse / PulsesPerScan;
-        floatScan -= Mathf.Floor(floatScan);
+        double floatScan = DoublePulse / PulsesPerScan;
+        floatScan -= Math.Floor(floatScan);
         if (floatScan > 0.25f)
         {
             JumpToScan(Scan);
@@ -2098,10 +2101,10 @@ public class Game : MonoBehaviour
                     }
                 }
                 
-                float correctTime = noteToCheck.note.time
+                double correctTime = noteToCheck.note.time
                     + LatencyForNote(noteToCheck.note);
-                float difference = Time - correctTime;
-                if (Mathf.Abs(difference) > 
+                double difference = Time - correctTime;
+                if (Math.Abs(difference) > 
                     n.note.timeWindow[Judgement.Miss])
                 {
                     // The touch or click is too early or too late
@@ -2192,10 +2195,10 @@ public class Game : MonoBehaviour
             // Do nothing.
             return;
         }
-        float correctTime = earliestNote.note.time
+        double correctTime = earliestNote.note.time
             + LatencyForNote(earliestNote.note);
-        float difference = Time - correctTime;
-        if (Mathf.Abs(difference) >
+        double difference = Time - correctTime;
+        if (Math.Abs(difference) >
             earliestNote.note.timeWindow[Judgement.Miss])
         {
             // The keystroke is too early or too late
@@ -2266,10 +2269,10 @@ public class Game : MonoBehaviour
             }
         }
 
-        float correctTime = earliestNote.note.time
+        double correctTime = earliestNote.note.time
             + LatencyForNote(earliestNote.note);
-        float difference = Time - correctTime;
-        if (Mathf.Abs(difference) >
+        double difference = Time - correctTime;
+        if (Math.Abs(difference) >
             earliestNote.note.timeWindow[Judgement.Miss])
         {
             // The keystroke is too early or too late
@@ -2322,13 +2325,13 @@ public class Game : MonoBehaviour
     #endregion
 
     #region Hitting Notes And Empty Hits
-    private void HitNote(NoteObject n, float timeDifference)
+    private void HitNote(NoteObject n, double timeDifference)
     {
         // All code paths into this method should have ignored
         // ongoing notes.
 
         Judgement judgement = Judgement.Miss;
-        float absDifference = Mathf.Abs(timeDifference);
+        double absDifference = Math.Abs(timeDifference);
         // Compensate for speed.
         absDifference /= speed;
 

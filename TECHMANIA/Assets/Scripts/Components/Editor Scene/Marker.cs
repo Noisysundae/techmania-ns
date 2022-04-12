@@ -19,7 +19,7 @@ public class Marker : MonoBehaviour
         int scan = beat / bps;
         int beatInScan = beat % bps;
 
-        float time = EditorContext.Pattern.PulseToTime(pulse);
+        double time = EditorContext.Pattern.PulseToTime(pulse);
 
         string scanPosition = "";
         if (beatInScan == 0)

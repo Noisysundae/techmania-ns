@@ -14,7 +14,7 @@ public class RepeatPathExtension : MonoBehaviour
 
         float startX = GetComponent<RectTransform>()
             .anchoredPosition.x;
-        float endX = scanRef.FloatPulseToXPosition(
+        float endX = scanRef.DoublePulseToXPosition(
             lastNotePulse,
             positionEndOfScanOutOfBounds: true,
             positionAfterScanOutOfBounds: true);

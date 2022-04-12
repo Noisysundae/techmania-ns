@@ -84,6 +84,8 @@ Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) se
 
 ### Optimization
 
+* (dirty change) Convert timing variables from (float -> double).
+  * Improves input and keysound playback precision.
 * Eliminate `GetComponent()` calls in the `Update()` loop.
   * This pretty much solves the "FPS drop on touch spam" problem.
   * I couldn't record a play on 1080p without stuttering on my laptop. With this fix, now I can!

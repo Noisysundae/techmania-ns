@@ -56,6 +56,6 @@ public class RepeatNoteAppearanceBase : NoteAppearance
                 scanRef.direction == Scan.Direction.Left);
         }
         noteImage.sprite = GlobalResource.noteSkin.repeat
-            .GetSpriteAtFloatIndex(Game.FloatBeat);
+            .GetSpriteAtFloatIndex(Game.DoubleBeat);
     }
 }

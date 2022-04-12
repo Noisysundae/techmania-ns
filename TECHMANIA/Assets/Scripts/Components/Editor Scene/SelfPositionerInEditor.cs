@@ -25,22 +25,22 @@ public class SelfPositionerInEditor : MonoBehaviour
         ScanlineInEditor scanline = GetComponent<ScanlineInEditor>();
         NoteObject noteObject = GetComponent<NoteObject>();
 
-        float pulse;
+        double pulse;
         if (marker != null)
         {
             pulse = marker.pulse;
         }
         else if (scanline != null)
         {
-            pulse = scanline.floatPulse;
+            pulse = scanline.doublePulse;
         }
         else
         {
             pulse = noteObject.note.pulse;
         }
-        float x = PulseToX(pulse);
+        double x = PulseToX(pulse);
 
-        float y;
+        double y;
         if (marker != null)
         {
             // Don't change y.
@@ -56,10 +56,10 @@ public class SelfPositionerInEditor : MonoBehaviour
         }
 
         RectTransform rect = GetComponent<RectTransform>();
-        rect.anchoredPosition = new Vector2(x, y);
+        rect.anchoredPosition = new Vector2((float) x, (float) y);
         if (noteObject != null)
         {
-            rect.anchoredPosition = new Vector2(x, y);
+            rect.anchoredPosition = new Vector2((float) x, (float) y);
             rect.sizeDelta = new Vector2(
                 PatternPanel.LaneHeight, PatternPanel.LaneHeight);
         }
@@ -67,12 +67,12 @@ public class SelfPositionerInEditor : MonoBehaviour
 
     public static Vector2 PositionOf(Note n)
     {
-        return new Vector2(PulseToX(n.pulse), LaneToY(n.lane));
+        return new Vector2((float) PulseToX(n.pulse), LaneToY(n.lane));
     }
 
-    private static float PulseToX(float pulse)
+    private static double PulseToX(double pulse)
     {
-        float scan = pulse / pulsesPerScan;
+        double scan = pulse / pulsesPerScan;
         return PatternPanel.ScanWidth * scan;
     }
 

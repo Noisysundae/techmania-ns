@@ -32,7 +32,7 @@ public class Scanline : MonoBehaviour
 
     private void Update()
     {
-        float x = scanRef.FloatPulseToXPosition(Game.FloatPulse);
+        float x = (float) scanRef.DoublePulseToXPosition(Game.DoublePulse);
         GetComponent<RectTransform>().anchoredPosition =
             new Vector2(x, 0f);
 
@@ -42,7 +42,7 @@ public class Scanline : MonoBehaviour
             GlobalResource.gameUiSkin.scanline;
         UIUtils.SetSpriteAndAspectRatio(image,
             scanlineSpriteSheet.GetSpriteAtFloatIndex(
-            Game.FloatScan));
+            Game.DoubleScan));
 
         float alpha;
         switch (Modifiers.instance.scanlineOpacity)
@@ -54,7 +54,8 @@ public class Scanline : MonoBehaviour
                 alpha = 0f;
                 break;
             default:
-                float scan = Game.FloatPulse / Game.PulsesPerScan;
+                float scan = (float) Game.DoublePulse
+                    / Game.PulsesPerScan;
                 if (Modifiers.instance.scanlineOpacity ==
                     Modifiers.ScanlineOpacity.Blink)
                 {

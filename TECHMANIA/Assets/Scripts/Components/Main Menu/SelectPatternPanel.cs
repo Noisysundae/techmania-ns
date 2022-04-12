@@ -122,7 +122,7 @@ public class SelectPatternPanel : MonoBehaviour
         else
         {
             p.PrepareForTimeCalculation();
-            float length;
+            double length;
             p.GetLengthInSecondsAndScans(out length, out _);
 
             // Get BPM.

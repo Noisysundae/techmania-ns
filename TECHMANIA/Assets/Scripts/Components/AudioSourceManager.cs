@@ -67,14 +67,14 @@ public class AudioSourceManager : MonoBehaviour
     }
 
     private void PlaySound(AudioSource source, AudioClip clip,
-        float startTime, int volumePercent, int panPercent)
+        double startTime, int volumePercent, int panPercent)
     {
         if (clip == null)
         {
             return;
         }
         
-        int startSample = Mathf.FloorToInt(
+        int startSample = (int) Math.Floor(
             startTime * clip.frequency);
         source.clip = clip;
         source.timeSamples = Mathf.Min(clip.samples, startSample);
@@ -84,8 +84,8 @@ public class AudioSourceManager : MonoBehaviour
     }
 
     public void PlayBackingTrack(AudioClip clip,
-        float startTime = 0f,
-        float factor = -1f)
+        double startTime = 0f,
+        double factor = -1f)
     {
         PlaySound(backingTrack, clip, startTime,
             volumePercent: factor == -1f ? Note.defaultVolume: (int) factor,
@@ -96,7 +96,7 @@ public class AudioSourceManager : MonoBehaviour
         string clipTypeForLogging)
     {
         AudioSource sourceWithLeastRemainingTime = null;
-        float leastRemainingTime = float.MaxValue;
+        double leastRemainingTime = double.MaxValue;
         foreach (AudioSource s in sources)
         {
             if (!s.isPlaying)
@@ -105,7 +105,7 @@ public class AudioSourceManager : MonoBehaviour
             }
 
             // Calculate the remaining time of this source.
-            float remainingTime = s.clip.length - s.time;
+            double remainingTime = getDoubleLength(s.clip) - getDoubleTime(s);
             if (remainingTime < leastRemainingTime)
             {
                 leastRemainingTime = remainingTime;
@@ -118,7 +118,7 @@ public class AudioSourceManager : MonoBehaviour
 
     // Returns the AudioSource chosen to play the clip, if not null.
     public AudioSource PlayKeysound(AudioClip clip, bool hiddenLane,
-        float startTime = 0f,
+        double startTime = 0f,
         int volumePercent = Note.defaultVolume,
         int panPercent = Note.defaultPan)
     {
@@ -232,5 +232,16 @@ public class AudioSourceManager : MonoBehaviour
     public static double DecibelToScaledAmp(double dB)
     {
         return DecibelToAmp(dB / 2);
+    }
+
+    public static double getDoubleTime(AudioSource src)
+    {
+        return (double) src.timeSamples
+            * src.clip.frequency;
+    }
+    public static double getDoubleLength(AudioClip clip)
+    {
+        return (double) clip.samples
+            * clip.frequency;
     }
 }

@@ -99,22 +99,22 @@ public class SpriteSheet
     // For animations that cycle once per beat/scan, pass in
     // the float beat/scan number.
     // Integer part of the input number is removed.
-    public Sprite GetSpriteAtFloatIndex(float floatIndex)
+    public Sprite GetSpriteAtFloatIndex(double doubleIndex)
     {
         if (sprites == null) return null;
-        floatIndex = floatIndex - Mathf.Floor(floatIndex);
-        int index = Mathf.FloorToInt(floatIndex * sprites.Count);
+        doubleIndex = doubleIndex - Math.Floor(doubleIndex);
+        int index = (int) Math.Floor(doubleIndex * sprites.Count);
         index = Mathf.Clamp(index, 0, sprites.Count - 1);
         return sprites[index];
     }
 
     // For animations that cycle on a fixed time. Relies on speed.
     // Returns null if the end of animation is reached.
-    public Sprite GetSpriteForTime(float time, bool loop)
+    public Sprite GetSpriteForTime(double time, bool loop)
     {
         if (sprites == null) return null;
         float fps = 60f * speed;
-        int index = Mathf.FloorToInt(time * fps);
+        int index = (int) Math.Floor(time * fps);
         if (loop)
         {
             while (index < 0) index += sprites.Count;

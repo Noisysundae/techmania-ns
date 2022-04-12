@@ -231,7 +231,7 @@ public partial class Pattern
     // Returns the pattern length between the start of the first
     // non-empty scan, and the end of the last non-empty scan.
     // Ignores end-of-scan.
-    public void GetLengthInSecondsAndScans(out float seconds,
+    public void GetLengthInSecondsAndScans(out double seconds,
         out int scans)
     {
         if (notes.Count == 0)
@@ -263,10 +263,10 @@ public partial class Pattern
         }
 
         int firstScan = minPulse / pulsesPerScan;
-        float startOfFirstScan = PulseToTime(
+        double startOfFirstScan = PulseToTime(
             firstScan * pulsesPerScan);
         int lastScan = maxPulse / pulsesPerScan;
-        float endOfLastScan = PulseToTime(
+        double endOfLastScan = PulseToTime(
             (lastScan + 1) * pulsesPerScan);
 
         seconds = endOfLastScan - startOfFirstScan;
@@ -275,7 +275,7 @@ public partial class Pattern
 
     public void CalculateTimeOfAllNotes(bool calculateTimeWindows)
     {
-        List<float> timeWindows = Ruleset.instance.timeWindows;
+        List<double> timeWindows = Ruleset.instance.timeWindows;
         if (calculateTimeWindows &&
             Options.instance.ruleset == Options.Ruleset.Legacy &&
             GameSetup.pattern.legacyRulesetOverride != null &&
@@ -289,12 +289,12 @@ public partial class Pattern
         foreach (Note n in notes)
         {
             n.time = PulseToTime(n.pulse);
-            float bpm = GetBPMAt(n.pulse);
-            float secondsPerPulse =
+            double bpm = GetBPMAt(n.pulse);
+            double secondsPerPulse =
                 // seconds per minute *
                 // minutes per beat *
                 // beats per pulse
-                60f / bpm / pulsesPerBeat;
+                60d / bpm / pulsesPerBeat;
 
             if (n is HoldNote)
             {
@@ -331,7 +331,7 @@ public partial class Pattern
 
             // Calculate time window according to current ruleset.
             if (!calculateTimeWindows) continue;
-            n.timeWindow = new Dictionary<Judgement, float>();
+            n.timeWindow = new Dictionary<Judgement, double>();
             if (Ruleset.instance.timeWindowsInPulses)
             {
                 n.timeWindow.Add(Judgement.RainbowMax,
@@ -362,10 +362,10 @@ public partial class Pattern
     }
 
     // Works for negative times too.
-    public float TimeToPulse(float time)
+    public double TimeToPulse(double time)
     {
         float referenceBpm = (float)patternMetadata.initBpm;
-        float referenceTime = (float)patternMetadata.firstBeatOffset;
+        double referenceTime = patternMetadata.firstBeatOffset;
         int referencePulse = 0;
 
         // Find the immediate TimeEvent before specified pulse.
@@ -400,7 +400,7 @@ public partial class Pattern
     }
 
     // Works for negative pulses too.
-    public float PulseToTime(int pulse)
+    public double PulseToTime(int pulse)
     {
         float referenceBpm = (float)patternMetadata.initBpm;
         float referenceTime = (float)patternMetadata.firstBeatOffset;
@@ -433,9 +433,9 @@ public partial class Pattern
             secondsPerPulse * (pulse - referencePulse);
     }
 
-    public float GetBPMAt(int pulse)
+    public double GetBPMAt(int pulse)
     {
-        float bpm = (float)patternMetadata.initBpm;
+        double bpm = patternMetadata.initBpm;
         foreach (BpmEvent e in bpmEvents)
         {
             if (e.pulse > pulse) break;
@@ -478,7 +478,7 @@ public partial class Pattern
         Radar r = new Radar();
 
         PrepareForTimeCalculation();
-        float seconds;
+        double seconds;
         int scans;
         GetLengthInSecondsAndScans(out seconds, out scans);
 
@@ -527,7 +527,8 @@ public partial class Pattern
         }
         else
         {
-            r.density.raw = playableNotes.Count / seconds;
+            r.density.raw = (float) (playableNotes.Count
+                / seconds);
         }
         r.density.normalized = NormalizeRadarValue(r.density.raw,
             0.5f, 8f);
@@ -537,12 +538,12 @@ public partial class Pattern
         {
             int scan = pair.Key;
             int numNotes = pair.Value;
-            float startTime = PulseToTime(scan * pulsesPerScan);
-            float endTime = PulseToTime((scan + 1) * pulsesPerScan);
-            float peak = numNotes / (endTime - startTime);
+            double startTime = PulseToTime(scan * pulsesPerScan);
+            double endTime = PulseToTime((scan + 1) * pulsesPerScan);
+            double peak = numNotes / (endTime - startTime);
             if (peak > r.peak.raw)
             {
-                r.peak.raw = peak;
+                r.peak.raw = (float) peak;
             }
         }
         r.peak.normalized = NormalizeRadarValue(r.peak.raw,
@@ -555,7 +556,7 @@ public partial class Pattern
         }
         else
         {
-            r.speed.raw = scans * 60 / seconds;
+            r.speed.raw = (float) (scans * 60 / seconds);
         }
         r.speed.normalized = NormalizeRadarValue(r.speed.raw,
             12f, 55f);

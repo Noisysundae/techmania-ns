@@ -17,7 +17,7 @@ public class ComboText : MonoBehaviour
 
     private SpriteSheet judgementSpriteSheet;
     private List<SpriteSheet> comboDigitSpriteSheet;
-    private float startTime;
+    private double startTime;
 
     // Start is called before the first frame update
     void Start()
@@ -192,7 +192,7 @@ public class ComboText : MonoBehaviour
 
     private void UpdateSprites()
     {
-        float time = Game.Time - startTime;
+        double time = Game.Time - startTime;
 
         if (judgementText.gameObject.activeSelf)
         {

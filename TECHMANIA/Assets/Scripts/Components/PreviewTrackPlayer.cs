@@ -70,18 +70,21 @@ public class PreviewTrackPlayer : MonoBehaviour
             yield break;
         }
 
-        if (startTime < 0f) startTime = 0f;
-        if (endTime > clip.length) endTime = clip.length;
-        if (endTime == 0f) endTime = clip.length;
-        float previewLength = (float)endTime - (float)startTime;
+        if (startTime < 0d) startTime = 0d;
+        if (endTime > AudioSourceManager.getDoubleLength(clip))
+        {
+            endTime = AudioSourceManager.getDoubleLength(clip);
+        }
+        if (endTime == 0d) endTime = AudioSourceManager.getDoubleLength(clip);
+        double previewLength = endTime - startTime;
 
         source.clip = clip;
         source.loop = false;
         source.volume = 0f;
-        float fadeLength = 1f;
-        if (fadeLength > previewLength * 0.5f)
+        double fadeLength = 1d;
+        if (fadeLength > previewLength * 0.5d)
         {
-            fadeLength = previewLength * 0.5f;
+            fadeLength = previewLength * 0.5d;
         }
 
         float maxAmp = Options.instance.usePerTrackGain ?
@@ -91,20 +94,22 @@ public class PreviewTrackPlayer : MonoBehaviour
         int numLoops = loop ? int.MaxValue : 1;
         for (int i = 0; i < numLoops; i++)
         {
+            float floatFadeLength = (float) fadeLength;
             source.time = (float)startTime;
             source.Play();
             
-            for (float time = 0f; time < fadeLength; time += Time.deltaTime)
+            for (float time = 0f; time < floatFadeLength; time += Time.deltaTime)
             {
-                float progress = time / fadeLength * maxAmp;
+                float progress = time / floatFadeLength * maxAmp;
                 source.volume = progress;
                 yield return null;
             }
             source.volume = maxAmp;
-            yield return new WaitForSeconds(previewLength - fadeLength * 2f);
-            for (float time = 0f; time < fadeLength; time += Time.deltaTime)
+            yield return new WaitForSeconds(
+                (float) (previewLength - fadeLength * 2));
+            for (float time = 0f; time < floatFadeLength; time += Time.deltaTime)
             {
-                float progress = time / fadeLength;
+                float progress = time / floatFadeLength;
                 source.volume = (1f - progress) * maxAmp;
                 yield return null;
             }

@@ -355,15 +355,15 @@ public class ResourceLoader : MonoBehaviour
             float[] mergedSamples;
             AudioClip mergedClip;
             int mergedSamplesLength = 0;
-            float mergedClipStartTimestamp = float.PositiveInfinity;
-            float mergedClipEndTimestamp = 0;
+            double mergedClipStartTimestamp = double.PositiveInfinity;
+            double mergedClipEndTimestamp = 0;
 
             // Find merged audio duration + related attributes
             foreach (Note note in pattern.notes)
             {
                 AudioClip sound = GetCachedClip(note.sound);
-                float noteTimestamp = pattern.PulseToTime(note.pulse);
-                float clipEndTimestamp = noteTimestamp;
+                double noteTimestamp = pattern.PulseToTime(note.pulse);
+                double clipEndTimestamp = noteTimestamp;
                 if (null != sound)
                 {
                     clipEndTimestamp += sound.length;
@@ -399,7 +399,7 @@ public class ResourceLoader : MonoBehaviour
                             - mergedClipStartTimestamp)
                         * targetSampleRate
                         * targetChannels);
-                    float scale = (float) targetSampleRate / clipSamples.rate;
+                    double scale = (double) targetSampleRate / clipSamples.rate;
                     int scaledLength = (int) (clipSamples.samples.Length * scale);
                     for (int i = 0;
                         i < scaledLength

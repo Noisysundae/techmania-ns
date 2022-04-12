@@ -101,7 +101,7 @@ public class RepeatHeadAppearanceBase : NoteAppearance
                 scanRef.direction == Scan.Direction.Left);
         }
         noteImage.sprite = GlobalResource.noteSkin.repeatHead
-            .GetSpriteAtFloatIndex(Game.FloatBeat);
+            .GetSpriteAtFloatIndex(Game.DoubleBeat);
         GetComponent<RepeatPathManager>().UpdateSprites();
     }
 
@@ -177,7 +177,7 @@ public class RepeatHeadAppearanceBase : NoteAppearance
     {
         float startX = GetComponent<RectTransform>()
             .anchoredPosition.x;
-        float endX = scanRef.FloatPulseToXPosition(
+        float endX = scanRef.DoublePulseToXPosition(
             lastRepeatNotePulse,
             positionEndOfScanOutOfBounds,
             positionAfterScanOutOfBounds: true);

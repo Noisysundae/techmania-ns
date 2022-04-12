@@ -24,8 +24,8 @@ public class SelectSkinPanel : MonoBehaviour
     public ComboText comboPreview;
 
     private System.Diagnostics.Stopwatch stopwatch;
-    private const float beatPerSecond = 1.5f;
-    private float previousBeat;
+    private const double beatPerSecond = 1.5d;
+    private double previousBeat;
     private int skinsBeingLoaded;
     private List<GameObject> vfxInstances;
 
@@ -141,9 +141,9 @@ public class SelectSkinPanel : MonoBehaviour
     private void Update()
     {
         Game.InjectBaseTimeAndOffset(
-            (float)stopwatch.Elapsed.TotalSeconds,
-            offset: 0f);
-        float beat = Game.Time * beatPerSecond;
+            stopwatch.Elapsed.TotalSeconds,
+            offset: 0d);
+        double beat = Game.Time * beatPerSecond;
         while (beat > 4f) beat -= 4f;
         bool noteVisible = beat < 2f;
         bool resolveNote = (previousBeat < 2f && beat >= 2f);
@@ -157,7 +157,7 @@ public class SelectSkinPanel : MonoBehaviour
             RectTransform scanlineRect = scanlinePreview
                 .GetComponent<RectTransform>();
             scanlineRect.anchoredPosition = new Vector2(
-                beat * 250f - 500f,
+                (float) (beat * 250d - 500d),
                 scanlineRect.anchoredPosition.y);
 
             UIUtils.SetSpriteAndAspectRatio(scanlinePreview,

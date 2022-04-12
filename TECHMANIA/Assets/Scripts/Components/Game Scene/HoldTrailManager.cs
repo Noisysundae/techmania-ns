@@ -33,7 +33,7 @@ public class HoldTrailManager : MonoBehaviour
 
         float startX = GetComponent<RectTransform>()
             .anchoredPosition.x;
-        float endX = scanRef.FloatPulseToXPosition(
+        float endX = scanRef.DoublePulseToXPosition(
             holdNote.pulse + holdNote.duration,
             positionEndOfScanOutOfBounds: false,
             positionAfterScanOutOfBounds: true);
@@ -197,22 +197,22 @@ public class HoldTrailManager : MonoBehaviour
         if (noteType == NoteType.Hold)
         {
             durationTrailSprite = GlobalResource.noteSkin.holdTrail
-                .GetSpriteAtFloatIndex(Game.FloatBeat);
+                .GetSpriteAtFloatIndex(Game.DoubleBeat);
             durationTrailEndSprite = GlobalResource.noteSkin
                 .holdTrailEnd.GetSpriteAtFloatIndex(
-                Game.FloatBeat);
+                Game.DoubleBeat);
             ongoingTrailSprite = GlobalResource.noteSkin
                 .holdOngoingTrail.GetSpriteAtFloatIndex(
-                Game.FloatBeat);
+                Game.DoubleBeat);
         }
         else
         {
             durationTrailSprite = GlobalResource.noteSkin
                 .repeatHoldTrail.GetSpriteAtFloatIndex(
-                Game.FloatBeat);
+                Game.DoubleBeat);
             durationTrailEndSprite = 
                 GlobalResource.noteSkin.repeatHoldTrailEnd
-                .GetSpriteAtFloatIndex(Game.FloatBeat);
+                .GetSpriteAtFloatIndex(Game.DoubleBeat);
         }
 
         durationTrail.GetComponent<Image>().sprite =

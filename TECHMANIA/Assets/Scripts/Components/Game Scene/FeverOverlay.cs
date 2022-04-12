@@ -34,7 +34,7 @@ public class FeverOverlay : MonoBehaviour
             float alpha = 1f;
             if (Game.feverAmount * 6f < 1f)
             {
-                alpha = Game.feverAmount * 6f;
+                alpha = (float) Game.feverAmount * 6f;
             }
             alpha *= noteAlpha;
             image.color = new Color(1f, 1f, 1f, alpha);

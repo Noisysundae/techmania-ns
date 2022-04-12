@@ -68,9 +68,9 @@ public class DragNoteAppearance : NoteAppearance,
     protected override void UpdateSprites()
     {
         noteImage.sprite = GlobalResource.noteSkin.dragHead
-            .GetSpriteAtFloatIndex(Game.FloatBeat);
+            .GetSpriteAtFloatIndex(Game.DoubleBeat);
         curve.sprite = GlobalResource.noteSkin.dragCurve
-            .GetSpriteAtFloatIndex(Game.FloatBeat);
+            .GetSpriteAtFloatIndex(Game.DoubleBeat);
     }
 
     protected override Vector2 GetHitboxSizeFromRuleset()
@@ -102,7 +102,7 @@ public class DragNoteAppearance : NoteAppearance,
         foreach (FloatPoint p in dragNote.Interpolate())
         {
             Vector2 pointOnCurve = new Vector2(
-                scanRef.FloatPulseToXPosition(
+                scanRef.DoublePulseToXPosition(
                     dragNote.pulse + p.pulse)
                 - headPosition.x,
                 scanRef.FloatLaneToYPosition(
@@ -200,7 +200,7 @@ public class DragNoteAppearance : NoteAppearance,
 
         // To calculate the hitbox's position, we need to compensate
         // for latency.
-        float compensatedTime = Game.Time;
+        double compensatedTime = Game.Time;
         if (!Game.autoPlay)
         {
             if (GameSetup.pattern.patternMetadata.controlScheme
@@ -214,9 +214,9 @@ public class DragNoteAppearance : NoteAppearance,
                     keyboardMouseLatencyMs * 0.001f;
             }
         }
-        float compensatedPulse = GameSetup.pattern.TimeToPulse(
+        double compensatedPulse = GameSetup.pattern.TimeToPulse(
             compensatedTime);
-        float compensatedScanlineX = scanRef.FloatPulseToXPosition(
+        double compensatedScanlineX = scanRef.DoublePulseToXPosition(
             compensatedPulse) -
             GetComponent<RectTransform>().anchoredPosition.x;
 
@@ -248,10 +248,10 @@ public class DragNoteAppearance : NoteAppearance,
             pointsOnCurve[pointIndexAfterHitbox - 1];
         Vector2 pointAfterHitbox =
             pointsOnCurve[pointIndexAfterHitbox];
-        float t = (compensatedScanlineX - pointBeforeHitbox.x) /
+        double t = (compensatedScanlineX - pointBeforeHitbox.x) /
             (pointAfterHitbox.x - pointBeforeHitbox.x);
         hitbox.anchoredPosition = Vector2.Lerp(pointBeforeHitbox,
-            pointAfterHitbox, t);
+            pointAfterHitbox, (float) t);
     }
 
     public Vector3 GetCurveEndPosition()

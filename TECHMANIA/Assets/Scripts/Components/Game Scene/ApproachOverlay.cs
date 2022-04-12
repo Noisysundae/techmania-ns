@@ -32,7 +32,7 @@ public class ApproachOverlay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float distance = Game.FloatScan - correctScan;
+        double distance = Game.DoubleScan - correctScan;
         if (distance < kOverlayStart || distance > kOverlayEnd)
         {
             image.color = Color.clear;
@@ -40,7 +40,7 @@ public class ApproachOverlay : MonoBehaviour
         else
         {
             float t = Mathf.InverseLerp(
-                kOverlayStart, kOverlayEnd, distance);
+                kOverlayStart, kOverlayEnd, (float) distance);
             image.sprite = GlobalResource.gameUiSkin.approachOverlay
                 .GetSpriteAtFloatIndex(t);
             image.color = new Color(1f, 1f, 1f, noteAlpha);

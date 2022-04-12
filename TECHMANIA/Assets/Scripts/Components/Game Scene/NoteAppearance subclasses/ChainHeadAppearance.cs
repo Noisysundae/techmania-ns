@@ -14,7 +14,7 @@ public class ChainHeadAppearance : ChainAppearanceBase
     protected override void UpdateSprites()
     {
         noteImage.sprite = GlobalResource.noteSkin.chainHead
-            .GetSpriteAtFloatIndex(Game.FloatBeat);
+            .GetSpriteAtFloatIndex(Game.DoubleBeat);
     }
 
     protected override Vector2 GetHitboxSizeFromRuleset()

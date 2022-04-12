@@ -41,6 +41,6 @@ public class HoldNoteAppearance : NoteAppearance
                 scanRef.direction == Scan.Direction.Left);
         }
         noteImage.sprite = GlobalResource.noteSkin.holdHead
-            .GetSpriteAtFloatIndex(Game.FloatBeat);
+            .GetSpriteAtFloatIndex(Game.DoubleBeat);
     }
 }

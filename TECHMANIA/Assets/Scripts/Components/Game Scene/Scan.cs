@@ -93,7 +93,7 @@ public class Scan : MonoBehaviour
 
         if (hidden) return noteObject;
 
-        float x = FloatPulseToXPosition(n.pulse);
+        float x = DoublePulseToXPosition(n.pulse);
         float y = FloatLaneToYPosition(n.lane);
         RectTransform rect = o.GetComponent<RectTransform>();
         rect.pivot = new Vector2(0.5f, 0.5f);
@@ -282,16 +282,16 @@ public class Scan : MonoBehaviour
     // If positionAfterScanOutOfBounds, then pulses larger than
     // the end of this scan will be positioned out of the screen.
     // These are meant for notes that may cross scans.
-    public float FloatPulseToXPosition(float pulse,
+    public float DoublePulseToXPosition(double pulse,
         bool positionEndOfScanOutOfBounds = false,
         bool positionAfterScanOutOfBounds = false)
     {
-        float relativeNormalizedScan = pulse / Game.PulsesPerScan
+        double relativeNormalizedScan = pulse / Game.PulsesPerScan
             - scanNumber;
         float normalizedX = Mathf.LerpUnclamped(
             Ruleset.instance.scanMarginBeforeFirstBeat,
             1f - Ruleset.instance.scanMarginAfterLastBeat,
-            relativeNormalizedScan);
+            (float) relativeNormalizedScan);
 
         if (relativeNormalizedScan == 1f &&
             positionEndOfScanOutOfBounds)
@@ -433,8 +433,8 @@ public class Scan : MonoBehaviour
             return;
         }
 
-        if (Game.FloatScan < floatScanToStartCountdown ||
-            Game.FloatScan > scanNumber)
+        if (Game.DoubleScan < floatScanToStartCountdown ||
+            Game.DoubleScan > scanNumber)
         {
             countdownBackground.color = Color.clear;
             countdownNumber.color = Color.clear;
@@ -446,7 +446,7 @@ public class Scan : MonoBehaviour
         float progress = Mathf.InverseLerp(
             floatScanToStartCountdown,
             scanNumber,
-            Game.FloatScan);
+            (float) Game.DoubleScan);
         UIUtils.SetSpriteAndAspectRatio(
             countdownBackground,
             GlobalResource.gameUiSkin.scanCountdownBackground

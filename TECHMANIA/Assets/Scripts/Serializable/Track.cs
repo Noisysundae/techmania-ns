@@ -448,7 +448,7 @@ public class LegacyRulesetOverride
 {
     // Empty list means no override.
 
-    public List<float> timeWindows;
+    public List<double> timeWindows;
     public List<int> hpDeltaBasic;
     public List<int> hpDeltaChain;
     public List<int> hpDeltaHold;
@@ -504,8 +504,8 @@ public class Note
 
     // Calculated at runtime:
 
-    public float time;
-    public Dictionary<Judgement, float> timeWindow;
+    public double time;
+    public Dictionary<Judgement, double> timeWindow;
 
     // Optional parameters:
 
@@ -651,8 +651,8 @@ public class HoldNote : Note
 
     // Calculated at runtime:
 
-    public float gracePeriodLength;
-    public float endTime;
+    public double gracePeriodLength;
+    public double endTime;
 
     public override string Pack()
     {
@@ -717,8 +717,8 @@ public class DragNote : Note
 
     // Calculated at runtime:
 
-    public float gracePeriodLength;
-    public float endTime;
+    public double gracePeriodLength;
+    public double endTime;
 
     public DragNote()
     {

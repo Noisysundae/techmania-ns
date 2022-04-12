@@ -5,6 +5,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+using Math = System.Math;
+
 public class UIUtils
 {
     public static string NoneOptionInDropdowns()
@@ -260,16 +262,16 @@ public class UIUtils
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
 
-    public static string FormatTime(float time,
+    public static string FormatTime(double time,
         bool includeMillisecond)
     {
         bool negative = time < 0f;
-        time = Mathf.Abs(time);
-        int minute = Mathf.FloorToInt(time / 60f);
+        time = Math.Abs(time);
+        int minute = (int) Math.Floor(time / 60f);
         time -= minute * 60f;
-        int second = Mathf.FloorToInt(time);
+        int second = (int) Math.Floor(time);
         time -= second;
-        int milliSecond = Mathf.FloorToInt(time * 1000f);
+        int milliSecond = (int) Math.Floor(time * 1000f);
 
         string sign = negative ? "-" : "";
         if (includeMillisecond)

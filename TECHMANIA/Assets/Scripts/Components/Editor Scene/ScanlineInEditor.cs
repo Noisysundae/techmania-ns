@@ -5,5 +5,5 @@ using UnityEngine;
 public class ScanlineInEditor : MonoBehaviour
 {
     [HideInInspector]
-    public float floatPulse;
+    public double doublePulse;
 }

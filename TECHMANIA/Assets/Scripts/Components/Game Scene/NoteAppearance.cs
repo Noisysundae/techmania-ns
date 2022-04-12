@@ -310,9 +310,10 @@ public class NoteAppearance : MonoBehaviour
             == Modifiers.NoteOpacity.Normal) return;
 
         float correctScan = 
-            (float)GetComponent<NoteObject>().note.pulse
+            (float) GetComponent<NoteObject>().note.pulse
             / Game.PulsesPerScan;
-        float currentScan = Game.FloatPulse / Game.PulsesPerScan;
+        float currentScan = (float) (Game.DoublePulse
+            / Game.PulsesPerScan);
         switch (Modifiers.instance.noteOpacity)
         {
             case Modifiers.NoteOpacity.FadeOut:

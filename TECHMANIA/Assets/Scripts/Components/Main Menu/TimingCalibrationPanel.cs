@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+using Math = System.Math;
+
 public class TimingCalibrationPanel : MonoBehaviour
 {
     public GraphicRaycaster raycaster;
@@ -42,7 +44,7 @@ public class TimingCalibrationPanel : MonoBehaviour
     private System.Diagnostics.Stopwatch stopwatch;
     // Unique to this panel, clampedTime is the public timer but
     // clamped into the 0th scan.
-    private float clampedTime;
+    private double clampedTime;
 
     private readonly int[] pulses = { 0, 240, 480, 600, 720 };
     private readonly int[] lanes = { 1, 0, 1, 1, 0 };
@@ -86,9 +88,9 @@ public class TimingCalibrationPanel : MonoBehaviour
         float noteScale = GlobalResource.noteSkin.basic.scale;
         for (int i = 0; i < pulses.Length; i++)
         {
-            float scan = PulseToFloatScan(pulses[i]);
+            double scan = PulseToDoubleScan(pulses[i]);
             notes[i].anchorMin = new Vector2(
-                FloatScanToAnchorX(scan),
+                DoubleScanToAnchorX(scan),
                 1f - 0.25f * lanes[i] - 0.125f);
             notes[i].anchorMax = notes[i].anchorMin;
             notes[i].anchoredPosition = Vector2.zero;
@@ -100,17 +102,17 @@ public class TimingCalibrationPanel : MonoBehaviour
         }
     }
 
-    private float PulseToFloatScan(float pulse)
+    private double PulseToDoubleScan(double pulse)
     {
-        return pulse / 4f / Pattern.pulsesPerBeat;
+        return pulse / 4d / Pattern.pulsesPerBeat;
     }
 
-    private float FloatScanToAnchorX(float scan)
+    private float DoubleScanToAnchorX(double scan)
     {
         return Mathf.LerpUnclamped(
             Ruleset.instance.scanMarginBeforeFirstBeat,
             1f - Ruleset.instance.scanMarginAfterLastBeat,
-            scan);
+            (float) scan);
     }
 
     // Update is called once per frame
@@ -122,8 +124,8 @@ public class TimingCalibrationPanel : MonoBehaviour
             options.touchOffsetMs :
             options.keyboardMouseOffsetMs;
         Game.InjectBaseTimeAndOffset(
-            (float)stopwatch.Elapsed.TotalSeconds,
-            offsetMs * 0.001f);
+            stopwatch.Elapsed.TotalSeconds,
+            offsetMs * 0.001d);
 
         float timePerScan = 4f / beatPerSecond;
         clampedTime = Game.Time;
@@ -134,18 +136,18 @@ public class TimingCalibrationPanel : MonoBehaviour
 
         // Move scanline.
 
-        float beat = Game.Time * beatPerSecond;
-        float pulse = beat * Pattern.pulsesPerBeat;
-        float scan0 = PulseToFloatScan(pulse);
-        float scan1 = scan0 + 1f;
-        while (scan0 > 1.5f) scan0 -= 2f;
-        while (scan1 > 1.5f) scan1 -= 2f;
+        double beat = Game.Time * beatPerSecond;
+        double pulse = beat * Pattern.pulsesPerBeat;
+        double scan0 = PulseToDoubleScan(pulse);
+        double scan1 = scan0 + 1d;
+        while (scan0 > 1.5d) scan0 -= 2d;
+        while (scan1 > 1.5d) scan1 -= 2d;
         scanline0.anchorMin = new Vector2(
-            FloatScanToAnchorX(scan0), 0f);
+            DoubleScanToAnchorX(scan0), 0);
         scanline0.anchorMax = new Vector2(
             scanline0.anchorMin.x, 1f);
         scanline1.anchorMin = new Vector2(
-            FloatScanToAnchorX(scan1), 0f);
+            DoubleScanToAnchorX(scan1), 0);
         scanline1.anchorMax = new Vector2(
             scanline1.anchorMin.x, 1f);
 
@@ -177,12 +179,12 @@ public class TimingCalibrationPanel : MonoBehaviour
         {
             // Which note does this keystroke go to?
             int id = -1;
-            float minDifference = float.MaxValue;
+            double minDifference = double.MaxValue;
             for (int i = 0; i < pulses.Length; i++)
             {
-                float correctTime = CorrectTime(i, 
+                double correctTime = CorrectTime(i, 
                     InputDevice.Keyboard);
-                float difference = Mathf.Abs(
+                double difference = Math.Abs(
                     clampedTime - correctTime);
                 if (difference < minDifference)
                 {
@@ -253,8 +255,8 @@ public class TimingCalibrationPanel : MonoBehaviour
     {
         // Calculate time difference.
         float correctTime = CorrectTime(id, device);
-        int timeDifferenceInMs = Mathf.FloorToInt(
-            Mathf.Abs(clampedTime - correctTime) * 1000f);
+        int timeDifferenceInMs = (int) Math.Floor(
+            Math.Abs(clampedTime - correctTime) * 1000d);
 
         // The usual stuff: explosion and keysound.
         if (timeDifferenceInMs <= 200)

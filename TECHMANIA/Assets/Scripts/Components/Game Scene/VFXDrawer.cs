@@ -18,7 +18,7 @@ public class VFXDrawer : MonoBehaviour
 
     private RectTransform rect;
     private Image image;
-    private float startTime;
+    private double startTime;
 
     // For random orientation seed reference
     private static int baseRandomSeed;
@@ -80,7 +80,7 @@ public class VFXDrawer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float time = Game.Time - startTime;
+        double time = Game.Time - startTime;
         Sprite sprite = spriteSheet.GetSpriteForTime(time, loop);
         if (sprite == null)
         {
