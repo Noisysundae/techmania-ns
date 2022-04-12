@@ -2,7 +2,7 @@
 
 ## Releases
 
-Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) section of the master branch (Windows only).
+Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) section of the master branch.
 
 ## Changes
 
