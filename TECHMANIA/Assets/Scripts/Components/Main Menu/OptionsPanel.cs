@@ -256,8 +256,11 @@ public class OptionsPanel : MonoBehaviour
             rulesetDropdown,
             "options_ruleset_redefined",
             "options_ruleset_standard",
-            "options_ruleset_legacy",
-            "options_ruleset_custom");
+            "options_ruleset_legacy"
+#if !UNITY_ANDROID
+            , "options_ruleset_custom"
+#endif
+        );
         rulesetDropdown.SetValueWithoutNotify(
             (int) Options.instance.ruleset + 1);
         rulesetDropdown.RefreshShownValue();

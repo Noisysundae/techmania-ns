@@ -7933,7 +7933,6 @@ GameObject:
   - component: {fileID: 324228440}
   - component: {fileID: 324228439}
   - component: {fileID: 324228438}
-  - component: {fileID: 324228437}
   m_Layer: 5
   m_Name: Ruleset
   m_TagString: Untagged
@@ -7962,18 +7961,6 @@ RectTransform:
   m_AnchoredPosition: {x: 395, y: -2432.6797}
   m_SizeDelta: {x: 780, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &324228437
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 324228435}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 615cd02a94f53d5449f0168d9d6cb34e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &324228438
 MonoBehaviour:
   m_ObjectHideFlags: 0
