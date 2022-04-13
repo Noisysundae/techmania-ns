@@ -155,7 +155,7 @@ PlayerSettings:
   applicationIdentifier:
     Android: com.TECHMANIATeam.TECHMANIA
     Standalone: com.TECHMANIATeam.TECHMANIA
-    iPhone: com.TECHMANIATeam.TECHMANIA
+    iPhone: com.TECHMANIA-Team.TECHMANIA
   buildNumber:
     Standalone: 0
     iPhone: 0
