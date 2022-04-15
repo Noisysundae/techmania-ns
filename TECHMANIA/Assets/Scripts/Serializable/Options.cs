@@ -96,6 +96,7 @@ public class Options : OptionsBase
     public string skinsFolderLocation;
     public string bgaFolderLocation;
     public bool pauseWhenGameLosesFocus;
+    public bool discordRichPresence;
 
     // Editor options
 
@@ -165,6 +166,7 @@ public class Options : OptionsBase
         skinsFolderLocation = "";
         bgaFolderLocation = "";
         pauseWhenGameLosesFocus = true;
+        discordRichPresence = true;
 
         editorOptions = new EditorOptions();
         modifiers = new Modifiers();
