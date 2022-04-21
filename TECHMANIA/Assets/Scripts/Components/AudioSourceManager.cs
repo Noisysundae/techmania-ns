@@ -237,11 +237,11 @@ public class AudioSourceManager : MonoBehaviour
     public static double getDoubleTime(AudioSource src)
     {
         return (double) src.timeSamples
-            * src.clip.frequency;
+            / src.clip.frequency;
     }
     public static double getDoubleLength(AudioClip clip)
     {
         return (double) clip.samples
-            * clip.frequency;
+            / clip.frequency;
     }
 }
