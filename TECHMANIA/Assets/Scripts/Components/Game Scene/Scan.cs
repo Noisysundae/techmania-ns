@@ -37,8 +37,7 @@ public class Scan : MonoBehaviour
     private List<NoteAppearance> noteAppearances;
     private List<HoldExtension> holdExtensions;
     private List<RepeatPathExtension> repeatPathExtensions;
-    private Scanline scanline;
-    public Scanline Scanline { get; }
+    public Scanline scanline { get; private set; }
 
     public static void InjectLaneHeight(float height)
     {

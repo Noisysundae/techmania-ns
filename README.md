@@ -4,6 +4,12 @@
 
 Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) section of the master branch.
 
+### Latest Versions
+
+* **Windows:** [v1.0.2-ns (2022-05-08)](https://github.com/Noisysundae/techmania-ns/releases/tag/1.0.2-ns_20220508)
+* **Android:** [v1.0.2-ns (2022-05-08)](https://github.com/Noisysundae/techmania-ns/releases/tag/1.0.2-ns_20220508)
+* **iOS:**  [v1.0.2-ns (2022-04-03)](https://github.com/Noisysundae/techmania-ns/releases/tag/1.0.2-ns_20220403)
+
 ## Changes
 
 **Note:** Each list is sorted by the date published (newest first).

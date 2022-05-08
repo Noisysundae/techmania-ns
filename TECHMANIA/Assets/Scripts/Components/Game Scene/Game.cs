@@ -1221,7 +1221,7 @@ public class Game : MonoBehaviour
             return new Vector2(-100f, -100f);
         }
         Scan s = scanObjects[Scan];
-        float x = s.Scanline.transform.position.x;
+        float x = s.scanline.transform.position.x;
         ScanBackground scanBackground =
             Modifiers.instance.GetScanPosition(Scan) switch
             {
