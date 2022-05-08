@@ -84,6 +84,9 @@ Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) se
 
 ### Optimization
 
+* (dirty change) Reduce `GetComponent()` calls in the Pattern Editor's `Update()` loop.
+  * There are still resource hogs on note object culling (instantiate/destroy).
+    * A new design is pretty much needed.
 * (dirty change) Convert timing variables from (float -> double).
   * Improves input and keysound playback precision.
 * Eliminate `GetComponent()` calls in the `Update()` loop.

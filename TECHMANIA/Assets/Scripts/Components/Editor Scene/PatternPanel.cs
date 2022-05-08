@@ -16,10 +16,14 @@ public class PatternPanel : MonoBehaviour
     [Header("Workspace")]
     public ScrollRect workspaceScrollRect;
     public ScrollRect headerScrollRect;
+    public RectTransform workspaceTransform;
+    public RectTransform headerTransform;
     public RectTransform workspaceViewport;
     public RectTransform workspaceContent;
     public RectTransform headerContent;
     public ScanlineInEditor scanline;
+    public RectTransform scanlineTransform;
+    public SelfPositionerInEditor scanlinePositioner;
 
     [Header("Lanes")]
     public RectTransform hiddenLaneBackground;
@@ -39,6 +43,7 @@ public class PatternPanel : MonoBehaviour
     public Transform noteContainer;
     public Transform noteCemetary;
     public NoteObject noteCursor;
+    public SelfPositionerInEditor noteCursorPositioner;
     public RectTransform selectionRectangle;
     public GameObject basicNotePrefab;
     public GameObject chainHeadPrefab;
@@ -82,6 +87,13 @@ public class PatternPanel : MonoBehaviour
     private float maxAmplitude;
 
     #region Internal Data Structures
+    private struct NoteReference {
+        public RectTransform transform;
+        public NoteObject noteObject;
+        public NoteInEditor noteInEditor;
+        public SelfPositionerInEditor positioner;
+    }
+    private Dictionary<GameObject, NoteReference> noteReference;
     // Each NoteObject contains a reference to a Note, and this
     // dictionary is the reverse of that. Only contains the notes
     // close to the viewport.
@@ -94,6 +106,15 @@ public class PatternPanel : MonoBehaviour
     private Note lastSelectedNoteWithoutShift;
     private Note lastClickedNote;
     public HashSet<Note> selectedNotes { get; private set; }
+
+    private NoteReference InsertNoteReference (GameObject o) {
+        NoteReference noteRef = new NoteReference();
+        noteRef.noteObject = o.GetComponent<NoteObject>();
+        noteRef.noteInEditor = o.GetComponent<NoteInEditor>();
+        noteRef.positioner = o.GetComponent<SelfPositionerInEditor>();
+        noteReference[o] = noteRef;
+        return noteRef;
+    }
 
     private Note GetNoteFromGameObject(GameObject o)
     {
@@ -188,18 +209,25 @@ public class PatternPanel : MonoBehaviour
 
         // Scanline
         scanline.doublePulse = 0f;
-        scanline.GetComponent<SelfPositionerInEditor>().Reposition();
+        scanlineTransform = scanline.GetComponent<RectTransform>();
+        scanlinePositioner = scanline.GetComponent<SelfPositionerInEditor>();
+        scanlinePositioner.Reposition();
         workspaceScrollRect.horizontalNormalizedPosition = 0f;
         headerScrollRect.horizontalNormalizedPosition = 0f;
         scanlinePositionSlider.SetValueWithoutNotify(0f);
 
         // UI and options
+        workspaceTransform = workspaceScrollRect
+            .GetComponent<RectTransform>();
+        headerTransform = headerScrollRect
+            .GetComponent<RectTransform>();
         tool = Tool.Note;
         noteType = NoteType.Basic;
         UpdateToolAndNoteTypeButtons();
         UpdateBeatSnapDivisorDisplay();
         UpdateVisibleLaneDisplay();
         keysoundSheet.Initialize();
+        noteCursorPositioner = noteCursor.GetComponent<SelfPositionerInEditor>();
 
         // Playback
         audioLoaded = false;
@@ -246,8 +274,7 @@ public class PatternPanel : MonoBehaviour
         if (scanlinePulseBeforePreview.HasValue)
         {
             scanline.doublePulse = scanlinePulseBeforePreview.Value;
-            scanline.GetComponent<SelfPositionerInEditor>()
-                .Reposition();
+            scanlinePositioner.Reposition();
             scanlinePulseBeforePreview = null;
             ScrollScanlineIntoView();
             RefreshPlaybackBar();
@@ -306,11 +333,11 @@ public class PatternPanel : MonoBehaviour
 
         bool mouseInWorkspace = RectTransformUtility
             .RectangleContainsScreenPoint(
-                workspaceScrollRect.GetComponent<RectTransform>(),
+                workspaceTransform,
                 Input.mousePosition);
         bool mouseInHeader = RectTransformUtility
             .RectangleContainsScreenPoint(
-                headerScrollRect.GetComponent<RectTransform>(), 
+                headerTransform, 
                 Input.mousePosition);
         if (Input.mouseScrollDelta.y != 0)
         {
@@ -482,7 +509,7 @@ public class PatternPanel : MonoBehaviour
         GameObject o = GetGameObjectFromNote(n);
         if (o == null) return;
 
-        NoteInEditor e = o.GetComponent<NoteInEditor>();
+        NoteInEditor e = noteReference[o].noteInEditor;
         e.SetKeysoundText();
         e.UpdateEndOfScanIndicator();
         switch (n.type)
@@ -575,7 +602,7 @@ public class PatternPanel : MonoBehaviour
         noteCursor.note = new Note();
         noteCursor.note.pulse = snappedCursorPulse;
         noteCursor.note.lane = snappedCursorLane;
-        noteCursor.GetComponent<SelfPositionerInEditor>().Reposition();
+        noteCursorPositioner.Reposition();
     }
 
     private void SnapNoteCursor()
@@ -596,7 +623,7 @@ public class PatternPanel : MonoBehaviour
         int snappedCursorPulse = SnapPulse(cursorPulse);
 
         scanline.doublePulse = snappedCursorPulse;
-        scanline.GetComponent<SelfPositionerInEditor>().Reposition();
+        scanlinePositioner.Reposition();
         RefreshPlaybackBar();
     }
 
@@ -690,8 +717,7 @@ public class PatternPanel : MonoBehaviour
         UnityAction<double> moveScanlineTo = (double pulse) =>
         {
             scanline.doublePulse = pulse;
-            scanline.GetComponent<SelfPositionerInEditor>()
-                .Reposition();
+            scanlinePositioner.Reposition();
             RefreshPlaybackBar();
             ScrollScanlineIntoView();
         };
@@ -1395,7 +1421,7 @@ public class PatternPanel : MonoBehaviour
             * Pattern.pulsesPerBeat;
         double scanlineRawPulse = totalPulses * newValue;
         scanline.doublePulse = SnapPulse(scanlineRawPulse);
-        scanline.GetComponent<SelfPositionerInEditor>().Reposition();
+        scanlinePositioner.Reposition();
         ScrollScanlineIntoView();
         RefreshScanlineTimeDisplay();
     }
@@ -1447,8 +1473,9 @@ public class PatternPanel : MonoBehaviour
         {
             GameObject o = GetGameObjectFromNote(n);
             if (o == null) continue;
-            o.GetComponent<NoteInEditor>().SetKeysoundText();
-            o.GetComponent<NoteInEditor>().UpdateKeysoundVisibility();
+            NoteInEditor e = noteReference[o].noteInEditor;
+            e.SetKeysoundText();
+            e.UpdateKeysoundVisibility();
         }
     }
 
@@ -1587,12 +1614,12 @@ public class PatternPanel : MonoBehaviour
         {
             GameObject o = GetGameObjectFromNote(n);
             if (o == null) continue;
+            NoteReference r = noteReference[o];
 
             // This is only visual. Notes are only really moved
             // in OnNoteObjectEndDrag.
-            o.GetComponent<RectTransform>().anchoredPosition += delta;
-            o.GetComponent<NoteInEditor>()
-                .KeepPathInPlaceWhileNoteBeingDragged(delta);
+            r.transform.anchoredPosition += delta;
+            r.noteInEditor.KeepPathInPlaceWhileNoteBeingDragged(delta);
         }
 
         ScrollWorkspaceWhenMouseIsCloseToEdge();
@@ -1745,9 +1772,10 @@ public class PatternPanel : MonoBehaviour
         {
             GameObject o = GetGameObjectFromNote(n);
             if (o == null) continue;
+            NoteReference r = noteReference[o];
 
-            o.GetComponent<SelfPositionerInEditor>().Reposition();
-            o.GetComponent<NoteInEditor>().ResetPathPosition();
+            r.positioner.Reposition();
+            r.noteInEditor.ResetPathPosition();
         }
 
         if (selectedNotes.Count == 1)
@@ -1876,7 +1904,7 @@ public class PatternPanel : MonoBehaviour
         {
             GameObject o = GetGameObjectFromNote(holdNote);
             if (o == null) continue;
-            o.GetComponent<NoteInEditor>().RecordTrailActualLength();
+            noteReference[o].noteInEditor.RecordTrailActualLength();
         }
     }
 
@@ -1899,7 +1927,7 @@ public class PatternPanel : MonoBehaviour
             if (o == null) continue;
             // This is only visual; duration is only really changed
             // in OnDurationHandleEndDrag.
-            o.GetComponent<NoteInEditor>().AdjustTrailLength(
+            noteReference[o].noteInEditor.AdjustTrailLength(
                 delta.x);
         }
 
@@ -1963,7 +1991,7 @@ public class PatternPanel : MonoBehaviour
         {
             GameObject o = GetGameObjectFromNote(n);
             if (o == null) continue;
-            o.GetComponent<NoteInEditor>().ResetTrail();
+            noteReference[o].noteInEditor.ResetTrail();
         }
     }
     #endregion
@@ -2669,19 +2697,17 @@ public class PatternPanel : MonoBehaviour
                 break;
         }
 
-        NoteObject noteObject = 
-            Instantiate(prefab, noteContainer)
-            .GetComponent<NoteObject>();
+        GameObject o = Instantiate(prefab, noteContainer);
+        NoteReference r = InsertNoteReference(o);
+        NoteObject noteObject = r.noteObject;
         noteObject.note = n;
-        NoteInEditor noteInEditor = noteObject
-            .GetComponent<NoteInEditor>();
+        NoteInEditor noteInEditor = r.noteInEditor;
         noteInEditor.SetKeysoundText();
         noteInEditor.UpdateKeysoundVisibility();
         noteInEditor.UpdateEndOfScanIndicator();
         noteInEditor.SetSprite(hidden: n.lane >= PlayableLanes);
         noteInEditor.UpdateSelection(selectedNotes);
-        noteObject.GetComponent<SelfPositionerInEditor>()
-            .Reposition();
+        r.positioner.Reposition();
 
         noteToNoteObject.Add(n, noteObject);
         if (n.type == NoteType.Drag)
@@ -2743,6 +2769,7 @@ public class PatternPanel : MonoBehaviour
         {
             Destroy(noteContainer.GetChild(i).gameObject);
         }
+        noteReference = new Dictionary<GameObject, NoteReference>();
         noteToNoteObject = new Dictionary<Note, NoteObject>();
         dragNotes = new HashSet<NoteInEditor>();
         lastSelectedNoteWithoutShift = null;
@@ -2798,7 +2825,7 @@ public class PatternPanel : MonoBehaviour
     // the same-type note after o.
     private void AdjustPathOrTrailAround(GameObject o)
     {
-        Note n = o.GetComponent<NoteObject>().note;
+        Note n = noteReference[o].noteObject.note;
         Note prev, next;
 
         switch (n.type)
@@ -2811,25 +2838,31 @@ public class PatternPanel : MonoBehaviour
 
                 if (n.type == NoteType.ChainNode)
                 {
-                    o.GetComponent<NoteInEditor>()
+                    GameObject reference = GetGameObjectFromNote(prev);
+                    noteReference[o].noteInEditor
                         .PointPathToward(prev);
-                    if (prev != null &&
-                        prev.type == NoteType.ChainHead)
+                    if (prev != null
+                        && prev.type == NoteType.ChainHead
+                        && reference != null)
                     {
-                        GetGameObjectFromNote(prev)
-                            ?.GetComponent<NoteInEditor>()
+                        noteReference[reference]
+                            .noteInEditor
                             .RotateNoteHeadToward(n);
                     }
                 }
                 if (next != null &&
                     next.type == NoteType.ChainNode)
                 {
-                    GetGameObjectFromNote(next)
-                        ?.GetComponent<NoteInEditor>()
-                        .PointPathToward(n);
+                    GameObject reference = GetGameObjectFromNote(next);
+                    if (reference != null)
+                    {
+                        noteReference[reference]
+                            .noteInEditor
+                            .PointPathToward(n);
+                    }
                     if (n.type == NoteType.ChainHead)
                     {
-                        o.GetComponent<NoteInEditor>()
+                        noteReference[o].noteInEditor
                             .RotateNoteHeadToward(next);
                     }
                 }
@@ -2845,25 +2878,27 @@ public class PatternPanel : MonoBehaviour
                 if (n.type == NoteType.Repeat ||
                     n.type == NoteType.RepeatHold)
                 {
-                    o.GetComponent<NoteInEditor>()
+                    noteReference[o].noteInEditor
                         .PointPathToward(prev);
                 }
 
                 if (next != null)
                 {
+                    GameObject reference = GetGameObjectFromNote(next);
                     NoteType nextType = next.type;
-                    if (nextType == NoteType.Repeat ||
-                        nextType == NoteType.RepeatHold)
+                    if (reference != null
+                        && (nextType == NoteType.Repeat
+                            || nextType == NoteType.RepeatHold))
                     {
-                        GetGameObjectFromNote(next)
-                            ?.GetComponent<NoteInEditor>()
+                        noteReference[reference]
+                            .noteInEditor
                             .PointPathToward(n);
                     }
                 }
                 break;
             case NoteType.Drag:
-                o.GetComponent<NoteInEditor>().ResetCurve();
-                o.GetComponent<NoteInEditor>()
+                noteReference[o].noteInEditor.ResetCurve();
+                noteReference[o].noteInEditor
                     .ResetAllAnchorsAndControlPoints();
                 break;
         }
@@ -2872,7 +2907,7 @@ public class PatternPanel : MonoBehaviour
             n.type == NoteType.RepeatHeadHold ||
             n.type == NoteType.RepeatHold)
         {
-            o.GetComponent<NoteInEditor>().ResetTrail();
+            noteReference[o].noteInEditor.ResetTrail();
         }
     }
 
@@ -2880,9 +2915,10 @@ public class PatternPanel : MonoBehaviour
     // the same-type note after o.
     private void AdjustPathBeforeDeleting(GameObject o)
     {
-        Note n = o.GetComponent<NoteObject>().note;
+        Note n = noteReference[o].noteObject.note;
         if (n.lane < 0 || n.lane >= PlayableLanes) return;
         Note prev, next;
+        GameObject prevRef, nextRef;
 
         switch (n.type)
         {
@@ -2890,26 +2926,33 @@ public class PatternPanel : MonoBehaviour
             case NoteType.ChainNode:
                 GetPreviousAndNextChainNotes(n,
                     out prev, out next);
+                prevRef = GetGameObjectFromNote(prev);
+                nextRef = GetGameObjectFromNote(next);
 
-                if (next != null &&
-                    next.type == NoteType.ChainNode)
+                if (next != null
+                    && next.type == NoteType.ChainNode)
                 {
-                    GetGameObjectFromNote(next)
-                        ?.GetComponent<NoteInEditor>()
-                        .PointPathToward(prev);
-                    if (prev != null &&
-                        prev.type == NoteType.ChainHead)
+                    if (nextRef != null)
                     {
-                        GetGameObjectFromNote(prev)
-                            ?.GetComponent<NoteInEditor>()
+                        noteReference[nextRef]
+                            .noteInEditor
+                            .PointPathToward(prev);
+                    }
+                    if (prev != null
+                        && prev.type == NoteType.ChainHead
+                        && prevRef != null)
+                    {
+                        noteReference[prevRef]
+                            .noteInEditor
                             .RotateNoteHeadToward(next);
                     }
                 }
-                else if (prev != null &&
-                    prev.type == NoteType.ChainHead)
+                else if (prev != null
+                    && prev.type == NoteType.ChainHead
+                    && prevRef != null)
                 {
-                    GetGameObjectFromNote(prev)
-                        ?.GetComponent<NoteInEditor>()
+                    noteReference[prevRef]
+                        .noteInEditor
                         .ResetNoteImageRotation();
                 }
                 break;
@@ -2919,15 +2962,17 @@ public class PatternPanel : MonoBehaviour
             case NoteType.RepeatHold:
                 GetPreviousAndNextRepeatNotes(n,
                     out prev, out next);
+                nextRef = GetGameObjectFromNote(next);
 
                 if (next != null)
                 {
                     NoteType nextType = next.type;
-                    if (nextType == NoteType.Repeat ||
-                        nextType == NoteType.RepeatHold)
+                    if (nextRef != null
+                        && (nextType == NoteType.Repeat ||
+                            nextType == NoteType.RepeatHold))
                     {
-                        GetGameObjectFromNote(next)
-                            ?.GetComponent<NoteInEditor>()
+                        noteReference[nextRef]
+                            .noteInEditor
                             .PointPathToward(prev);
                     }
                 }
@@ -2950,19 +2995,22 @@ public class PatternPanel : MonoBehaviour
         foreach (Note n in EditorContext.Pattern.notes)
         {
             GameObject o = GetGameObjectFromNote(n);
-            if (n.type == NoteType.Hold ||
-                n.type == NoteType.RepeatHeadHold ||
-                n.type == NoteType.RepeatHold)
+            if (o != null)
             {
-                // Adjust the trails of hold notes.
-                o?.GetComponent<NoteInEditor>().ResetTrail();
-            }
-            if (n.type == NoteType.Drag)
-            {
-                // Draw curves of drag notes.
-                o?.GetComponent<NoteInEditor>().ResetCurve();
-                o?.GetComponent<NoteInEditor>()
-                    .ResetAllAnchorsAndControlPoints();
+                NoteInEditor e = noteReference[o].noteInEditor;
+                if (n.type == NoteType.Hold
+                    || n.type == NoteType.RepeatHeadHold
+                    || n.type == NoteType.RepeatHold)
+                {
+                    // Adjust the trails of hold notes.
+                    e.ResetTrail();
+                }
+                if (n.type == NoteType.Drag)
+                {
+                    // Draw curves of drag notes.
+                    e.ResetCurve();
+                    e.ResetAllAnchorsAndControlPoints();
+                }
             }
 
             // For chain paths and repeat paths, ignore hidden notes.
@@ -2974,13 +3022,18 @@ public class PatternPanel : MonoBehaviour
                 // Adjust the paths of chain nodes.
                 if (n.type == NoteType.ChainNode)
                 {
-                    o?.GetComponent<NoteInEditor>()
-                        .PointPathToward(prevChain);
-                    if (prevChain != null &&
-                        prevChain.type == NoteType.ChainHead)
+                    GameObject prevChainRef =
+                        GetGameObjectFromNote(prevChain);
+                    if (o != null)
                     {
-                        GetGameObjectFromNote(prevChain)
-                            ?.GetComponent<NoteInEditor>()
+                        noteReference[o].noteInEditor
+                            .PointPathToward(prevChain);
+                    }
+                    if (prevChain != null
+                        && prevChainRef != null
+                        && prevChain.type == NoteType.ChainHead)
+                    {
+                        noteReference[prevChainRef].noteInEditor
                             .RotateNoteHeadToward(n);
                     }
                 }
@@ -2992,10 +3045,11 @@ public class PatternPanel : MonoBehaviour
                 n.type == NoteType.RepeatHold)
             {
                 // Adjust the paths of repeat notes.
-                if (n.type == NoteType.Repeat ||
-                    n.type == NoteType.RepeatHold)
+                if (o != null
+                    && (n.type == NoteType.Repeat ||
+                        n.type == NoteType.RepeatHold))
                 {
-                    o?.GetComponent<NoteInEditor>()
+                    noteReference[o].noteInEditor
                         .PointPathToward(previousRepeat[n.lane]);
                 }
                 previousRepeat[n.lane] = n;
@@ -3207,6 +3261,7 @@ public class PatternPanel : MonoBehaviour
     private void DeleteNoteObject(Note n, GameObject o,
         bool intendToDeleteNote)
     {
+        Debug.Log("t");
         if (intendToDeleteNote)
         {
             AdjustPathBeforeDeleting(o);
@@ -3216,6 +3271,7 @@ public class PatternPanel : MonoBehaviour
             AdjustPathOrTrailAround(o);
         }
         noteToNoteObject.Remove(n);
+        noteReference.Remove(o);
         // No exception if the elements don't exist.
         dragNotes.Remove(o.GetComponent<NoteInEditor>());
         
@@ -3259,7 +3315,7 @@ public class PatternPanel : MonoBehaviour
         {
             GameObject o = GetGameObjectFromNote(n);
             if (o == null) continue;
-            o.GetComponent<NoteInEditor>().UpdateEndOfScanIndicator();
+            noteReference[o].noteInEditor.UpdateEndOfScanIndicator();
         }
     }
     #endregion
@@ -3679,7 +3735,7 @@ public class PatternPanel : MonoBehaviour
         {
             scanline.doublePulse = playbackStartingPulse;
         }
-        scanline.GetComponent<SelfPositionerInEditor>().Reposition();
+        scanlinePositioner.Reposition();
         ScrollScanlineIntoView();
         RefreshPlaybackBar();
 
@@ -3767,7 +3823,7 @@ public class PatternPanel : MonoBehaviour
 
         // Move scanline.
         scanline.doublePulse = playbackCurrentPulse;
-        scanline.GetComponent<SelfPositionerInEditor>().Reposition();
+        scanlinePositioner.Reposition();
         ScrollScanlineIntoView();
         RefreshPlaybackBar();
     }
@@ -3827,7 +3883,7 @@ public class PatternPanel : MonoBehaviour
         if (!Options.instance.editorOptions.keepScanlineInView) return;
 
         UIUtils.ScrollIntoView(
-            scanline.GetComponent<RectTransform>(),
+            scanlineTransform,
             workspaceScrollRect,
             normalizedMargin: 0.8f,
             viewRectAsPoint: true,
