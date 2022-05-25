@@ -109,6 +109,7 @@ public class PatternPanel : MonoBehaviour
 
     private NoteReference InsertNoteReference (GameObject o) {
         NoteReference noteRef = new NoteReference();
+        noteRef.transform = o.GetComponent<RectTransform>();
         noteRef.noteObject = o.GetComponent<NoteObject>();
         noteRef.noteInEditor = o.GetComponent<NoteInEditor>();
         noteRef.positioner = o.GetComponent<SelfPositionerInEditor>();
@@ -3261,7 +3262,6 @@ public class PatternPanel : MonoBehaviour
     private void DeleteNoteObject(Note n, GameObject o,
         bool intendToDeleteNote)
     {
-        Debug.Log("t");
         if (intendToDeleteNote)
         {
             AdjustPathBeforeDeleting(o);
