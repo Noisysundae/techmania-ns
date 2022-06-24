@@ -246,9 +246,6 @@ public class Game : MonoBehaviour
     private const string kNoteHitboxTag = "NoteHitbox";
     private const string kLaneHitboxTag = "LaneHitbox";
 
-    private const string kNoteHitboxTag = "NoteHitbox";
-    private const string kLaneHitboxTag = "LaneHitbox";
-
     // Component caching.
     public static Dictionary<GameObject, EmptyTouchReceiver>
         gameObjectToEmptyTouchReceiver;
@@ -638,7 +635,10 @@ public class Game : MonoBehaviour
             initialTime = GameSetup.pattern.PulseToTime(
                 firstScan * PulsesPerScan);
         }
+    }
 
+    private void InitializePatternPostAudio()
+    {
         // Reset component caches. They will be filled as we spawn
         // scans and note objects.
         hitboxToNoteObject = new Dictionary<
@@ -652,8 +652,7 @@ public class Game : MonoBehaviour
         List<Note> notesToRemove = new List<Note>();
         foreach (Note n in GameSetup.pattern.notes)
         {
-            if (n.sound == "" && GameSetup.pattern.IsHiddenNote(
-                n.lane))
+            if (n.sound == "" && GameSetup.pattern.IsHiddenNote(n.lane))
             {
                 notesToRemove.Add(n);
             }
@@ -732,14 +731,17 @@ public class Game : MonoBehaviour
 
             NoteObject noteObject = SpawnNoteObject(
                 n, scanObjects[scanOfN], hidden);
-            noteObject.appearance = noteObject.GetComponent<NoteAppearance>();
 
             while (noteObjectsInLane.Count <= n.lane)
             {
-                noteObjectsInLane.Add(noteObjectsInLane.Count, new NoteList());
-                notesForMouseInLane.Add(notesForMouseInLane.Count, new NoteList());
-                notesForKeyboardInLane.Add(notesForKeyboardInLane.Count, new NoteList());
-                unmanagedRepeatNotes.Add(unmanagedRepeatNotes.Count, new Dictionary<int, NoteObject>());
+                noteObjectsInLane.Add(
+                    noteObjectsInLane.Count, new NoteList());
+                notesForMouseInLane.Add(
+                    notesForMouseInLane.Count, new NoteList());
+                notesForKeyboardInLane.Add(
+                    notesForKeyboardInLane.Count, new NoteList());
+                unmanagedRepeatNotes.Add(
+                    unmanagedRepeatNotes.Count, new Dictionary<int, NoteObject>());
             }
             noteObjectsInLane[n.lane].Add(noteObject);
             switch (n.type)
@@ -776,8 +778,9 @@ public class Game : MonoBehaviour
             if (n.type == NoteType.ChainHead ||
                 n.type == NoteType.ChainNode)
             {
-                (noteObject.appearance as ChainAppearanceBase).SetNextChainNode(
-                    nextChainNode?.gameObject);
+                (noteObject.appearance as ChainAppearanceBase)
+                    .SetNextChainNode(
+                        nextChainNode?.gameObject);
                 if (n.type == NoteType.ChainHead)
                 {
                     nextChainNode = null;
@@ -793,7 +796,8 @@ public class Game : MonoBehaviour
             if (n.type == NoteType.Repeat ||
                 n.type == NoteType.RepeatHold)
             {
-                unmanagedRepeatNotes[n.lane].Add(unmanagedRepeatNotes[n.lane].Count, noteObject);
+                unmanagedRepeatNotes[n.lane].Add(
+                    unmanagedRepeatNotes[n.lane].Count, noteObject);
             }
             if (n.type == NoteType.RepeatHead ||
                 n.type == NoteType.RepeatHeadHold)
@@ -814,7 +818,7 @@ public class Game : MonoBehaviour
             Pattern.pulsesPerBeat;
         if (Ruleset.instance.constantFeverCoefficient)
         {
-            feverCoefficient = 8d;
+            feverCoefficient = 8f;
         }
         else
         {
@@ -825,7 +829,7 @@ public class Game : MonoBehaviour
         Debug.Log("Fever coefficient is: " + feverCoefficient);
 
         // Initialize practice mode.
-        loopStart = firstScan - 1;
+        loopStart = firstScan;
         loopEnd = lastScan;
         speedPercentage = 100;
 
