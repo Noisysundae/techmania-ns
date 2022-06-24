@@ -239,7 +239,7 @@ public class Options : OptionsBase
             instance = LoadFromFile(
                 Paths.GetOptionsFilePath()) as Options;
         }
-        catch (IOException)
+        catch (Exception)
         {
             instance = new Options();
         }

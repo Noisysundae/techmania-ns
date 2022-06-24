@@ -106,13 +106,14 @@ public class Scan : MonoBehaviour
         appearance.SetScanAndScanlineRef(this, scanline);
         appearance.Initialize();
         noteAppearances.Add(appearance);
-        if (null != hitbox)
+        if (hitbox != null)
         {
-            GameSetup.noteReference.Add(hitbox.gameObject, noteObject);
+            Game.hitboxToNoteObject.Add(
+                hitbox.gameObject, noteObject);
             if (n.type == NoteType.RepeatHead ||
                 n.type == NoteType.RepeatHeadHold)
             {
-                GameSetup.repeatHeadReference.Add(
+                Game.noteObjectToRepeatHead.Add(
                     noteObject,
                     appearance as RepeatHeadAppearanceBase);
             }
