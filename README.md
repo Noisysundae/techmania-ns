@@ -6,8 +6,8 @@ Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) se
 
 ### Latest Versions
 
-* **Windows:** [v1.0.2-ns (2022-06-06)](https://github.com/Noisysundae/techmania-ns/releases/tag/1.0.2-ns_20220606)
-* **Android:** [v1.0.2-ns (2022-06-06)](https://github.com/Noisysundae/techmania-ns/releases/tag/1.0.2-ns_20220606)
+* **Windows:** [v1.1-ns (2022-06-24)](https://github.com/Noisysundae/techmania-ns/releases/tag/1.1-ns_20220624)
+* **Android:** [v1.1-ns (2022-06-24)](https://github.com/Noisysundae/techmania-ns/releases/tag/1.1-ns_20220624)
 * **iOS:**  [v1.0.2-ns (2022-04-03)](https://github.com/Noisysundae/techmania-ns/releases/tag/1.0.2-ns_20220403)
 
 ## Changes
@@ -95,7 +95,7 @@ Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) se
     * A new design is pretty much needed.
 * (dirty change) Convert timing variables from (float -> double).
   * Improves input and keysound playback precision.
-* Eliminate `GetComponent()` calls in the `Update()` loop.
+* ~~Eliminate `GetComponent()` calls in the `Update()` loop.~~ *Merged into the official build (1.1)*
   * This pretty much solves the "FPS drop on touch spam" problem.
   * I couldn't record a play on 1080p without stuttering on my laptop. With this fix, now I can!
 * Manually call garbage collector (GC) after finishing loading a game scene or a pattern editor.
@@ -103,7 +103,7 @@ Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) se
 * Automagically merge all keysounds in hidden notes into a long one.
   * Greatly reduces the number of audio played at once, especially on easier patterns with a lot of keysounds.
   * Will extend this to auto keysound and auto assist tick in the future.
-* On gameplay initialization, remove all hidden notes with no keysound.
+* ~~On gameplay initialization, remove all hidden notes with no keysound.~~ *Merged into the official build (1.1)*
 * Disable all `Console.Log()`s on builds.
 * ~~Rays casted from touches now ignore all inactive note hitboxes.~~ *Merged into the official build (1.0.2)*
   * Was one of the causes of fps drop on touch spamming (e.g. jacking repeat notes) I managed to find.
@@ -121,7 +121,7 @@ Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) se
 * Enable Rulesets on iOS and Android Except Custom
 * Fix Long Note Behavior with Brief Input Release
   * This is related to the *Grace Period* rule, and it should not apply to consecutive "begin pressing" inputs on a note.
-  * In other words, split-second finger lifting on a long note no longer works!
+  * In other words, on a long note, lifting finger early now counts only on the trail end portion!
 * Fix Curtain Open (Fade in From Black) Transition Not Completely Opening
   * Was the reason why the game screen sometimes looks dimmed.
 * Fix Practice Mode Shortcuts Being Available on Pause
