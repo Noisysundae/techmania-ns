@@ -6,8 +6,8 @@ Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) se
 
 ### Latest Versions
 
-* **Windows:** [v1.1-ns (2022-06-24)](https://github.com/Noisysundae/techmania-ns/releases/tag/1.1-ns_20220624)
-* **Android:** [v1.1-ns (2022-06-24)](https://github.com/Noisysundae/techmania-ns/releases/tag/1.1-ns_20220624)
+* **Windows:** [v1.1-ns (2022-07-22)](https://github.com/Noisysundae/techmania-ns/releases/tag/1.1-ns_20220722)
+* **Android:** [v1.1-ns (2022-07-22)](https://github.com/Noisysundae/techmania-ns/releases/tag/1.1-ns_20220722)
 * **iOS:**  [v1.0.2-ns (2022-04-03)](https://github.com/Noisysundae/techmania-ns/releases/tag/1.0.2-ns_20220403)
 
 ## Changes

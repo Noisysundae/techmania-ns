@@ -67,7 +67,7 @@ public class AudioSourceManager : MonoBehaviour
     }
 
     private void PlaySound(AudioSource source, AudioClip clip,
-        double startTime, int volumePercent, int panPercent)
+        double startTime, double volumePercent, double panPercent)
     {
         if (clip == null)
         {
@@ -78,8 +78,8 @@ public class AudioSourceManager : MonoBehaviour
             startTime * clip.frequency);
         source.clip = clip;
         source.timeSamples = Mathf.Min(clip.samples, startSample);
-        source.volume = volumePercent * 0.01f;
-        source.panStereo = panPercent * 0.01f;
+        source.volume = (float) (volumePercent * 0.01);
+        source.panStereo = (float) (panPercent * 0.01);
         source.Play();
     }
 
@@ -88,7 +88,7 @@ public class AudioSourceManager : MonoBehaviour
         double factor = -1f)
     {
         PlaySound(backingTrack, clip, startTime,
-            volumePercent: factor == -1f ? Note.defaultVolume: (int) factor,
+            volumePercent: factor == -1f ? Note.defaultVolume: factor * 100,
             panPercent: Note.defaultPan);
     }
 
