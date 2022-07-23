@@ -3,12 +3,24 @@ using System.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Networking;
 
 public class ResourceLoader : MonoBehaviour
 {
+    private struct RequestCollection {
+        public UnityWebRequest req;
+        public UnityWebRequestAsyncOperation op;
+        public RequestCollection (
+            UnityWebRequest r,
+            UnityWebRequestAsyncOperation o)
+        {
+            req = r;
+            op = o;
+        }
+    }
     private struct AudioSamplesWithRate
     {
         public int rate;
@@ -142,7 +154,10 @@ public class ResourceLoader : MonoBehaviour
         UnityAction<float> progressCallback)
     {
         Options.TemporarilyDisableVSync();
-        int numLoaded = 0;
+        int numFiles = filenameWithFolder.Count;
+        Dictionary<string, RequestCollection>
+            requests = new Dictionary<string, RequestCollection>();
+        List<string> filesLoaded = new List<string>();
         foreach (string file in filenameWithFolder)
         {
             string fileRelativePath = Paths.RelativePath(trackFolder, file);
@@ -169,26 +184,47 @@ public class ResourceLoader : MonoBehaviour
                 UnityWebRequest request =
                     UnityWebRequestMultimedia.GetAudioClip(
                         Paths.FullPathToUri(file), AudioType.UNKNOWN);
-                yield return request.SendWebRequest();
-
-                AudioClip clip;
-                string error;
-                GetAudioClipFromWebRequest(request,
-                    out clip, out error);
-                if (clip == null)
-                {
-                    cacheAudioCompleteCallback?.Invoke(error);
-                    yield break;
-                }
-                audioClips.Add(fileRelativePath, clip);
-                AddAudioSamples(fileRelativePath, clip);
+                requests.Add(
+                    fileRelativePath,
+                    new RequestCollection(
+                        request,
+                        request.SendWebRequest()));
             }
-            
-            numLoaded++;
-            progressCallback?.Invoke((float)numLoaded /
-                filenameWithFolder.Count);
-            Debug.Log("Loaded: " + file);
+            else
+            {
+                filesLoaded.Add(fileRelativePath);
+            }
         }
+
+        Func<object> onRequestsYield = () =>
+        {
+            foreach (var req in requests.Where(e => e.Value.op.isDone))
+            {
+                string file = req.Key;
+                if (!filesLoaded.Contains(file))
+                {
+                    AudioClip clip;
+                    string error;
+                    GetAudioClipFromWebRequest(req.Value.req,
+                        out clip, out error);
+                    if (clip == null)
+                    {
+                        cacheAudioCompleteCallback?.Invoke(error);
+                        continue;
+                    }
+                    audioClips.Add(file, clip);
+                    AddAudioSamples(file, clip);
+
+                    filesLoaded.Add(file);
+                    progressCallback?.Invoke(
+                        (float) filesLoaded.Count / numFiles);
+                    Debug.Log("Loaded: " + file);
+                }
+            }
+            return null;
+        };
+        while (filesLoaded.Count != numFiles)
+            yield return onRequestsYield();
 
         yield return null;  // Wait 1 more frame just in case
         cacheAudioCompleteCallback?.Invoke(null);

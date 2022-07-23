@@ -6,8 +6,8 @@ Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) se
 
 ### Latest Versions
 
-* **Windows:** [v1.1-ns (2022-07-22)](https://github.com/Noisysundae/techmania-ns/releases/tag/1.1-ns_20220722)
-* **Android:** [v1.1-ns (2022-07-22)](https://github.com/Noisysundae/techmania-ns/releases/tag/1.1-ns_20220722)
+* **Windows:** [v1.1-ns (2022-07-23)](https://github.com/Noisysundae/techmania-ns/releases/tag/1.1-ns_20220723)
+* **Android:** [v1.1-ns (2022-07-23)](https://github.com/Noisysundae/techmania-ns/releases/tag/1.1-ns_20220723)
 * **iOS:**  [v1.0.2-ns (2022-04-03)](https://github.com/Noisysundae/techmania-ns/releases/tag/1.0.2-ns_20220403)
 
 ## Changes
@@ -90,6 +90,10 @@ Refer to the [Releases](https://github.com/Noisysundae/techmania-ns/releases) se
 
 ### Optimization
 
+* Eager keysound loading
+  * This speeds up pattern load time, more apparent on faster storages (e.g. SSDs).
+    * The problem stemmed from the pre-optimize coroutine only loading one file per frame.
+  * Drawback: The game will freeze briefly while loading keysound.
 * (dirty change) Reduce `GetComponent()` calls in the Pattern Editor's `Update()` loop.
   * There are still resource hogs on note object culling (instantiate/destroy).
     * A new design is pretty much needed.
