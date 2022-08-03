@@ -154,7 +154,7 @@ public class ResourceLoader : MonoBehaviour
         UnityAction<float> progressCallback)
     {
         Options.TemporarilyDisableVSync();
-        int numFiles = filenameWithFolder.Count;
+        int numFiles;
         Dictionary<string, RequestCollection>
             requests = new Dictionary<string, RequestCollection>();
         List<string> filesLoaded = new List<string>();
@@ -195,6 +195,7 @@ public class ResourceLoader : MonoBehaviour
                 filesLoaded.Add(fileRelativePath);
             }
         }
+        numFiles = requests.Count;
 
         Func<object> onRequestsYield = () =>
         {
