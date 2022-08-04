@@ -224,7 +224,7 @@ public class ResourceLoader : MonoBehaviour
             }
             return null;
         };
-        while (filesLoaded.Count != numFiles)
+        while (filesLoaded.Count < numFiles)
             yield return onRequestsYield();
 
         yield return null;  // Wait 1 more frame just in case
