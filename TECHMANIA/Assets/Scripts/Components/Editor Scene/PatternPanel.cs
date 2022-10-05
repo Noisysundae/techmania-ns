@@ -3013,11 +3013,11 @@ public class PatternPanel : MonoBehaviour
                 GetPreviousAndNextChainNotes(n,
                     out prev, out next);
                 prevRef = GetGameObjectFromNote(prev);
-                nextRef = GetGameObjectFromNote(next);
 
                 if (next != null
                     && next.type == NoteType.ChainNode)
                 {
+                    nextRef = GetGameObjectFromNote(next);
                     if (nextRef != null)
                     {
                         noteReference[nextRef]
@@ -3048,10 +3048,10 @@ public class PatternPanel : MonoBehaviour
             case NoteType.RepeatHold:
                 GetPreviousAndNextRepeatNotes(n,
                     out prev, out next);
-                nextRef = GetGameObjectFromNote(next);
 
                 if (next != null)
                 {
+                    nextRef = GetGameObjectFromNote(next);
                     NoteType nextType = next.type;
                     if (nextRef != null
                         && (nextType == NoteType.Repeat ||
