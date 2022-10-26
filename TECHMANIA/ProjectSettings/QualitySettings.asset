@@ -35,7 +35,7 @@ QualitySettings:
     streamingMipmapsRenderersPerFrame: 512
     streamingMipmapsMaxLevelReduction: 2
     streamingMipmapsMaxFileIORequests: 1024
-    particleRaycastBudget: 4096
+    particleRaycastBudget: 1
     asyncUploadTimeSlice: 2
     asyncUploadBufferSize: 16
     asyncUploadPersistentBuffer: 1
@@ -49,6 +49,7 @@ QualitySettings:
     PS4: 0
     PSM: 0
     PSP2: 0
+    Server: 0
     Stadia: 0
     Standalone: 0
     Tizen: 0
