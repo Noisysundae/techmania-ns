@@ -4,28 +4,64 @@ using UnityEngine;
 
 public class Startup : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
+	// Start is called before the first frame update
+	void Start()
+	{
 #if !UNITY_EDITOR
         Debug.unityLogger.logEnabled = false;
 #endif
-        Input.simulateMouseWithTouches = false;
-        Paths.PrepareFolders();
-        OptionsPanel.ApplyOptionsOnStartUp();
-        Paths.ApplyCustomDataLocation();
-        SpriteSheet.PrepareEmptySpriteSheet();
-        Records.RefreshInstance();
-        BetterStreamingAssets.Initialize();
-        GetComponent<GlobalResourceLoader>().StartLoading();
-
-        if (!BaseBga.IsInitialized())
+		Input.simulateMouseWithTouches = false;
+		Paths.PrepareFolders();
+		OptionsPanel.ApplyOptionsOnStartUp();
+		SpriteSheet.PrepareEmptySpriteSheet();
+		Records.RefreshInstance();
+#if UNITY_ANDROID
+        AndroidUtility.CheckVersion();
+        // Ask for storage permission before loading resource if custom data location is set
+        if (Options.instance.customDataLocation)
         {
-            BaseBga.SetPaths(Paths.GetAllVideoFiles(Paths.GetBgaFolder()));
-            BaseBga.SetMode(Options.instance.baseBgaPlaybackMode);
+            StartCoroutine(AndroidUtility.AskForPermissions(OnAndroidPermissionAsked));
         }
+        else
+        {
+            // This prevents loading custom skins from streaming assets at startup.
+            // Android Play Games may sync your options after reinstall the game.
+            // So we have to reset skins if custom data location is not set but using custom skins.
+            Options.instance.ResetCustomDataLocation();
+            LoadResources();
+        }
+#else
+		LoadResources();
+#endif
 
-        DiscordController.Start();
-        DiscordController.SetActivity(DiscordActivityType.MainMenu);
+		if (!BaseBga.IsInitialized())
+		{
+			BaseBga.SetPaths(Paths.GetAllVideoFiles(Paths.GetBgaFolder()));
+			BaseBga.SetMode(Options.instance.baseBgaPlaybackMode);
+		}
+
+		DiscordController.Start();
+		DiscordController.SetActivity(DiscordActivityType.MainMenu);
+	}
+
+	void LoadResources()
+	{
+		Paths.ApplyCustomDataLocation();
+		BetterStreamingAssets.Initialize();
+		StartCoroutine(GetComponent<GlobalResourceLoader>().LoadResources(
+			reload: false, finishCallback: null));
+	}
+
+#if UNITY_ANDROID
+    void OnAndroidPermissionAsked ()
+    {
+        // Turn off custom data location and reset skins if user denied permission.
+        // Otherwise. there will be an error while loading skins.
+        if (!AndroidUtility.HasStoragePermissions())
+        {
+            Options.instance.ResetCustomDataLocation();
+        }
+        LoadResources();
     }
+#endif
 }
